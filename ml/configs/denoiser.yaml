@@ -1,0 +1,15 @@
+# Low-dose denoiser: our DnCNN-style residual network, synthetic Poisson + Gaussian noise.
+common:
+  task: denoise
+  dataset: denoise
+  model: {arch: dncnn, depth: 10, width: 48}
+  optim: {lr: 1.0e-3, weight_decay: 0}
+  train: {patience: 3, warmup_epochs: 0, num_workers: 0, monitor: val_psnr}
+starter:
+  img_size: 128
+  train: {epochs: 5, batch_size: 32, limit_train: 4000, limit_val: 500}
+full:
+  img_size: 256
+  model: {depth: 17, width: 64}
+  train: {epochs: 30, batch_size: 32, limit_train: 40000, limit_val: 2000, num_workers: 4}
+  kaggle: {dataset_sources: [nih-chest-xrays/data], gpu_hours: 1.5}

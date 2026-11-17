@@ -1,0 +1,15 @@
+# Pneumonia localiser on RSNA boxes: Faster R-CNN MobileNetV3-FPN (ours). Full profile only:
+# RSNA needs the competition rules accepted on kaggle.com. Starter app localises pneumonia via Grad-CAM.
+common:
+  task: detection
+  dataset: rsna
+  model: {arch: fasterrcnn_mobilenet}
+  optim: {lr: 5.0e-3, weight_decay: 1.0e-4, momentum: 0.9}
+  train: {patience: 3, warmup_epochs: 1, num_workers: 4, monitor: val_map50}
+starter:
+  img_size: 384
+  train: {epochs: 2, batch_size: 8}
+full:
+  img_size: 512
+  train: {epochs: 15, batch_size: 16}
+  kaggle: {competition_sources: [rsna-pneumonia-detection-challenge], gpu_hours: 3.0}

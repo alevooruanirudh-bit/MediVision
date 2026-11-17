@@ -1,0 +1,21 @@
+# Chest X-ray 14-label classifier — ensemble member (efficientnet_b2). Part of chest_ensemble.
+common:
+  task: multilabel
+  ensemble: chest_ensemble
+  labels: nih14
+  model: {arch: classifier, backbone: efficientnet_b2, dropout: 0.3, hidden: 512}
+  loss: {type: asl, gamma_neg: 4, gamma_pos: 0, clip: 0.05}
+  optim: {lr: 3.0e-4, weight_decay: 1.0e-4}
+  augment: {scale: [0.75, 1.0], rotate: 7, brightness: 0.15, contrast: 0.15, clahe_p: 0.3, hflip: false}
+  train: {patience: 3, warmup_epochs: 1, num_workers: 0, monitor: val_macro_auroc}
+starter:
+  dataset: chestmnist
+  img_size: 128
+  train: {epochs: 3, batch_size: 64, limit_train: 24000, limit_val: 4000}
+full:
+  dataset: nih
+  img_size: 448
+  train: {epochs: 12, batch_size: 64, num_workers: 4}
+  kaggle:
+    dataset_sources: [nih-chest-xrays/data]
+    gpu_hours: 2.0

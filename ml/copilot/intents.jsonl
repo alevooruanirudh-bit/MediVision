@@ -1,0 +1,1207 @@
+{"text": "what do you make of the mass", "intent": "explain_finding", "template_id": "explain_finding:0"}
+{"text": "what do you make of the enlarged heart", "intent": "explain_finding", "template_id": "explain_finding:0"}
+{"text": "can you go over the lung nodule with me", "intent": "explain_finding", "template_id": "explain_finding:1"}
+{"text": "can you go over the glioma with me", "intent": "explain_finding", "template_id": "explain_finding:1"}
+{"text": "unpack the pleural effusion finding", "intent": "explain_finding", "template_id": "explain_finding:2"}
+{"text": "unpack the pneumothorax finding", "intent": "explain_finding", "template_id": "explain_finding:2"}
+{"text": "what is your read on the pleural thickening", "intent": "explain_finding", "template_id": "explain_finding:3"}
+{"text": "what is your read on the cardiomegaly", "intent": "explain_finding", "template_id": "explain_finding:3"}
+{"text": "give me your interpretation of nodule", "intent": "explain_finding", "template_id": "explain_finding:4"}
+{"text": "give me your interpretation of hernia", "intent": "explain_finding", "template_id": "explain_finding:4"}
+{"text": "explain your pleural effusion result", "intent": "explain_finding", "template_id": "explain_finding:5"}
+{"text": "explain your fibrosis result", "intent": "explain_finding", "template_id": "explain_finding:5"}
+{"text": "what does this consolidation tell us", "intent": "explain_finding", "template_id": "explain_finding:6"}
+{"text": "what does this pleural effusion tell us", "intent": "explain_finding", "template_id": "explain_finding:6"}
+{"text": "comment on the pneumothorax", "intent": "explain_finding", "template_id": "explain_finding:7"}
+{"text": "comment on the infiltration", "intent": "explain_finding", "template_id": "explain_finding:7"}
+{"text": "explain the infiltration", "intent": "explain_finding", "template_id": "explain_finding:8"}
+{"text": "explain the pneumothorax", "intent": "explain_finding", "template_id": "explain_finding:8"}
+{"text": "can you explain the pneumonia finding", "intent": "explain_finding", "template_id": "explain_finding:9"}
+{"text": "can you explain the pneumothorax finding", "intent": "explain_finding", "template_id": "explain_finding:9"}
+{"text": "what does pleural thickening mean in this scan", "intent": "explain_finding", "template_id": "explain_finding:10"}
+{"text": "what does infiltration mean in this scan", "intent": "explain_finding", "template_id": "explain_finding:10"}
+{"text": "tell me more about the pleural effusion here", "intent": "explain_finding", "template_id": "explain_finding:11"}
+{"text": "tell me more about the hernia here", "intent": "explain_finding", "template_id": "explain_finding:11"}
+{"text": "what is going on with the cardiomegaly", "intent": "explain_finding", "template_id": "explain_finding:12"}
+{"text": "what is going on with the pneumonia", "intent": "explain_finding", "template_id": "explain_finding:12"}
+{"text": "describe the glioma you found", "intent": "explain_finding", "template_id": "explain_finding:13"}
+{"text": "help me understand the hernia result", "intent": "explain_finding", "template_id": "explain_finding:14"}
+{"text": "help me understand the pleural effusion result", "intent": "explain_finding", "template_id": "explain_finding:14"}
+{"text": "what does the hernia finding mean for this patient", "intent": "explain_finding", "template_id": "explain_finding:15"}
+{"text": "walk me through the lung nodule", "intent": "explain_finding", "template_id": "explain_finding:16"}
+{"text": "walk me through the pleural effusion", "intent": "explain_finding", "template_id": "explain_finding:16"}
+{"text": "explain this pneumonia to me", "intent": "explain_finding", "template_id": "explain_finding:17"}
+{"text": "explain this pleural effusion to me", "intent": "explain_finding", "template_id": "explain_finding:17"}
+{"text": "what am i looking at with pleural thickening", "intent": "explain_finding", "template_id": "explain_finding:18"}
+{"text": "what am i looking at with enlarged heart", "intent": "explain_finding", "template_id": "explain_finding:18"}
+{"text": "elaborate on the pulmonary edema", "intent": "explain_finding", "template_id": "explain_finding:19"}
+{"text": "elaborate on the infiltration", "intent": "explain_finding", "template_id": "explain_finding:19"}
+{"text": "give me details about the enlarged heart finding", "intent": "explain_finding", "template_id": "explain_finding:20"}
+{"text": "give me details about the pleural thickening finding", "intent": "explain_finding", "template_id": "explain_finding:20"}
+{"text": "talk me through the cardiomegaly result", "intent": "explain_finding", "template_id": "explain_finding:21"}
+{"text": "talk me through the hernia result", "intent": "explain_finding", "template_id": "explain_finding:21"}
+{"text": "what's the story with the pulmonary edema", "intent": "explain_finding", "template_id": "explain_finding:22"}
+{"text": "what's the story with the pleural thickening", "intent": "explain_finding", "template_id": "explain_finding:22"}
+{"text": "explain what you saw regarding meningioma", "intent": "explain_finding", "template_id": "explain_finding:23"}
+{"text": "explain what you saw regarding atelectasis", "intent": "explain_finding", "template_id": "explain_finding:23"}
+{"text": "i don't understand the cardiomegaly finding", "intent": "explain_finding", "template_id": "explain_finding:24"}
+{"text": "i don't understand the hernia finding", "intent": "explain_finding", "template_id": "explain_finding:24"}
+{"text": "break down the hernia result for me", "intent": "explain_finding", "template_id": "explain_finding:25"}
+{"text": "break down the glioma result for me", "intent": "explain_finding", "template_id": "explain_finding:25"}
+{"text": "can you clarify the consolidation finding", "intent": "explain_finding", "template_id": "explain_finding:26"}
+{"text": "can you clarify the nodule finding", "intent": "explain_finding", "template_id": "explain_finding:26"}
+{"text": "what does it mean that cardiomegaly was flagged", "intent": "explain_finding", "template_id": "explain_finding:27"}
+{"text": "what does it mean that pleural thickening was flagged", "intent": "explain_finding", "template_id": "explain_finding:27"}
+{"text": "interpret the pituitary tumor finding", "intent": "explain_finding", "template_id": "explain_finding:28"}
+{"text": "interpret the pneumothorax finding", "intent": "explain_finding", "template_id": "explain_finding:28"}
+{"text": "please explain hernia in this study", "intent": "explain_finding", "template_id": "explain_finding:29"}
+{"text": "please explain pleural effusion in this study", "intent": "explain_finding", "template_id": "explain_finding:29"}
+{"text": "what is the significance of the fracture", "intent": "explain_finding", "template_id": "explain_finding:30"}
+{"text": "what is the significance of the consolidation", "intent": "explain_finding", "template_id": "explain_finding:30"}
+{"text": "explain the significance of emphysema here", "intent": "explain_finding", "template_id": "explain_finding:31"}
+{"text": "explain the significance of meningioma here", "intent": "explain_finding", "template_id": "explain_finding:31"}
+{"text": "what should i know about the pleural thickening on this image", "intent": "explain_finding", "template_id": "explain_finding:32"}
+{"text": "what should i know about the infiltration on this image", "intent": "explain_finding", "template_id": "explain_finding:32"}
+{"text": "the brain tumor, what does that mean", "intent": "explain_finding", "template_id": "explain_finding:33"}
+{"text": "the mass, what does that mean", "intent": "explain_finding", "template_id": "explain_finding:33"}
+{"text": "more info on infiltrate please", "intent": "explain_finding", "template_id": "explain_finding:34"}
+{"text": "more info on hernia please", "intent": "explain_finding", "template_id": "explain_finding:34"}
+{"text": "can you go into detail on infiltrate", "intent": "explain_finding", "template_id": "explain_finding:35"}
+{"text": "can you go into detail on nodule", "intent": "explain_finding", "template_id": "explain_finding:35"}
+{"text": "explain the flagged pulmonary edema", "intent": "explain_finding", "template_id": "explain_finding:36"}
+{"text": "explain the flagged pneumonia", "intent": "explain_finding", "template_id": "explain_finding:36"}
+{"text": "what's this about opacity", "intent": "explain_finding", "template_id": "explain_finding:37"}
+{"text": "what's this about atelectasis", "intent": "explain_finding", "template_id": "explain_finding:37"}
+{"text": "tell me about this pituitary tumor", "intent": "explain_finding", "template_id": "explain_finding:38"}
+{"text": "tell me about this brain tumor", "intent": "explain_finding", "template_id": "explain_finding:38"}
+{"text": "describe pneumonia in this x-ray", "intent": "explain_finding", "template_id": "explain_finding:39"}
+{"text": "describe pneumothorax in this x-ray", "intent": "explain_finding", "template_id": "explain_finding:39"}
+{"text": "what does the report mean by hernia", "intent": "explain_finding", "template_id": "explain_finding:40"}
+{"text": "what does the report mean by pulmonary edema", "intent": "explain_finding", "template_id": "explain_finding:40"}
+{"text": "explain the meaning of the fibrosis finding", "intent": "explain_finding", "template_id": "explain_finding:41"}
+{"text": "explain the meaning of the emphysema finding", "intent": "explain_finding", "template_id": "explain_finding:41"}
+{"text": "summarize the mass finding for me", "intent": "explain_finding", "template_id": "explain_finding:42"}
+{"text": "summarize the tumour finding for me", "intent": "explain_finding", "template_id": "explain_finding:42"}
+{"text": "what are you seeing for infiltrate", "intent": "explain_finding", "template_id": "explain_finding:43"}
+{"text": "what are you seeing for pulmonary edema", "intent": "explain_finding", "template_id": "explain_finding:43"}
+{"text": "explain fracture please", "intent": "explain_finding", "template_id": "explain_finding:44"}
+{"text": "explain pneumothorax please", "intent": "explain_finding", "template_id": "explain_finding:44"}
+{"text": "i want to understand cardiomegaly", "intent": "explain_finding", "template_id": "explain_finding:45"}
+{"text": "i want to understand fibrosis", "intent": "explain_finding", "template_id": "explain_finding:45"}
+{"text": "please describe what the infiltration looks like here", "intent": "explain_finding", "template_id": "explain_finding:46"}
+{"text": "please describe what the atelectasis looks like here", "intent": "explain_finding", "template_id": "explain_finding:46"}
+{"text": "explain the brain tumor in more depth", "intent": "explain_finding", "template_id": "explain_finding:47"}
+{"text": "explain the mass in more depth", "intent": "explain_finding", "template_id": "explain_finding:47"}
+{"text": "what are the implications of enlarged heart", "intent": "explain_finding", "template_id": "explain_finding:48"}
+{"text": "what are the implications of emphysema", "intent": "explain_finding", "template_id": "explain_finding:48"}
+{"text": "how should i interpret the infiltration result", "intent": "explain_finding", "template_id": "explain_finding:49"}
+{"text": "how should i interpret the pleural effusion result", "intent": "explain_finding", "template_id": "explain_finding:49"}
+{"text": "why do you think there is meningioma", "intent": "why_finding", "template_id": "why_finding:0"}
+{"text": "why do you think there is pneumothorax", "intent": "why_finding", "template_id": "why_finding:0"}
+{"text": "why was brain tumor flagged", "intent": "why_finding", "template_id": "why_finding:1"}
+{"text": "why was pleural thickening flagged", "intent": "why_finding", "template_id": "why_finding:1"}
+{"text": "what made you call hernia", "intent": "why_finding", "template_id": "why_finding:2"}
+{"text": "what made you call opacity", "intent": "why_finding", "template_id": "why_finding:2"}
+{"text": "why does the model say mass", "intent": "why_finding", "template_id": "why_finding:3"}
+{"text": "what evidence supports pituitary tumor", "intent": "why_finding", "template_id": "why_finding:4"}
+{"text": "what evidence supports nodule", "intent": "why_finding", "template_id": "why_finding:4"}
+{"text": "why fracture", "intent": "why_finding", "template_id": "why_finding:5"}
+{"text": "why emphysema", "intent": "why_finding", "template_id": "why_finding:5"}
+{"text": "how did you decide on hernia", "intent": "why_finding", "template_id": "why_finding:6"}
+{"text": "how did you decide on opacity", "intent": "why_finding", "template_id": "why_finding:6"}
+{"text": "what features suggest infiltrate", "intent": "why_finding", "template_id": "why_finding:7"}
+{"text": "what features suggest pneumothorax", "intent": "why_finding", "template_id": "why_finding:7"}
+{"text": "what led to the pneumothorax prediction", "intent": "why_finding", "template_id": "why_finding:8"}
+{"text": "what led to the edema prediction", "intent": "why_finding", "template_id": "why_finding:8"}
+{"text": "on what basis did you detect emphysema", "intent": "why_finding", "template_id": "why_finding:9"}
+{"text": "on what basis did you detect pituitary tumor", "intent": "why_finding", "template_id": "why_finding:9"}
+{"text": "why is meningioma on the list", "intent": "why_finding", "template_id": "why_finding:10"}
+{"text": "why is pneumothorax on the list", "intent": "why_finding", "template_id": "why_finding:10"}
+{"text": "justify the pleural effusion finding", "intent": "why_finding", "template_id": "why_finding:11"}
+{"text": "justify the tumour finding", "intent": "why_finding", "template_id": "why_finding:11"}
+{"text": "why did the ai pick up pituitary tumor", "intent": "why_finding", "template_id": "why_finding:12"}
+{"text": "why did the ai pick up pulmonary edema", "intent": "why_finding", "template_id": "why_finding:12"}
+{"text": "what in the image points to glioma", "intent": "why_finding", "template_id": "why_finding:13"}
+{"text": "what in the image points to hernia", "intent": "why_finding", "template_id": "why_finding:13"}
+{"text": "what is the reasoning behind meningioma", "intent": "why_finding", "template_id": "why_finding:14"}
+{"text": "what is the reasoning behind infiltrate", "intent": "why_finding", "template_id": "why_finding:14"}
+{"text": "explain why pulmonary edema was detected", "intent": "why_finding", "template_id": "why_finding:15"}
+{"text": "explain why pituitary tumor was detected", "intent": "why_finding", "template_id": "why_finding:15"}
+{"text": "why do you believe it's lung nodule", "intent": "why_finding", "template_id": "why_finding:16"}
+{"text": "why do you believe it's meningioma", "intent": "why_finding", "template_id": "why_finding:16"}
+{"text": "what convinced the model of nodule", "intent": "why_finding", "template_id": "why_finding:17"}
+{"text": "what convinced the model of effusion", "intent": "why_finding", "template_id": "why_finding:17"}
+{"text": "what signs indicate infiltrate", "intent": "why_finding", "template_id": "why_finding:18"}
+{"text": "what signs indicate nodule", "intent": "why_finding", "template_id": "why_finding:18"}
+{"text": "why are you suggesting atelectasis", "intent": "why_finding", "template_id": "why_finding:19"}
+{"text": "why are you suggesting fracture", "intent": "why_finding", "template_id": "why_finding:19"}
+{"text": "how come you found cardiomegaly", "intent": "why_finding", "template_id": "why_finding:20"}
+{"text": "how come you found emphysema", "intent": "why_finding", "template_id": "why_finding:20"}
+{"text": "what is driving the pleural effusion score", "intent": "why_finding", "template_id": "why_finding:21"}
+{"text": "what is driving the consolidation score", "intent": "why_finding", "template_id": "why_finding:21"}
+{"text": "what pattern triggered brain tumor", "intent": "why_finding", "template_id": "why_finding:22"}
+{"text": "what pattern triggered pulmonary edema", "intent": "why_finding", "template_id": "why_finding:22"}
+{"text": "why is the enlarged heart probability high", "intent": "why_finding", "template_id": "why_finding:23"}
+{"text": "why is the tumour probability high", "intent": "why_finding", "template_id": "why_finding:23"}
+{"text": "why would the model think pneumonia", "intent": "why_finding", "template_id": "why_finding:24"}
+{"text": "why would the model think lung nodule", "intent": "why_finding", "template_id": "why_finding:24"}
+{"text": "give me the rationale for lung nodule", "intent": "why_finding", "template_id": "why_finding:25"}
+{"text": "give me the rationale for emphysema", "intent": "why_finding", "template_id": "why_finding:25"}
+{"text": "what's the basis for the pneumothorax call", "intent": "why_finding", "template_id": "why_finding:26"}
+{"text": "what's the basis for the atelectasis call", "intent": "why_finding", "template_id": "why_finding:26"}
+{"text": "what makes this look like infiltrate", "intent": "why_finding", "template_id": "why_finding:27"}
+{"text": "what makes this look like lung nodule", "intent": "why_finding", "template_id": "why_finding:27"}
+{"text": "why does this look like pleural thickening to you", "intent": "why_finding", "template_id": "why_finding:28"}
+{"text": "why does this look like edema to you", "intent": "why_finding", "template_id": "why_finding:28"}
+{"text": "which image features drove the enlarged heart prediction", "intent": "why_finding", "template_id": "why_finding:29"}
+{"text": "which image features drove the infiltration prediction", "intent": "why_finding", "template_id": "why_finding:29"}
+{"text": "why is it saying pleural thickening", "intent": "why_finding", "template_id": "why_finding:30"}
+{"text": "why is it saying edema", "intent": "why_finding", "template_id": "why_finding:30"}
+{"text": "what part of the image made you think pituitary tumor", "intent": "why_finding", "template_id": "why_finding:31"}
+{"text": "what part of the image made you think infiltration", "intent": "why_finding", "template_id": "why_finding:31"}
+{"text": "why did nodule come up", "intent": "why_finding", "template_id": "why_finding:32"}
+{"text": "why did meningioma come up", "intent": "why_finding", "template_id": "why_finding:32"}
+{"text": "how did the ai arrive at lung nodule", "intent": "why_finding", "template_id": "why_finding:33"}
+{"text": "how did the ai arrive at pneumonia", "intent": "why_finding", "template_id": "why_finding:33"}
+{"text": "why flag enlarged heart at all", "intent": "why_finding", "template_id": "why_finding:34"}
+{"text": "why flag pneumothorax at all", "intent": "why_finding", "template_id": "why_finding:34"}
+{"text": "why is atelectasis suspected", "intent": "why_finding", "template_id": "why_finding:35"}
+{"text": "why is enlarged heart suspected", "intent": "why_finding", "template_id": "why_finding:35"}
+{"text": "what supports the suspicion of pneumonia", "intent": "why_finding", "template_id": "why_finding:36"}
+{"text": "what supports the suspicion of meningioma", "intent": "why_finding", "template_id": "why_finding:36"}
+{"text": "why did you rank pneumonia so high", "intent": "why_finding", "template_id": "why_finding:37"}
+{"text": "why did you rank effusion so high", "intent": "why_finding", "template_id": "why_finding:37"}
+{"text": "explain the reasoning for emphysema", "intent": "why_finding", "template_id": "why_finding:38"}
+{"text": "explain the reasoning for hernia", "intent": "why_finding", "template_id": "why_finding:38"}
+{"text": "why do the models agree on atelectasis", "intent": "why_finding", "template_id": "why_finding:39"}
+{"text": "why do the models agree on edema", "intent": "why_finding", "template_id": "why_finding:39"}
+{"text": "where is the pulmonary edema", "intent": "where_finding", "template_id": "where_finding:0"}
+{"text": "where is the effusion", "intent": "where_finding", "template_id": "where_finding:0"}
+{"text": "where is it located", "intent": "where_finding", "template_id": "where_finding:1"}
+{"text": "which side is the enlarged heart on", "intent": "where_finding", "template_id": "where_finding:2"}
+{"text": "which side is the infiltration on", "intent": "where_finding", "template_id": "where_finding:2"}
+{"text": "where exactly is the pleural thickening", "intent": "where_finding", "template_id": "where_finding:3"}
+{"text": "where exactly is the nodule", "intent": "where_finding", "template_id": "where_finding:3"}
+{"text": "show me where the fracture is", "intent": "where_finding", "template_id": "where_finding:4"}
+{"text": "show me where the hernia is", "intent": "where_finding", "template_id": "where_finding:4"}
+{"text": "what part of the lung is affected", "intent": "where_finding", "template_id": "where_finding:5"}
+{"text": "which lobe is involved", "intent": "where_finding", "template_id": "where_finding:6"}
+{"text": "is the mass on the left or right", "intent": "where_finding", "template_id": "where_finding:7"}
+{"text": "is the enlarged heart on the left or right", "intent": "where_finding", "template_id": "where_finding:7"}
+{"text": "location of the pituitary tumor", "intent": "where_finding", "template_id": "where_finding:8"}
+{"text": "location of the fibrosis", "intent": "where_finding", "template_id": "where_finding:8"}
+{"text": "where did you find the fracture", "intent": "where_finding", "template_id": "where_finding:9"}
+{"text": "where did you find the glioma", "intent": "where_finding", "template_id": "where_finding:9"}
+{"text": "which zone has the meningioma", "intent": "where_finding", "template_id": "where_finding:10"}
+{"text": "which zone has the tumour", "intent": "where_finding", "template_id": "where_finding:10"}
+{"text": "where is the abnormality", "intent": "where_finding", "template_id": "where_finding:11"}
+{"text": "point out the pleural effusion", "intent": "where_finding", "template_id": "where_finding:12"}
+{"text": "point out the infiltrate", "intent": "where_finding", "template_id": "where_finding:12"}
+{"text": "where in the chest is the brain tumor", "intent": "where_finding", "template_id": "where_finding:13"}
+{"text": "where in the chest is the meningioma", "intent": "where_finding", "template_id": "where_finding:13"}
+{"text": "is it upper or lower lung", "intent": "where_finding", "template_id": "where_finding:14"}
+{"text": "which lung has the opacity", "intent": "where_finding", "template_id": "where_finding:15"}
+{"text": "which lung has the pleural thickening", "intent": "where_finding", "template_id": "where_finding:15"}
+{"text": "where's the lung nodule", "intent": "where_finding", "template_id": "where_finding:16"}
+{"text": "what region shows lung nodule", "intent": "where_finding", "template_id": "where_finding:17"}
+{"text": "is the cardiomegaly bilateral", "intent": "where_finding", "template_id": "where_finding:18"}
+{"text": "is the emphysema bilateral", "intent": "where_finding", "template_id": "where_finding:18"}
+{"text": "which area is abnormal", "intent": "where_finding", "template_id": "where_finding:19"}
+{"text": "localize the glioma", "intent": "where_finding", "template_id": "where_finding:20"}
+{"text": "localize the lung nodule", "intent": "where_finding", "template_id": "where_finding:20"}
+{"text": "where is the hotspot", "intent": "where_finding", "template_id": "where_finding:21"}
+{"text": "where is the most suspicious area", "intent": "where_finding", "template_id": "where_finding:22"}
+{"text": "where does the pleural effusion sit", "intent": "where_finding", "template_id": "where_finding:23"}
+{"text": "where does the consolidation sit", "intent": "where_finding", "template_id": "where_finding:23"}
+{"text": "what is the location of the lesion", "intent": "where_finding", "template_id": "where_finding:24"}
+{"text": "is it in the right lower zone", "intent": "where_finding", "template_id": "where_finding:25"}
+{"text": "is the pneumothorax in the upper zone", "intent": "where_finding", "template_id": "where_finding:26"}
+{"text": "is the consolidation in the upper zone", "intent": "where_finding", "template_id": "where_finding:26"}
+{"text": "which side is affected", "intent": "where_finding", "template_id": "where_finding:27"}
+{"text": "where should i look", "intent": "where_finding", "template_id": "where_finding:28"}
+{"text": "where on the image is the infiltrate", "intent": "where_finding", "template_id": "where_finding:29"}
+{"text": "where on the image is the atelectasis", "intent": "where_finding", "template_id": "where_finding:29"}
+{"text": "highlight the location of cardiomegaly", "intent": "where_finding", "template_id": "where_finding:30"}
+{"text": "highlight the location of mass", "intent": "where_finding", "template_id": "where_finding:30"}
+{"text": "where is the fracture", "intent": "where_finding", "template_id": "where_finding:31"}
+{"text": "which bone is fractured", "intent": "where_finding", "template_id": "where_finding:32"}
+{"text": "where is the tumour", "intent": "where_finding", "template_id": "where_finding:33"}
+{"text": "what part of the brain is involved", "intent": "where_finding", "template_id": "where_finding:34"}
+{"text": "where is the mass located", "intent": "where_finding", "template_id": "where_finding:35"}
+{"text": "is the finding central or peripheral", "intent": "where_finding", "template_id": "where_finding:36"}
+{"text": "in which zone is the opacity", "intent": "where_finding", "template_id": "where_finding:37"}
+{"text": "where's the problem area", "intent": "where_finding", "template_id": "where_finding:38"}
+{"text": "tell me the location of the finding", "intent": "where_finding", "template_id": "where_finding:39"}
+{"text": "how high is the confidence on fracture", "intent": "confidence", "template_id": "confidence:0"}
+{"text": "how high is the confidence on pleural effusion", "intent": "confidence", "template_id": "confidence:0"}
+{"text": "what probability did you assign to cardiomegaly", "intent": "confidence", "template_id": "confidence:1"}
+{"text": "what probability did you assign to effusion", "intent": "confidence", "template_id": "confidence:1"}
+{"text": "how reliable is this particular hernia score", "intent": "confidence", "template_id": "confidence:2"}
+{"text": "how reliable is this particular enlarged heart score", "intent": "confidence", "template_id": "confidence:2"}
+{"text": "is the pleural thickening probability above threshold", "intent": "confidence", "template_id": "confidence:3"}
+{"text": "is the cardiomegaly probability above threshold", "intent": "confidence", "template_id": "confidence:3"}
+{"text": "how confident are you", "intent": "confidence", "template_id": "confidence:4"}
+{"text": "how sure are you about nodule", "intent": "confidence", "template_id": "confidence:5"}
+{"text": "how sure are you about fracture", "intent": "confidence", "template_id": "confidence:5"}
+{"text": "what is the probability of effusion", "intent": "confidence", "template_id": "confidence:6"}
+{"text": "what is the probability of pneumothorax", "intent": "confidence", "template_id": "confidence:6"}
+{"text": "how likely is consolidation", "intent": "confidence", "template_id": "confidence:7"}
+{"text": "how likely is fracture", "intent": "confidence", "template_id": "confidence:7"}
+{"text": "what's the confidence for lung nodule", "intent": "confidence", "template_id": "confidence:8"}
+{"text": "what's the confidence for enlarged heart", "intent": "confidence", "template_id": "confidence:8"}
+{"text": "how certain is the glioma finding", "intent": "confidence", "template_id": "confidence:9"}
+{"text": "how certain is the edema finding", "intent": "confidence", "template_id": "confidence:9"}
+{"text": "what are the odds of nodule", "intent": "confidence", "template_id": "confidence:10"}
+{"text": "what are the odds of fracture", "intent": "confidence", "template_id": "confidence:10"}
+{"text": "how confident is the ai", "intent": "confidence", "template_id": "confidence:11"}
+{"text": "what is the score for nodule", "intent": "confidence", "template_id": "confidence:12"}
+{"text": "what is the score for emphysema", "intent": "confidence", "template_id": "confidence:12"}
+{"text": "how strong is the evidence for cardiomegaly", "intent": "confidence", "template_id": "confidence:13"}
+{"text": "probability of emphysema", "intent": "confidence", "template_id": "confidence:14"}
+{"text": "probability of infiltrate", "intent": "confidence", "template_id": "confidence:14"}
+{"text": "confidence level for emphysema", "intent": "confidence", "template_id": "confidence:15"}
+{"text": "is the model sure about pulmonary edema", "intent": "confidence", "template_id": "confidence:16"}
+{"text": "is the model sure about pneumothorax", "intent": "confidence", "template_id": "confidence:16"}
+{"text": "how reliable is the enlarged heart prediction", "intent": "confidence", "template_id": "confidence:17"}
+{"text": "how reliable is the cardiomegaly prediction", "intent": "confidence", "template_id": "confidence:17"}
+{"text": "what percentage for tumour", "intent": "confidence", "template_id": "confidence:18"}
+{"text": "what percentage for mass", "intent": "confidence", "template_id": "confidence:18"}
+{"text": "how much do you trust the tumour result", "intent": "confidence", "template_id": "confidence:19"}
+{"text": "how much do you trust the edema result", "intent": "confidence", "template_id": "confidence:19"}
+{"text": "what's the likelihood of emphysema", "intent": "confidence", "template_id": "confidence:20"}
+{"text": "what's the likelihood of pituitary tumor", "intent": "confidence", "template_id": "confidence:20"}
+{"text": "how probable is atelectasis", "intent": "confidence", "template_id": "confidence:21"}
+{"text": "how probable is fibrosis", "intent": "confidence", "template_id": "confidence:21"}
+{"text": "give me the confidence", "intent": "confidence", "template_id": "confidence:22"}
+{"text": "what is your certainty on effusion", "intent": "confidence", "template_id": "confidence:23"}
+{"text": "what is your certainty on consolidation", "intent": "confidence", "template_id": "confidence:23"}
+{"text": "is fibrosis likely or just possible", "intent": "confidence", "template_id": "confidence:24"}
+{"text": "is nodule likely or just possible", "intent": "confidence", "template_id": "confidence:24"}
+{"text": "how high is the enlarged heart probability", "intent": "confidence", "template_id": "confidence:25"}
+{"text": "how high is the pituitary tumor probability", "intent": "confidence", "template_id": "confidence:25"}
+{"text": "what's the calibrated probability for pleural thickening", "intent": "confidence", "template_id": "confidence:26"}
+{"text": "what's the calibrated probability for effusion", "intent": "confidence", "template_id": "confidence:26"}
+{"text": "how definite is the brain tumor call", "intent": "confidence", "template_id": "confidence:27"}
+{"text": "how definite is the fibrosis call", "intent": "confidence", "template_id": "confidence:27"}
+{"text": "what confidence do you have in pulmonary edema", "intent": "confidence", "template_id": "confidence:28"}
+{"text": "what confidence do you have in glioma", "intent": "confidence", "template_id": "confidence:28"}
+{"text": "rate your confidence on pneumothorax", "intent": "confidence", "template_id": "confidence:29"}
+{"text": "rate your confidence on pituitary tumor", "intent": "confidence", "template_id": "confidence:29"}
+{"text": "is the edema finding strong or weak", "intent": "confidence", "template_id": "confidence:30"}
+{"text": "is the fibrosis finding strong or weak", "intent": "confidence", "template_id": "confidence:30"}
+{"text": "how confident is the ensemble", "intent": "confidence", "template_id": "confidence:31"}
+{"text": "what does the model output for nodule", "intent": "confidence", "template_id": "confidence:32"}
+{"text": "what does the model output for atelectasis", "intent": "confidence", "template_id": "confidence:32"}
+{"text": "what's the number for nodule", "intent": "confidence", "template_id": "confidence:33"}
+{"text": "what's the number for brain tumor", "intent": "confidence", "template_id": "confidence:33"}
+{"text": "how sure is the model overall", "intent": "confidence", "template_id": "confidence:34"}
+{"text": "is this a confident prediction", "intent": "confidence", "template_id": "confidence:35"}
+{"text": "what is the predicted probability", "intent": "confidence", "template_id": "confidence:36"}
+{"text": "how much confidence for the top finding", "intent": "confidence", "template_id": "confidence:37"}
+{"text": "how sure are you it's pneumonia", "intent": "confidence", "template_id": "confidence:38"}
+{"text": "how sure are you it's pleural thickening", "intent": "confidence", "template_id": "confidence:38"}
+{"text": "is the pleural thickening result borderline", "intent": "confidence", "template_id": "confidence:39"}
+{"text": "is the brain tumor result borderline", "intent": "confidence", "template_id": "confidence:39"}
+{"text": "what level of certainty for fibrosis", "intent": "confidence", "template_id": "confidence:40"}
+{"text": "what level of certainty for mass", "intent": "confidence", "template_id": "confidence:40"}
+{"text": "how strongly does the model believe glioma", "intent": "confidence", "template_id": "confidence:41"}
+{"text": "how strongly does the model believe pneumonia", "intent": "confidence", "template_id": "confidence:41"}
+{"text": "is the probability of fracture significant", "intent": "confidence", "template_id": "confidence:42"}
+{"text": "is the probability of opacity significant", "intent": "confidence", "template_id": "confidence:42"}
+{"text": "confidence score please", "intent": "confidence", "template_id": "confidence:43"}
+{"text": "what should we do next", "intent": "next_steps", "template_id": "next_steps:0"}
+{"text": "what are the next steps", "intent": "next_steps", "template_id": "next_steps:1"}
+{"text": "what do you recommend", "intent": "next_steps", "template_id": "next_steps:2"}
+{"text": "what follow up is needed", "intent": "next_steps", "template_id": "next_steps:3"}
+{"text": "what should the clinician do", "intent": "next_steps", "template_id": "next_steps:4"}
+{"text": "recommendations please", "intent": "next_steps", "template_id": "next_steps:5"}
+{"text": "what is the recommended management", "intent": "next_steps", "template_id": "next_steps:6"}
+{"text": "should we order more tests", "intent": "next_steps", "template_id": "next_steps:7"}
+{"text": "what test should be done next", "intent": "next_steps", "template_id": "next_steps:8"}
+{"text": "do we need a ct", "intent": "next_steps", "template_id": "next_steps:9"}
+{"text": "is follow up imaging needed", "intent": "next_steps", "template_id": "next_steps:10"}
+{"text": "what would you suggest for opacity", "intent": "next_steps", "template_id": "next_steps:11"}
+{"text": "what would you suggest for brain tumor", "intent": "next_steps", "template_id": "next_steps:11"}
+{"text": "what's the next step for consolidation", "intent": "next_steps", "template_id": "next_steps:12"}
+{"text": "what's the next step for opacity", "intent": "next_steps", "template_id": "next_steps:12"}
+{"text": "how should pneumonia be followed up", "intent": "next_steps", "template_id": "next_steps:13"}
+{"text": "how should lung nodule be followed up", "intent": "next_steps", "template_id": "next_steps:13"}
+{"text": "what should happen now", "intent": "next_steps", "template_id": "next_steps:14"}
+{"text": "what action is recommended", "intent": "next_steps", "template_id": "next_steps:15"}
+{"text": "should this patient get more imaging", "intent": "next_steps", "template_id": "next_steps:16"}
+{"text": "what is the plan", "intent": "next_steps", "template_id": "next_steps:17"}
+{"text": "next steps for tumour", "intent": "next_steps", "template_id": "next_steps:18"}
+{"text": "next steps for opacity", "intent": "next_steps", "template_id": "next_steps:18"}
+{"text": "what workup is appropriate", "intent": "next_steps", "template_id": "next_steps:19"}
+{"text": "what should i do about the pneumonia", "intent": "next_steps", "template_id": "next_steps:20"}
+{"text": "what should i do about the consolidation", "intent": "next_steps", "template_id": "next_steps:20"}
+{"text": "is a referral needed", "intent": "next_steps", "template_id": "next_steps:21"}
+{"text": "should we repeat the x-ray", "intent": "next_steps", "template_id": "next_steps:22"}
+{"text": "do we need further evaluation", "intent": "next_steps", "template_id": "next_steps:23"}
+{"text": "how do we proceed", "intent": "next_steps", "template_id": "next_steps:24"}
+{"text": "what are your recommendations for this case", "intent": "next_steps", "template_id": "next_steps:25"}
+{"text": "what further investigations are suggested", "intent": "next_steps", "template_id": "next_steps:26"}
+{"text": "what's the suggested follow-up", "intent": "next_steps", "template_id": "next_steps:27"}
+{"text": "any recommendations for fibrosis", "intent": "next_steps", "template_id": "next_steps:28"}
+{"text": "any recommendations for emphysema", "intent": "next_steps", "template_id": "next_steps:28"}
+{"text": "what should be done about this finding", "intent": "next_steps", "template_id": "next_steps:29"}
+{"text": "is any action required", "intent": "next_steps", "template_id": "next_steps:30"}
+{"text": "what do guidelines suggest for nodule", "intent": "next_steps", "template_id": "next_steps:31"}
+{"text": "what do guidelines suggest for tumour", "intent": "next_steps", "template_id": "next_steps:31"}
+{"text": "what would be the next imaging study", "intent": "next_steps", "template_id": "next_steps:32"}
+{"text": "how should we manage this", "intent": "next_steps", "template_id": "next_steps:33"}
+{"text": "what monitoring is needed", "intent": "next_steps", "template_id": "next_steps:34"}
+{"text": "when should we re-image", "intent": "next_steps", "template_id": "next_steps:35"}
+{"text": "do i need to escalate", "intent": "next_steps", "template_id": "next_steps:36"}
+{"text": "is a specialist consult needed", "intent": "next_steps", "template_id": "next_steps:37"}
+{"text": "suggest the next steps", "intent": "next_steps", "template_id": "next_steps:38"}
+{"text": "what follow-up for effusion", "intent": "next_steps", "template_id": "next_steps:39"}
+{"text": "compare with the previous study", "intent": "compare_previous", "template_id": "compare_previous:0"}
+{"text": "has anything changed since last time", "intent": "compare_previous", "template_id": "compare_previous:1"}
+{"text": "is it better or worse than before", "intent": "compare_previous", "template_id": "compare_previous:2"}
+{"text": "compare to the prior x-ray", "intent": "compare_previous", "template_id": "compare_previous:3"}
+{"text": "any interval change", "intent": "compare_previous", "template_id": "compare_previous:4"}
+{"text": "how does this compare to the old scan", "intent": "compare_previous", "template_id": "compare_previous:5"}
+{"text": "is the opacity new", "intent": "compare_previous", "template_id": "compare_previous:6"}
+{"text": "is the edema new", "intent": "compare_previous", "template_id": "compare_previous:6"}
+{"text": "has the emphysema progressed", "intent": "compare_previous", "template_id": "compare_previous:7"}
+{"text": "has the edema progressed", "intent": "compare_previous", "template_id": "compare_previous:7"}
+{"text": "is the consolidation improving", "intent": "compare_previous", "template_id": "compare_previous:8"}
+{"text": "is the pituitary tumor improving", "intent": "compare_previous", "template_id": "compare_previous:8"}
+{"text": "what changed from the previous exam", "intent": "compare_previous", "template_id": "compare_previous:9"}
+{"text": "compare with prior", "intent": "compare_previous", "template_id": "compare_previous:10"}
+{"text": "show me the comparison", "intent": "compare_previous", "template_id": "compare_previous:11"}
+{"text": "difference from last study", "intent": "compare_previous", "template_id": "compare_previous:12"}
+{"text": "is there progression", "intent": "compare_previous", "template_id": "compare_previous:13"}
+{"text": "has it resolved", "intent": "compare_previous", "template_id": "compare_previous:14"}
+{"text": "is the fracture worse", "intent": "compare_previous", "template_id": "compare_previous:15"}
+{"text": "is the nodule worse", "intent": "compare_previous", "template_id": "compare_previous:15"}
+{"text": "is this stable compared to before", "intent": "compare_previous", "template_id": "compare_previous:16"}
+{"text": "open the comparison view", "intent": "compare_previous", "template_id": "compare_previous:17"}
+{"text": "compare the two studies", "intent": "compare_previous", "template_id": "compare_previous:18"}
+{"text": "what's different now", "intent": "compare_previous", "template_id": "compare_previous:19"}
+{"text": "how has the heart size changed", "intent": "compare_previous", "template_id": "compare_previous:20"}
+{"text": "did the ctr change", "intent": "compare_previous", "template_id": "compare_previous:21"}
+{"text": "is the infiltrate still there", "intent": "compare_previous", "template_id": "compare_previous:22"}
+{"text": "is the opacity still there", "intent": "compare_previous", "template_id": "compare_previous:22"}
+{"text": "change since prior imaging", "intent": "compare_previous", "template_id": "compare_previous:23"}
+{"text": "interval change summary", "intent": "compare_previous", "template_id": "compare_previous:24"}
+{"text": "is the effusion bigger now", "intent": "compare_previous", "template_id": "compare_previous:25"}
+{"text": "has the patient improved", "intent": "compare_previous", "template_id": "compare_previous:26"}
+{"text": "longitudinal comparison please", "intent": "compare_previous", "template_id": "compare_previous:27"}
+{"text": "track changes over time", "intent": "compare_previous", "template_id": "compare_previous:28"}
+{"text": "compare this scan with the last one", "intent": "compare_previous", "template_id": "compare_previous:29"}
+{"text": "is it new or old", "intent": "compare_previous", "template_id": "compare_previous:30"}
+{"text": "any new findings since last time", "intent": "compare_previous", "template_id": "compare_previous:31"}
+{"text": "what's the trend", "intent": "compare_previous", "template_id": "compare_previous:32"}
+{"text": "has the opacity cleared", "intent": "compare_previous", "template_id": "compare_previous:33"}
+{"text": "is this a new finding or chronic", "intent": "compare_previous", "template_id": "compare_previous:34"}
+{"text": "compare current and prior", "intent": "compare_previous", "template_id": "compare_previous:35"}
+{"text": "are there changes from baseline", "intent": "compare_previous", "template_id": "compare_previous:36"}
+{"text": "is it getting better", "intent": "compare_previous", "template_id": "compare_previous:37"}
+{"text": "how does it look versus the earlier study", "intent": "compare_previous", "template_id": "compare_previous:38"}
+{"text": "did anything get worse", "intent": "compare_previous", "template_id": "compare_previous:39"}
+{"text": "what is tumour", "intent": "define_term", "template_id": "define_term:0"}
+{"text": "what is nodule", "intent": "define_term", "template_id": "define_term:0"}
+{"text": "define nodule", "intent": "define_term", "template_id": "define_term:1"}
+{"text": "define pneumothorax", "intent": "define_term", "template_id": "define_term:1"}
+{"text": "what does pneumonia mean", "intent": "define_term", "template_id": "define_term:2"}
+{"text": "what does cardiomegaly mean", "intent": "define_term", "template_id": "define_term:2"}
+{"text": "definition of pneumonia", "intent": "define_term", "template_id": "define_term:3"}
+{"text": "definition of emphysema", "intent": "define_term", "template_id": "define_term:3"}
+{"text": "what is the meaning of consolidation", "intent": "define_term", "template_id": "define_term:4"}
+{"text": "what is the meaning of mass", "intent": "define_term", "template_id": "define_term:4"}
+{"text": "can you define consolidation", "intent": "define_term", "template_id": "define_term:5"}
+{"text": "can you define emphysema", "intent": "define_term", "template_id": "define_term:5"}
+{"text": "what's fracture", "intent": "define_term", "template_id": "define_term:6"}
+{"text": "what are effusions", "intent": "define_term", "template_id": "define_term:7"}
+{"text": "what are emphysemas", "intent": "define_term", "template_id": "define_term:7"}
+{"text": "explain the term glioma", "intent": "define_term", "template_id": "define_term:8"}
+{"text": "explain the term nodule", "intent": "define_term", "template_id": "define_term:8"}
+{"text": "what is meant by opacity", "intent": "define_term", "template_id": "define_term:9"}
+{"text": "what is meant by glioma", "intent": "define_term", "template_id": "define_term:9"}
+{"text": "pneumothorax meaning", "intent": "define_term", "template_id": "define_term:10"}
+{"text": "meningioma meaning", "intent": "define_term", "template_id": "define_term:10"}
+{"text": "what does the word cardiomegaly mean", "intent": "define_term", "template_id": "define_term:11"}
+{"text": "what does the word lung nodule mean", "intent": "define_term", "template_id": "define_term:11"}
+{"text": "tell me what opacity is", "intent": "define_term", "template_id": "define_term:12"}
+{"text": "tell me what pituitary tumor is", "intent": "define_term", "template_id": "define_term:12"}
+{"text": "define the term brain tumor for me", "intent": "define_term", "template_id": "define_term:13"}
+{"text": "define the term consolidation for me", "intent": "define_term", "template_id": "define_term:13"}
+{"text": "what's the definition of emphysema", "intent": "define_term", "template_id": "define_term:14"}
+{"text": "what's the definition of atelectasis", "intent": "define_term", "template_id": "define_term:14"}
+{"text": "in general what is infiltration", "intent": "define_term", "template_id": "define_term:15"}
+{"text": "in general what is opacity", "intent": "define_term", "template_id": "define_term:15"}
+{"text": "what is glioma in medicine", "intent": "define_term", "template_id": "define_term:16"}
+{"text": "what is mass in medicine", "intent": "define_term", "template_id": "define_term:16"}
+{"text": "what causes pneumothorax", "intent": "define_term", "template_id": "define_term:17"}
+{"text": "what causes opacity", "intent": "define_term", "template_id": "define_term:17"}
+{"text": "what are common causes of tumour", "intent": "define_term", "template_id": "define_term:18"}
+{"text": "what are common causes of lung nodule", "intent": "define_term", "template_id": "define_term:18"}
+{"text": "how does infiltrate usually look on x-ray", "intent": "define_term", "template_id": "define_term:19"}
+{"text": "how does lung nodule usually look on x-ray", "intent": "define_term", "template_id": "define_term:19"}
+{"text": "what is a typical appearance of tumour", "intent": "define_term", "template_id": "define_term:20"}
+{"text": "what is a typical appearance of pneumothorax", "intent": "define_term", "template_id": "define_term:20"}
+{"text": "describe tumour in general", "intent": "define_term", "template_id": "define_term:21"}
+{"text": "describe atelectasis in general", "intent": "define_term", "template_id": "define_term:21"}
+{"text": "general information about atelectasis", "intent": "define_term", "template_id": "define_term:22"}
+{"text": "general information about enlarged heart", "intent": "define_term", "template_id": "define_term:22"}
+{"text": "what do you know about effusion", "intent": "define_term", "template_id": "define_term:23"}
+{"text": "what do you know about enlarged heart", "intent": "define_term", "template_id": "define_term:23"}
+{"text": "teach me about hernia", "intent": "define_term", "template_id": "define_term:24"}
+{"text": "teach me about infiltrate", "intent": "define_term", "template_id": "define_term:24"}
+{"text": "what is the medical term opacity", "intent": "define_term", "template_id": "define_term:25"}
+{"text": "what is the medical term glioma", "intent": "define_term", "template_id": "define_term:25"}
+{"text": "what is cardiothoracic ratio", "intent": "define_term", "template_id": "define_term:26"}
+{"text": "what is a ctr", "intent": "define_term", "template_id": "define_term:27"}
+{"text": "what is grad-cam", "intent": "define_term", "template_id": "define_term:28"}
+{"text": "what does atelectasis mean", "intent": "define_term", "template_id": "define_term:29"}
+{"text": "what is a pleural effusion", "intent": "define_term", "template_id": "define_term:30"}
+{"text": "what's a pneumothorax", "intent": "define_term", "template_id": "define_term:31"}
+{"text": "what is a meningioma", "intent": "define_term", "template_id": "define_term:32"}
+{"text": "what is a glioma", "intent": "define_term", "template_id": "define_term:33"}
+{"text": "what is a pituitary tumour", "intent": "define_term", "template_id": "define_term:34"}
+{"text": "what is consolidation", "intent": "define_term", "template_id": "define_term:35"}
+{"text": "what is the fleischner society", "intent": "define_term", "template_id": "define_term:36"}
+{"text": "what is an infiltrate", "intent": "define_term", "template_id": "define_term:37"}
+{"text": "what does opacity mean", "intent": "define_term", "template_id": "define_term:38"}
+{"text": "what is emphysema", "intent": "define_term", "template_id": "define_term:39"}
+{"text": "what does enlarged heart refer to", "intent": "define_term", "template_id": "define_term:40"}
+{"text": "what does fracture refer to", "intent": "define_term", "template_id": "define_term:40"}
+{"text": "show the grad-cam heatmap for fracture", "intent": "show_heatmap", "template_id": "show_heatmap:0"}
+{"text": "show the grad-cam heatmap for emphysema", "intent": "show_heatmap", "template_id": "show_heatmap:0"}
+{"text": "overlay grad-cam", "intent": "show_heatmap", "template_id": "show_heatmap:1"}
+{"text": "show where the meningioma is on the heatmap", "intent": "show_heatmap", "template_id": "show_heatmap:2"}
+{"text": "show where the nodule is on the heatmap", "intent": "show_heatmap", "template_id": "show_heatmap:2"}
+{"text": "map out the enlarged heart on the image", "intent": "show_heatmap", "template_id": "show_heatmap:3"}
+{"text": "map out the pleural thickening on the image", "intent": "show_heatmap", "template_id": "show_heatmap:3"}
+{"text": "show the heatmap for pleural thickening", "intent": "show_heatmap", "template_id": "show_heatmap:4"}
+{"text": "show the heatmap for enlarged heart", "intent": "show_heatmap", "template_id": "show_heatmap:4"}
+{"text": "show me the grad-cam", "intent": "show_heatmap", "template_id": "show_heatmap:5"}
+{"text": "display the heatmap", "intent": "show_heatmap", "template_id": "show_heatmap:6"}
+{"text": "turn on the heatmap", "intent": "show_heatmap", "template_id": "show_heatmap:7"}
+{"text": "show me where the model looked", "intent": "show_heatmap", "template_id": "show_heatmap:8"}
+{"text": "show the attention map", "intent": "show_heatmap", "template_id": "show_heatmap:9"}
+{"text": "overlay the heatmap for effusion", "intent": "show_heatmap", "template_id": "show_heatmap:10"}
+{"text": "visualize opacity", "intent": "show_heatmap", "template_id": "show_heatmap:11"}
+{"text": "visualize tumour", "intent": "show_heatmap", "template_id": "show_heatmap:11"}
+{"text": "show the saliency map", "intent": "show_heatmap", "template_id": "show_heatmap:12"}
+{"text": "can i see the heatmap", "intent": "show_heatmap", "template_id": "show_heatmap:13"}
+{"text": "highlight glioma on the image", "intent": "show_heatmap", "template_id": "show_heatmap:14"}
+{"text": "highlight cardiomegaly on the image", "intent": "show_heatmap", "template_id": "show_heatmap:14"}
+{"text": "show gradcam for fibrosis", "intent": "show_heatmap", "template_id": "show_heatmap:15"}
+{"text": "show gradcam for tumour", "intent": "show_heatmap", "template_id": "show_heatmap:15"}
+{"text": "show the activation map", "intent": "show_heatmap", "template_id": "show_heatmap:16"}
+{"text": "open the heatmap", "intent": "show_heatmap", "template_id": "show_heatmap:17"}
+{"text": "display grad-cam for enlarged heart", "intent": "show_heatmap", "template_id": "show_heatmap:18"}
+{"text": "display grad-cam for infiltration", "intent": "show_heatmap", "template_id": "show_heatmap:18"}
+{"text": "show me the explanation map", "intent": "show_heatmap", "template_id": "show_heatmap:19"}
+{"text": "show occlusion map", "intent": "show_heatmap", "template_id": "show_heatmap:20"}
+{"text": "show the xai overlay", "intent": "show_heatmap", "template_id": "show_heatmap:21"}
+{"text": "visualize the model attention", "intent": "show_heatmap", "template_id": "show_heatmap:22"}
+{"text": "toggle the heatmap", "intent": "show_heatmap", "template_id": "show_heatmap:23"}
+{"text": "show heat map", "intent": "show_heatmap", "template_id": "show_heatmap:24"}
+{"text": "where did the model focus", "intent": "show_heatmap", "template_id": "show_heatmap:25"}
+{"text": "draw the heatmap for consolidation", "intent": "show_heatmap", "template_id": "show_heatmap:26"}
+{"text": "show the class activation map", "intent": "show_heatmap", "template_id": "show_heatmap:27"}
+{"text": "show me the hot spots", "intent": "show_heatmap", "template_id": "show_heatmap:28"}
+{"text": "put the heatmap on", "intent": "show_heatmap", "template_id": "show_heatmap:29"}
+{"text": "show the overlay for effusion", "intent": "show_heatmap", "template_id": "show_heatmap:30"}
+{"text": "show the overlay for edema", "intent": "show_heatmap", "template_id": "show_heatmap:30"}
+{"text": "explainability map please", "intent": "show_heatmap", "template_id": "show_heatmap:31"}
+{"text": "show what the ai saw", "intent": "show_heatmap", "template_id": "show_heatmap:32"}
+{"text": "show the grad cam plus plus", "intent": "show_heatmap", "template_id": "show_heatmap:33"}
+{"text": "heatmap for consolidation please", "intent": "show_heatmap", "template_id": "show_heatmap:34"}
+{"text": "heatmap for pulmonary edema please", "intent": "show_heatmap", "template_id": "show_heatmap:34"}
+{"text": "i want to see the heatmap", "intent": "show_heatmap", "template_id": "show_heatmap:35"}
+{"text": "show the visual explanation", "intent": "show_heatmap", "template_id": "show_heatmap:36"}
+{"text": "show me the region of interest", "intent": "show_heatmap", "template_id": "show_heatmap:37"}
+{"text": "overlay the attention", "intent": "show_heatmap", "template_id": "show_heatmap:38"}
+{"text": "map the fibrosis", "intent": "show_heatmap", "template_id": "show_heatmap:39"}
+{"text": "map the pneumonia", "intent": "show_heatmap", "template_id": "show_heatmap:39"}
+{"text": "show the brain tumor heatmap", "intent": "show_heatmap", "template_id": "show_heatmap:40"}
+{"text": "show the hernia heatmap", "intent": "show_heatmap", "template_id": "show_heatmap:40"}
+{"text": "enable the heat map overlay", "intent": "show_heatmap", "template_id": "show_heatmap:41"}
+{"text": "let me see the cam", "intent": "show_heatmap", "template_id": "show_heatmap:42"}
+{"text": "highlight the area the ai used", "intent": "show_heatmap", "template_id": "show_heatmap:43"}
+{"text": "what are the measurements", "intent": "measurements", "template_id": "measurements:0"}
+{"text": "what is the cardiothoracic ratio", "intent": "measurements", "template_id": "measurements:1"}
+{"text": "what's the ctr", "intent": "measurements", "template_id": "measurements:2"}
+{"text": "is the heart enlarged", "intent": "measurements", "template_id": "measurements:3"}
+{"text": "how big is the heart", "intent": "measurements", "template_id": "measurements:4"}
+{"text": "show the measurements", "intent": "measurements", "template_id": "measurements:5"}
+{"text": "what is the lung area", "intent": "measurements", "template_id": "measurements:6"}
+{"text": "measure the lungs", "intent": "measurements", "template_id": "measurements:7"}
+{"text": "what's the heart size", "intent": "measurements", "template_id": "measurements:8"}
+{"text": "how large is the tumour", "intent": "measurements", "template_id": "measurements:9"}
+{"text": "what is the tumour area", "intent": "measurements", "template_id": "measurements:10"}
+{"text": "what are the lung volumes", "intent": "measurements", "template_id": "measurements:11"}
+{"text": "is the ctr above 0.5", "intent": "measurements", "template_id": "measurements:12"}
+{"text": "what is the symmetry index", "intent": "measurements", "template_id": "measurements:13"}
+{"text": "are the lungs symmetric", "intent": "measurements", "template_id": "measurements:14"}
+{"text": "give me the numbers", "intent": "measurements", "template_id": "measurements:15"}
+{"text": "what's the left lung area", "intent": "measurements", "template_id": "measurements:16"}
+{"text": "what's the right lung area", "intent": "measurements", "template_id": "measurements:17"}
+{"text": "how big is the lesion", "intent": "measurements", "template_id": "measurements:18"}
+{"text": "how big is the mass", "intent": "measurements", "template_id": "measurements:19"}
+{"text": "how big is the edema", "intent": "measurements", "template_id": "measurements:19"}
+{"text": "what size is the pleural thickening", "intent": "measurements", "template_id": "measurements:20"}
+{"text": "what size is the infiltration", "intent": "measurements", "template_id": "measurements:20"}
+{"text": "quantify the findings", "intent": "measurements", "template_id": "measurements:21"}
+{"text": "show quantitative measurements", "intent": "measurements", "template_id": "measurements:22"}
+{"text": "ctr value please", "intent": "measurements", "template_id": "measurements:23"}
+{"text": "what is the heart to chest ratio", "intent": "measurements", "template_id": "measurements:24"}
+{"text": "measure the heart", "intent": "measurements", "template_id": "measurements:25"}
+{"text": "is there cardiomegaly by ctr", "intent": "measurements", "template_id": "measurements:26"}
+{"text": "lung measurements please", "intent": "measurements", "template_id": "measurements:27"}
+{"text": "how many square millimetres is the tumour", "intent": "measurements", "template_id": "measurements:28"}
+{"text": "what is the size of the abnormality", "intent": "measurements", "template_id": "measurements:29"}
+{"text": "tumour size", "intent": "measurements", "template_id": "measurements:30"}
+{"text": "what is the mask area", "intent": "measurements", "template_id": "measurements:31"}
+{"text": "are the measurements normal", "intent": "measurements", "template_id": "measurements:32"}
+{"text": "list the measurements", "intent": "measurements", "template_id": "measurements:33"}
+{"text": "what are the lung areas", "intent": "measurements", "template_id": "measurements:34"}
+{"text": "how wide is the heart", "intent": "measurements", "template_id": "measurements:35"}
+{"text": "what is the thoracic width", "intent": "measurements", "template_id": "measurements:36"}
+{"text": "how much of the lung is affected", "intent": "measurements", "template_id": "measurements:37"}
+{"text": "give me the ctr and lung areas", "intent": "measurements", "template_id": "measurements:38"}
+{"text": "show me the automatic measurements", "intent": "measurements", "template_id": "measurements:39"}
+{"text": "is the study normal overall", "intent": "normal_or_not", "template_id": "normal_or_not:0"}
+{"text": "does the scan show anything abnormal", "intent": "normal_or_not", "template_id": "normal_or_not:1"}
+{"text": "is it a normal x-ray or not", "intent": "normal_or_not", "template_id": "normal_or_not:2"}
+{"text": "are there any abnormal findings at all", "intent": "normal_or_not", "template_id": "normal_or_not:3"}
+{"text": "is this scan normal", "intent": "normal_or_not", "template_id": "normal_or_not:4"}
+{"text": "is the x-ray normal", "intent": "normal_or_not", "template_id": "normal_or_not:5"}
+{"text": "is anything wrong", "intent": "normal_or_not", "template_id": "normal_or_not:6"}
+{"text": "is it abnormal", "intent": "normal_or_not", "template_id": "normal_or_not:7"}
+{"text": "is this a normal study", "intent": "normal_or_not", "template_id": "normal_or_not:8"}
+{"text": "are there any abnormalities", "intent": "normal_or_not", "template_id": "normal_or_not:9"}
+{"text": "is everything okay", "intent": "normal_or_not", "template_id": "normal_or_not:10"}
+{"text": "does this look normal", "intent": "normal_or_not", "template_id": "normal_or_not:11"}
+{"text": "is the image clear", "intent": "normal_or_not", "template_id": "normal_or_not:12"}
+{"text": "any problems", "intent": "normal_or_not", "template_id": "normal_or_not:13"}
+{"text": "is this healthy", "intent": "normal_or_not", "template_id": "normal_or_not:14"}
+{"text": "is there anything concerning", "intent": "normal_or_not", "template_id": "normal_or_not:15"}
+{"text": "is this a normal chest", "intent": "normal_or_not", "template_id": "normal_or_not:16"}
+{"text": "should i be worried", "intent": "normal_or_not", "template_id": "normal_or_not:17"}
+{"text": "is the brain mri normal", "intent": "normal_or_not", "template_id": "normal_or_not:18"}
+{"text": "is there a fracture or not", "intent": "normal_or_not", "template_id": "normal_or_not:19"}
+{"text": "normal or abnormal", "intent": "normal_or_not", "template_id": "normal_or_not:20"}
+{"text": "is it clean", "intent": "normal_or_not", "template_id": "normal_or_not:21"}
+{"text": "any pathology", "intent": "normal_or_not", "template_id": "normal_or_not:22"}
+{"text": "is the scan unremarkable", "intent": "normal_or_not", "template_id": "normal_or_not:23"}
+{"text": "does it look ok", "intent": "normal_or_not", "template_id": "normal_or_not:24"}
+{"text": "is there disease", "intent": "normal_or_not", "template_id": "normal_or_not:25"}
+{"text": "is the study negative", "intent": "normal_or_not", "template_id": "normal_or_not:26"}
+{"text": "are the lungs normal", "intent": "normal_or_not", "template_id": "normal_or_not:27"}
+{"text": "is the heart normal", "intent": "normal_or_not", "template_id": "normal_or_not:28"}
+{"text": "everything fine", "intent": "normal_or_not", "template_id": "normal_or_not:29"}
+{"text": "is anything abnormal here", "intent": "normal_or_not", "template_id": "normal_or_not:30"}
+{"text": "is this patient's scan normal", "intent": "normal_or_not", "template_id": "normal_or_not:31"}
+{"text": "anything wrong with this image", "intent": "normal_or_not", "template_id": "normal_or_not:32"}
+{"text": "are there significant findings", "intent": "normal_or_not", "template_id": "normal_or_not:33"}
+{"text": "is it a negative study", "intent": "normal_or_not", "template_id": "normal_or_not:34"}
+{"text": "is this x-ray fine", "intent": "normal_or_not", "template_id": "normal_or_not:35"}
+{"text": "is this within normal limits", "intent": "normal_or_not", "template_id": "normal_or_not:36"}
+{"text": "nothing wrong right", "intent": "normal_or_not", "template_id": "normal_or_not:37"}
+{"text": "is this okay or not", "intent": "normal_or_not", "template_id": "normal_or_not:38"}
+{"text": "does the ai think this is normal", "intent": "normal_or_not", "template_id": "normal_or_not:39"}
+{"text": "is there any finding at all", "intent": "normal_or_not", "template_id": "normal_or_not:40"}
+{"text": "is the bone intact", "intent": "normal_or_not", "template_id": "normal_or_not:41"}
+{"text": "do you see anything abnormal", "intent": "normal_or_not", "template_id": "normal_or_not:42"}
+{"text": "is it normal overall", "intent": "normal_or_not", "template_id": "normal_or_not:43"}
+{"text": "is this a critical finding", "intent": "urgency", "template_id": "urgency:0"}
+{"text": "needs urgent review?", "intent": "urgency", "template_id": "urgency:1"}
+{"text": "is there anything life threatening on this scan", "intent": "urgency", "template_id": "urgency:2"}
+{"text": "should this be prioritised", "intent": "urgency", "template_id": "urgency:3"}
+{"text": "how urgent is this", "intent": "urgency", "template_id": "urgency:4"}
+{"text": "is this an emergency", "intent": "urgency", "template_id": "urgency:5"}
+{"text": "what is the triage level", "intent": "urgency", "template_id": "urgency:6"}
+{"text": "what's the urgency score", "intent": "urgency", "template_id": "urgency:7"}
+{"text": "does this need immediate attention", "intent": "urgency", "template_id": "urgency:8"}
+{"text": "is it critical", "intent": "urgency", "template_id": "urgency:9"}
+{"text": "how quickly should this be read", "intent": "urgency", "template_id": "urgency:10"}
+{"text": "what priority is this", "intent": "urgency", "template_id": "urgency:11"}
+{"text": "is this urgent", "intent": "urgency", "template_id": "urgency:12"}
+{"text": "should this go to the top of the worklist", "intent": "urgency", "template_id": "urgency:13"}
+{"text": "triage this study", "intent": "urgency", "template_id": "urgency:14"}
+{"text": "is it routine", "intent": "urgency", "template_id": "urgency:15"}
+{"text": "can this wait", "intent": "urgency", "template_id": "urgency:16"}
+{"text": "is there anything life threatening", "intent": "urgency", "template_id": "urgency:17"}
+{"text": "how serious is it", "intent": "urgency", "template_id": "urgency:18"}
+{"text": "what is the priority level", "intent": "urgency", "template_id": "urgency:19"}
+{"text": "urgency please", "intent": "urgency", "template_id": "urgency:20"}
+{"text": "should i call the clinician now", "intent": "urgency", "template_id": "urgency:21"}
+{"text": "is a stat read needed", "intent": "urgency", "template_id": "urgency:22"}
+{"text": "how severe is this", "intent": "urgency", "template_id": "urgency:23"}
+{"text": "why is it marked critical", "intent": "urgency", "template_id": "urgency:24"}
+{"text": "why is this urgent", "intent": "urgency", "template_id": "urgency:25"}
+{"text": "what's the triage category", "intent": "urgency", "template_id": "urgency:26"}
+{"text": "is this time sensitive", "intent": "urgency", "template_id": "urgency:27"}
+{"text": "does this need same day review", "intent": "urgency", "template_id": "urgency:28"}
+{"text": "what urgency did you assign", "intent": "urgency", "template_id": "urgency:29"}
+{"text": "explain the urgency score", "intent": "urgency", "template_id": "urgency:30"}
+{"text": "how was the triage computed", "intent": "urgency", "template_id": "urgency:31"}
+{"text": "should we escalate", "intent": "urgency", "template_id": "urgency:32"}
+{"text": "is it safe to wait", "intent": "urgency", "template_id": "urgency:33"}
+{"text": "how worried should we be", "intent": "urgency", "template_id": "urgency:34"}
+{"text": "rank the urgency", "intent": "urgency", "template_id": "urgency:35"}
+{"text": "is this a priority case", "intent": "urgency", "template_id": "urgency:36"}
+{"text": "what's the risk level", "intent": "urgency", "template_id": "urgency:37"}
+{"text": "is this high priority", "intent": "urgency", "template_id": "urgency:38"}
+{"text": "why is it routine", "intent": "urgency", "template_id": "urgency:39"}
+{"text": "should this be flagged", "intent": "urgency", "template_id": "urgency:40"}
+{"text": "how bad is it", "intent": "urgency", "template_id": "urgency:41"}
+{"text": "does this need urgent action", "intent": "urgency", "template_id": "urgency:42"}
+{"text": "what is the severity", "intent": "urgency", "template_id": "urgency:43"}
+{"text": "what are the main limitations", "intent": "limitations", "template_id": "limitations:0"}
+{"text": "where does this tool fail", "intent": "limitations", "template_id": "limitations:1"}
+{"text": "should this be used for diagnosis", "intent": "limitations", "template_id": "limitations:2"}
+{"text": "what are the shortcomings of the ai", "intent": "limitations", "template_id": "limitations:3"}
+{"text": "what are your limitations", "intent": "limitations", "template_id": "limitations:4"}
+{"text": "how reliable is this ai", "intent": "limitations", "template_id": "limitations:5"}
+{"text": "can i trust this", "intent": "limitations", "template_id": "limitations:6"}
+{"text": "what can't you detect", "intent": "limitations", "template_id": "limitations:7"}
+{"text": "what are the limitations of the model", "intent": "limitations", "template_id": "limitations:8"}
+{"text": "is this a diagnosis", "intent": "limitations", "template_id": "limitations:9"}
+{"text": "can this replace a radiologist", "intent": "limitations", "template_id": "limitations:10"}
+{"text": "what are the caveats", "intent": "limitations", "template_id": "limitations:11"}
+{"text": "how accurate is the model", "intent": "limitations", "template_id": "limitations:12"}
+{"text": "what are the weaknesses", "intent": "limitations", "template_id": "limitations:13"}
+{"text": "is this clinically validated", "intent": "limitations", "template_id": "limitations:14"}
+{"text": "should i rely on this", "intent": "limitations", "template_id": "limitations:15"}
+{"text": "what could go wrong", "intent": "limitations", "template_id": "limitations:16"}
+{"text": "is this fda approved", "intent": "limitations", "template_id": "limitations:17"}
+{"text": "is the model biased", "intent": "limitations", "template_id": "limitations:18"}
+{"text": "what are the risks of using this", "intent": "limitations", "template_id": "limitations:19"}
+{"text": "what is the model not good at", "intent": "limitations", "template_id": "limitations:20"}
+{"text": "disclaimer please", "intent": "limitations", "template_id": "limitations:21"}
+{"text": "is this medical advice", "intent": "limitations", "template_id": "limitations:22"}
+{"text": "how often is it wrong", "intent": "limitations", "template_id": "limitations:23"}
+{"text": "what's the error rate", "intent": "limitations", "template_id": "limitations:24"}
+{"text": "are there known failure modes", "intent": "limitations", "template_id": "limitations:25"}
+{"text": "is this safe to use clinically", "intent": "limitations", "template_id": "limitations:26"}
+{"text": "how was this validated", "intent": "limitations", "template_id": "limitations:27"}
+{"text": "what are the blind spots", "intent": "limitations", "template_id": "limitations:28"}
+{"text": "can the ai make mistakes", "intent": "limitations", "template_id": "limitations:29"}
+{"text": "is this for clinical use", "intent": "limitations", "template_id": "limitations:30"}
+{"text": "what are the known limitations", "intent": "limitations", "template_id": "limitations:31"}
+{"text": "is it trustworthy", "intent": "limitations", "template_id": "limitations:32"}
+{"text": "what does the starter model mean", "intent": "limitations", "template_id": "limitations:33"}
+{"text": "why should i be careful with this result", "intent": "limitations", "template_id": "limitations:34"}
+{"text": "what's the accuracy", "intent": "limitations", "template_id": "limitations:35"}
+{"text": "how good is this model", "intent": "limitations", "template_id": "limitations:36"}
+{"text": "how well does it perform", "intent": "limitations", "template_id": "limitations:37"}
+{"text": "is the performance good enough", "intent": "limitations", "template_id": "limitations:38"}
+{"text": "does it work on children", "intent": "limitations", "template_id": "limitations:39"}
+{"text": "does it work on ct", "intent": "limitations", "template_id": "limitations:40"}
+{"text": "what populations was it tested on", "intent": "limitations", "template_id": "limitations:41"}
+{"text": "is it fair across sex and age", "intent": "limitations", "template_id": "limitations:42"}
+{"text": "what are the uncertainties of this tool", "intent": "limitations", "template_id": "limitations:43"}
+{"text": "rewrite the impression", "intent": "rewrite_section", "template_id": "rewrite_section:0"}
+{"text": "make the report more concise", "intent": "rewrite_section", "template_id": "rewrite_section:1"}
+{"text": "make it patient friendly", "intent": "rewrite_section", "template_id": "rewrite_section:2"}
+{"text": "simplify the findings section", "intent": "rewrite_section", "template_id": "rewrite_section:3"}
+{"text": "rewrite this in plain language", "intent": "rewrite_section", "template_id": "rewrite_section:4"}
+{"text": "shorten the report", "intent": "rewrite_section", "template_id": "rewrite_section:5"}
+{"text": "make the impression more detailed", "intent": "rewrite_section", "template_id": "rewrite_section:6"}
+{"text": "rewrite the findings concisely", "intent": "rewrite_section", "template_id": "rewrite_section:7"}
+{"text": "rephrase the impression for a patient", "intent": "rewrite_section", "template_id": "rewrite_section:8"}
+{"text": "make the report easier to read", "intent": "rewrite_section", "template_id": "rewrite_section:9"}
+{"text": "write a concise version", "intent": "rewrite_section", "template_id": "rewrite_section:10"}
+{"text": "give me a detailed version of the findings", "intent": "rewrite_section", "template_id": "rewrite_section:11"}
+{"text": "rewrite for a layperson", "intent": "rewrite_section", "template_id": "rewrite_section:12"}
+{"text": "can you simplify the report", "intent": "rewrite_section", "template_id": "rewrite_section:13"}
+{"text": "rewrite the recommendations", "intent": "rewrite_section", "template_id": "rewrite_section:14"}
+{"text": "summarize the report in simple words", "intent": "rewrite_section", "template_id": "rewrite_section:15"}
+{"text": "make this less technical", "intent": "rewrite_section", "template_id": "rewrite_section:16"}
+{"text": "condense the findings", "intent": "rewrite_section", "template_id": "rewrite_section:17"}
+{"text": "rewrite the report section", "intent": "rewrite_section", "template_id": "rewrite_section:18"}
+{"text": "expand the impression", "intent": "rewrite_section", "template_id": "rewrite_section:19"}
+{"text": "make the findings more detailed", "intent": "rewrite_section", "template_id": "rewrite_section:20"}
+{"text": "patient friendly version please", "intent": "rewrite_section", "template_id": "rewrite_section:21"}
+{"text": "rewrite in lay terms", "intent": "rewrite_section", "template_id": "rewrite_section:22"}
+{"text": "make it shorter", "intent": "rewrite_section", "template_id": "rewrite_section:23"}
+{"text": "rewrite the impression in plain english", "intent": "rewrite_section", "template_id": "rewrite_section:24"}
+{"text": "tighten up the impression", "intent": "rewrite_section", "template_id": "rewrite_section:25"}
+{"text": "rewrite with more detail", "intent": "rewrite_section", "template_id": "rewrite_section:26"}
+{"text": "make the language simpler", "intent": "rewrite_section", "template_id": "rewrite_section:27"}
+{"text": "rewrite findings for the patient", "intent": "rewrite_section", "template_id": "rewrite_section:28"}
+{"text": "change the style to concise", "intent": "rewrite_section", "template_id": "rewrite_section:29"}
+{"text": "switch to patient-friendly wording", "intent": "rewrite_section", "template_id": "rewrite_section:30"}
+{"text": "regenerate the impression", "intent": "rewrite_section", "template_id": "rewrite_section:31"}
+{"text": "rewrite the measurements section", "intent": "rewrite_section", "template_id": "rewrite_section:32"}
+{"text": "edit the impression", "intent": "rewrite_section", "template_id": "rewrite_section:33"}
+{"text": "reword the findings", "intent": "rewrite_section", "template_id": "rewrite_section:34"}
+{"text": "make it understandable for the family", "intent": "rewrite_section", "template_id": "rewrite_section:35"}
+{"text": "produce a concise impression", "intent": "rewrite_section", "template_id": "rewrite_section:36"}
+{"text": "rewrite in a detailed style", "intent": "rewrite_section", "template_id": "rewrite_section:37"}
+{"text": "simplify this section", "intent": "rewrite_section", "template_id": "rewrite_section:38"}
+{"text": "rewrite the report to be brief", "intent": "rewrite_section", "template_id": "rewrite_section:39"}
+{"text": "summarize the study", "intent": "summary", "template_id": "summary:0"}
+{"text": "give me a summary", "intent": "summary", "template_id": "summary:1"}
+{"text": "what's the bottom line", "intent": "summary", "template_id": "summary:2"}
+{"text": "summary please", "intent": "summary", "template_id": "summary:3"}
+{"text": "what's the overall impression", "intent": "summary", "template_id": "summary:4"}
+{"text": "sum it up", "intent": "summary", "template_id": "summary:5"}
+{"text": "give me the gist", "intent": "summary", "template_id": "summary:6"}
+{"text": "tl;dr", "intent": "summary", "template_id": "summary:7"}
+{"text": "what's the main takeaway", "intent": "summary", "template_id": "summary:8"}
+{"text": "brief summary of the findings", "intent": "summary", "template_id": "summary:9"}
+{"text": "what is the conclusion", "intent": "summary", "template_id": "summary:10"}
+{"text": "summarize the results", "intent": "summary", "template_id": "summary:11"}
+{"text": "give me the overview", "intent": "summary", "template_id": "summary:12"}
+{"text": "overall what do you see", "intent": "summary", "template_id": "summary:13"}
+{"text": "short summary", "intent": "summary", "template_id": "summary:14"}
+{"text": "what's the headline", "intent": "summary", "template_id": "summary:15"}
+{"text": "quick summary of this scan", "intent": "summary", "template_id": "summary:16"}
+{"text": "what's the impression", "intent": "summary", "template_id": "summary:17"}
+{"text": "can you summarize", "intent": "summary", "template_id": "summary:18"}
+{"text": "give me a one line summary", "intent": "summary", "template_id": "summary:19"}
+{"text": "what does the report conclude", "intent": "summary", "template_id": "summary:20"}
+{"text": "overall assessment", "intent": "summary", "template_id": "summary:21"}
+{"text": "summarize everything", "intent": "summary", "template_id": "summary:22"}
+{"text": "key points please", "intent": "summary", "template_id": "summary:23"}
+{"text": "what are the key findings", "intent": "summary", "template_id": "summary:24"}
+{"text": "high level summary", "intent": "summary", "template_id": "summary:25"}
+{"text": "what's the big picture", "intent": "summary", "template_id": "summary:26"}
+{"text": "in short what is it", "intent": "summary", "template_id": "summary:27"}
+{"text": "the summary of this exam", "intent": "summary", "template_id": "summary:28"}
+{"text": "give me the impression", "intent": "summary", "template_id": "summary:29"}
+{"text": "recap the findings", "intent": "summary", "template_id": "summary:30"}
+{"text": "briefly what did you find", "intent": "summary", "template_id": "summary:31"}
+{"text": "what's your overall read", "intent": "summary", "template_id": "summary:32"}
+{"text": "summarize this x-ray", "intent": "summary", "template_id": "summary:33"}
+{"text": "summarize this mri", "intent": "summary", "template_id": "summary:34"}
+{"text": "summarize the case", "intent": "summary", "template_id": "summary:35"}
+{"text": "give me a quick overview", "intent": "summary", "template_id": "summary:36"}
+{"text": "what is the final impression", "intent": "summary", "template_id": "summary:37"}
+{"text": "bottom line please", "intent": "summary", "template_id": "summary:38"}
+{"text": "concise summary of the study", "intent": "summary", "template_id": "summary:39"}
+{"text": "what did you find", "intent": "list_findings", "template_id": "list_findings:0"}
+{"text": "list the findings", "intent": "list_findings", "template_id": "list_findings:1"}
+{"text": "what are the findings", "intent": "list_findings", "template_id": "list_findings:2"}
+{"text": "show all findings", "intent": "list_findings", "template_id": "list_findings:3"}
+{"text": "what abnormalities were detected", "intent": "list_findings", "template_id": "list_findings:4"}
+{"text": "which findings are positive", "intent": "list_findings", "template_id": "list_findings:5"}
+{"text": "top findings", "intent": "list_findings", "template_id": "list_findings:6"}
+{"text": "what are the top 3 findings", "intent": "list_findings", "template_id": "list_findings:7"}
+{"text": "list everything you detected", "intent": "list_findings", "template_id": "list_findings:8"}
+{"text": "what did the ai detect", "intent": "list_findings", "template_id": "list_findings:9"}
+{"text": "show me the findings list", "intent": "list_findings", "template_id": "list_findings:10"}
+{"text": "which diseases were flagged", "intent": "list_findings", "template_id": "list_findings:11"}
+{"text": "what was flagged", "intent": "list_findings", "template_id": "list_findings:12"}
+{"text": "what conditions are present", "intent": "list_findings", "template_id": "list_findings:13"}
+{"text": "which labels are positive", "intent": "list_findings", "template_id": "list_findings:14"}
+{"text": "what are the results", "intent": "list_findings", "template_id": "list_findings:15"}
+{"text": "show me the results", "intent": "list_findings", "template_id": "list_findings:16"}
+{"text": "all findings please", "intent": "list_findings", "template_id": "list_findings:17"}
+{"text": "what's on the list", "intent": "list_findings", "template_id": "list_findings:18"}
+{"text": "which findings passed the threshold", "intent": "list_findings", "template_id": "list_findings:19"}
+{"text": "what is likely present", "intent": "list_findings", "template_id": "list_findings:20"}
+{"text": "list likely findings", "intent": "list_findings", "template_id": "list_findings:21"}
+{"text": "what are the possible findings", "intent": "list_findings", "template_id": "list_findings:22"}
+{"text": "enumerate the findings", "intent": "list_findings", "template_id": "list_findings:23"}
+{"text": "give me the findings", "intent": "list_findings", "template_id": "list_findings:24"}
+{"text": "what is detected in this image", "intent": "list_findings", "template_id": "list_findings:25"}
+{"text": "show the predictions", "intent": "list_findings", "template_id": "list_findings:26"}
+{"text": "list the predictions", "intent": "list_findings", "template_id": "list_findings:27"}
+{"text": "what did the model predict", "intent": "list_findings", "template_id": "list_findings:28"}
+{"text": "which abnormalities are there", "intent": "list_findings", "template_id": "list_findings:29"}
+{"text": "what did you see", "intent": "list_findings", "template_id": "list_findings:30"}
+{"text": "what are the positive findings", "intent": "list_findings", "template_id": "list_findings:31"}
+{"text": "anything detected", "intent": "list_findings", "template_id": "list_findings:32"}
+{"text": "findings please", "intent": "list_findings", "template_id": "list_findings:33"}
+{"text": "what are the ai findings", "intent": "list_findings", "template_id": "list_findings:34"}
+{"text": "what labels were predicted", "intent": "list_findings", "template_id": "list_findings:35"}
+{"text": "what's present", "intent": "list_findings", "template_id": "list_findings:36"}
+{"text": "show detections", "intent": "list_findings", "template_id": "list_findings:37"}
+{"text": "what are all the probabilities", "intent": "list_findings", "template_id": "list_findings:38"}
+{"text": "what are the outputs", "intent": "list_findings", "template_id": "list_findings:39"}
+{"text": "what else could it be", "intent": "differential", "template_id": "differential:0"}
+{"text": "what is the differential", "intent": "differential", "template_id": "differential:1"}
+{"text": "differential diagnosis", "intent": "differential", "template_id": "differential:2"}
+{"text": "could it be something else", "intent": "differential", "template_id": "differential:3"}
+{"text": "what are the alternatives", "intent": "differential", "template_id": "differential:4"}
+{"text": "what mimics enlarged heart", "intent": "differential", "template_id": "differential:5"}
+{"text": "what mimics pleural effusion", "intent": "differential", "template_id": "differential:5"}
+{"text": "differential for tumour", "intent": "differential", "template_id": "differential:6"}
+{"text": "differential for nodule", "intent": "differential", "template_id": "differential:6"}
+{"text": "what else looks like infiltrate", "intent": "differential", "template_id": "differential:7"}
+{"text": "what else looks like meningioma", "intent": "differential", "template_id": "differential:7"}
+{"text": "other possibilities", "intent": "differential", "template_id": "differential:8"}
+{"text": "what are other causes", "intent": "differential", "template_id": "differential:9"}
+{"text": "could this be hernia instead", "intent": "differential", "template_id": "differential:10"}
+{"text": "could this be fibrosis instead", "intent": "differential", "template_id": "differential:10"}
+{"text": "is it infiltration or something else", "intent": "differential", "template_id": "differential:11"}
+{"text": "is it fibrosis or something else", "intent": "differential", "template_id": "differential:11"}
+{"text": "what conditions look similar", "intent": "differential", "template_id": "differential:12"}
+{"text": "what's in the differential", "intent": "differential", "template_id": "differential:13"}
+{"text": "alternatives to enlarged heart", "intent": "differential", "template_id": "differential:14"}
+{"text": "alternatives to pleural thickening", "intent": "differential", "template_id": "differential:14"}
+{"text": "what could be confused with enlarged heart", "intent": "differential", "template_id": "differential:15"}
+{"text": "what could be confused with fibrosis", "intent": "differential", "template_id": "differential:15"}
+{"text": "list the differential diagnoses", "intent": "differential", "template_id": "differential:16"}
+{"text": "what else should we consider", "intent": "differential", "template_id": "differential:17"}
+{"text": "other diagnoses to consider", "intent": "differential", "template_id": "differential:18"}
+{"text": "could this be benign", "intent": "differential", "template_id": "differential:19"}
+{"text": "might it be an artifact", "intent": "differential", "template_id": "differential:20"}
+{"text": "is it really fibrosis", "intent": "differential", "template_id": "differential:21"}
+{"text": "is it really effusion", "intent": "differential", "template_id": "differential:21"}
+{"text": "what are the mimics", "intent": "differential", "template_id": "differential:22"}
+{"text": "how do we distinguish infiltrate from others", "intent": "differential", "template_id": "differential:23"}
+{"text": "how do we distinguish brain tumor from others", "intent": "differential", "template_id": "differential:23"}
+{"text": "any other explanations", "intent": "differential", "template_id": "differential:24"}
+{"text": "what other diseases could cause this", "intent": "differential", "template_id": "differential:25"}
+{"text": "what else is on the list", "intent": "differential", "template_id": "differential:26"}
+{"text": "what's the ddx", "intent": "differential", "template_id": "differential:27"}
+{"text": "ddx please", "intent": "differential", "template_id": "differential:28"}
+{"text": "what would you consider besides atelectasis", "intent": "differential", "template_id": "differential:29"}
+{"text": "what would you consider besides fracture", "intent": "differential", "template_id": "differential:29"}
+{"text": "could this be infection or tumour", "intent": "differential", "template_id": "differential:30"}
+{"text": "could it be atelectasis instead", "intent": "differential", "template_id": "differential:31"}
+{"text": "could it be just positioning", "intent": "differential", "template_id": "differential:32"}
+{"text": "is it effusion or a normal variant", "intent": "differential", "template_id": "differential:33"}
+{"text": "is it brain tumor or a normal variant", "intent": "differential", "template_id": "differential:33"}
+{"text": "what other entities", "intent": "differential", "template_id": "differential:34"}
+{"text": "broaden the differential", "intent": "differential", "template_id": "differential:35"}
+{"text": "what are the differential considerations for opacity", "intent": "differential", "template_id": "differential:36"}
+{"text": "what are the differential considerations for enlarged heart", "intent": "differential", "template_id": "differential:36"}
+{"text": "can it be something other than atelectasis", "intent": "differential", "template_id": "differential:37"}
+{"text": "can it be something other than enlarged heart", "intent": "differential", "template_id": "differential:37"}
+{"text": "what are similar conditions to emphysema", "intent": "differential", "template_id": "differential:38"}
+{"text": "what are similar conditions to fracture", "intent": "differential", "template_id": "differential:38"}
+{"text": "help me with the differential", "intent": "differential", "template_id": "differential:39"}
+{"text": "how much do the models vary on tumour", "intent": "uncertainty", "template_id": "uncertainty:0"}
+{"text": "how much do the models vary on cardiomegaly", "intent": "uncertainty", "template_id": "uncertainty:0"}
+{"text": "are the three networks consistent", "intent": "uncertainty", "template_id": "uncertainty:1"}
+{"text": "is the ensemble split on pleural thickening", "intent": "uncertainty", "template_id": "uncertainty:2"}
+{"text": "is the ensemble split on pleural effusion", "intent": "uncertainty", "template_id": "uncertainty:2"}
+{"text": "what is the disagreement score", "intent": "uncertainty", "template_id": "uncertainty:3"}
+{"text": "how much spread is there between models", "intent": "uncertainty", "template_id": "uncertainty:4"}
+{"text": "does dropout sampling change the answer", "intent": "uncertainty", "template_id": "uncertainty:5"}
+{"text": "is the mass call stable across models", "intent": "uncertainty", "template_id": "uncertainty:6"}
+{"text": "is the meningioma call stable across models", "intent": "uncertainty", "template_id": "uncertainty:6"}
+{"text": "which models disagree", "intent": "uncertainty", "template_id": "uncertainty:7"}
+{"text": "how uncertain is the model", "intent": "uncertainty", "template_id": "uncertainty:8"}
+{"text": "do the models disagree", "intent": "uncertainty", "template_id": "uncertainty:9"}
+{"text": "what's the uncertainty", "intent": "uncertainty", "template_id": "uncertainty:10"}
+{"text": "is there disagreement between models", "intent": "uncertainty", "template_id": "uncertainty:11"}
+{"text": "how much do the ensemble members agree", "intent": "uncertainty", "template_id": "uncertainty:12"}
+{"text": "why is the uncertainty high", "intent": "uncertainty", "template_id": "uncertainty:13"}
+{"text": "what is the ensemble spread", "intent": "uncertainty", "template_id": "uncertainty:14"}
+{"text": "how stable is the prediction", "intent": "uncertainty", "template_id": "uncertainty:15"}
+{"text": "is the fibrosis prediction uncertain", "intent": "uncertainty", "template_id": "uncertainty:16"}
+{"text": "what's the variance", "intent": "uncertainty", "template_id": "uncertainty:17"}
+{"text": "monte carlo dropout result", "intent": "uncertainty", "template_id": "uncertainty:18"}
+{"text": "how consistent are the models", "intent": "uncertainty", "template_id": "uncertainty:19"}
+{"text": "is this a borderline case", "intent": "uncertainty", "template_id": "uncertainty:20"}
+{"text": "what's the error bar", "intent": "uncertainty", "template_id": "uncertainty:21"}
+{"text": "show me the uncertainty", "intent": "uncertainty", "template_id": "uncertainty:22"}
+{"text": "why is there uncertainty on pleural thickening", "intent": "uncertainty", "template_id": "uncertainty:23"}
+{"text": "why is there uncertainty on emphysema", "intent": "uncertainty", "template_id": "uncertainty:23"}
+{"text": "how much variability", "intent": "uncertainty", "template_id": "uncertainty:24"}
+{"text": "are the models in agreement on opacity", "intent": "uncertainty", "template_id": "uncertainty:25"}
+{"text": "are the models in agreement on brain tumor", "intent": "uncertainty", "template_id": "uncertainty:25"}
+{"text": "is the prediction robust", "intent": "uncertainty", "template_id": "uncertainty:26"}
+{"text": "what's the std", "intent": "uncertainty", "template_id": "uncertainty:27"}
+{"text": "is the uncertainty acceptable", "intent": "uncertainty", "template_id": "uncertainty:28"}
+{"text": "is the model unsure", "intent": "uncertainty", "template_id": "uncertainty:29"}
+{"text": "where is the model unsure", "intent": "uncertainty", "template_id": "uncertainty:30"}
+{"text": "which finding is most uncertain", "intent": "uncertainty", "template_id": "uncertainty:31"}
+{"text": "how wide is the confidence interval", "intent": "uncertainty", "template_id": "uncertainty:32"}
+{"text": "uncertainty for cardiomegaly", "intent": "uncertainty", "template_id": "uncertainty:33"}
+{"text": "uncertainty for pleural thickening", "intent": "uncertainty", "template_id": "uncertainty:33"}
+{"text": "do all three models agree", "intent": "uncertainty", "template_id": "uncertainty:34"}
+{"text": "what does each model say", "intent": "uncertainty", "template_id": "uncertainty:35"}
+{"text": "what are the individual model outputs", "intent": "uncertainty", "template_id": "uncertainty:36"}
+{"text": "how noisy is the prediction", "intent": "uncertainty", "template_id": "uncertainty:37"}
+{"text": "is this out of distribution", "intent": "uncertainty", "template_id": "uncertainty:38"}
+{"text": "should i trust this given the uncertainty", "intent": "uncertainty", "template_id": "uncertainty:39"}
+{"text": "explain the uncertainty", "intent": "uncertainty", "template_id": "uncertainty:40"}
+{"text": "what is the epistemic uncertainty", "intent": "uncertainty", "template_id": "uncertainty:41"}
+{"text": "how sure are the models collectively", "intent": "uncertainty", "template_id": "uncertainty:42"}
+{"text": "is there model disagreement on pleural effusion", "intent": "uncertainty", "template_id": "uncertainty:43"}
+{"text": "is there model disagreement on pneumonia", "intent": "uncertainty", "template_id": "uncertainty:43"}
+{"text": "how confident is each ensemble member", "intent": "uncertainty", "template_id": "uncertainty:44"}
+{"text": "what's the spread of probabilities", "intent": "uncertainty", "template_id": "uncertainty:45"}
+{"text": "are the results unstable", "intent": "uncertainty", "template_id": "uncertainty:46"}
+{"text": "what's the mc dropout variance", "intent": "uncertainty", "template_id": "uncertainty:47"}
+{"text": "what neural networks are you running", "intent": "model_info", "template_id": "model_info:0"}
+{"text": "what is the training dataset", "intent": "model_info", "template_id": "model_info:1"}
+{"text": "describe the architecture", "intent": "model_info", "template_id": "model_info:2"}
+{"text": "which weights are active", "intent": "model_info", "template_id": "model_info:3"}
+{"text": "how many parameters does it have", "intent": "model_info", "template_id": "model_info:4"}
+{"text": "what kind of model is the copilot", "intent": "model_info", "template_id": "model_info:5"}
+{"text": "is any cloud ai involved", "intent": "model_info", "template_id": "model_info:6"}
+{"text": "where did the training images come from", "intent": "model_info", "template_id": "model_info:7"}
+{"text": "which model did you use", "intent": "model_info", "template_id": "model_info:8"}
+{"text": "how were you trained", "intent": "model_info", "template_id": "model_info:9"}
+{"text": "what data were you trained on", "intent": "model_info", "template_id": "model_info:10"}
+{"text": "what architecture is this", "intent": "model_info", "template_id": "model_info:11"}
+{"text": "tell me about the model", "intent": "model_info", "template_id": "model_info:12"}
+{"text": "what is the ensemble", "intent": "model_info", "template_id": "model_info:13"}
+{"text": "which datasets were used", "intent": "model_info", "template_id": "model_info:14"}
+{"text": "is this the starter or full model", "intent": "model_info", "template_id": "model_info:15"}
+{"text": "how was the model built", "intent": "model_info", "template_id": "model_info:16"}
+{"text": "what backbone do you use", "intent": "model_info", "template_id": "model_info:17"}
+{"text": "who trained this model", "intent": "model_info", "template_id": "model_info:18"}
+{"text": "was this trained on nih data", "intent": "model_info", "template_id": "model_info:19"}
+{"text": "what is your training data", "intent": "model_info", "template_id": "model_info:20"}
+{"text": "how big is the training set", "intent": "model_info", "template_id": "model_info:21"}
+{"text": "which version is running", "intent": "model_info", "template_id": "model_info:22"}
+{"text": "are the weights pretrained", "intent": "model_info", "template_id": "model_info:23"}
+{"text": "what's the model card", "intent": "model_info", "template_id": "model_info:24"}
+{"text": "show the model card", "intent": "model_info", "template_id": "model_info:25"}
+{"text": "how many images was it trained on", "intent": "model_info", "template_id": "model_info:26"}
+{"text": "is it a densenet", "intent": "model_info", "template_id": "model_info:27"}
+{"text": "what algorithms are used", "intent": "model_info", "template_id": "model_info:28"}
+{"text": "how does the ai work", "intent": "model_info", "template_id": "model_info:29"}
+{"text": "explain how the system works", "intent": "model_info", "template_id": "model_info:30"}
+{"text": "what's under the hood", "intent": "model_info", "template_id": "model_info:31"}
+{"text": "which ai engine is this", "intent": "model_info", "template_id": "model_info:32"}
+{"text": "is this using chatgpt", "intent": "model_info", "template_id": "model_info:33"}
+{"text": "are you an llm", "intent": "model_info", "template_id": "model_info:34"}
+{"text": "do you use an external api", "intent": "model_info", "template_id": "model_info:35"}
+{"text": "how does the copilot work", "intent": "model_info", "template_id": "model_info:36"}
+{"text": "what is medivision", "intent": "model_info", "template_id": "model_info:37"}
+{"text": "which models are loaded", "intent": "model_info", "template_id": "model_info:38"}
+{"text": "is onnx being used", "intent": "model_info", "template_id": "model_info:39"}
+{"text": "what's the model's auroc", "intent": "model_info", "template_id": "model_info:40"}
+{"text": "what are the model metrics", "intent": "model_info", "template_id": "model_info:41"}
+{"text": "how was it validated on test data", "intent": "model_info", "template_id": "model_info:42"}
+{"text": "is the model trained from scratch", "intent": "model_info", "template_id": "model_info:43"}
+{"text": "did you use imagenet weights", "intent": "model_info", "template_id": "model_info:44"}
+{"text": "what is the input resolution", "intent": "model_info", "template_id": "model_info:45"}
+{"text": "how does the triage model work", "intent": "model_info", "template_id": "model_info:46"}
+{"text": "describe the pipeline", "intent": "model_info", "template_id": "model_info:47"}
+{"text": "is the image quality ok", "intent": "image_quality", "template_id": "image_quality:0"}
+{"text": "is this a valid image", "intent": "image_quality", "template_id": "image_quality:1"}
+{"text": "is this a chest x-ray", "intent": "image_quality", "template_id": "image_quality:2"}
+{"text": "is this image supported", "intent": "image_quality", "template_id": "image_quality:3"}
+{"text": "why is there an out of distribution warning", "intent": "image_quality", "template_id": "image_quality:4"}
+{"text": "what does the ood banner mean", "intent": "image_quality", "template_id": "image_quality:5"}
+{"text": "is this image too blurry", "intent": "image_quality", "template_id": "image_quality:6"}
+{"text": "is the image adequate", "intent": "image_quality", "template_id": "image_quality:7"}
+{"text": "can you read this image", "intent": "image_quality", "template_id": "image_quality:8"}
+{"text": "is this the right type of scan", "intent": "image_quality", "template_id": "image_quality:9"}
+{"text": "what modality is this", "intent": "image_quality", "template_id": "image_quality:10"}
+{"text": "is this an mri or x-ray", "intent": "image_quality", "template_id": "image_quality:11"}
+{"text": "why did it say not a medical image", "intent": "image_quality", "template_id": "image_quality:12"}
+{"text": "is the scan rotated", "intent": "image_quality", "template_id": "image_quality:13"}
+{"text": "is the exposure okay", "intent": "image_quality", "template_id": "image_quality:14"}
+{"text": "is this image usable", "intent": "image_quality", "template_id": "image_quality:15"}
+{"text": "is it a proper frontal view", "intent": "image_quality", "template_id": "image_quality:16"}
+{"text": "was the image recognized correctly", "intent": "image_quality", "template_id": "image_quality:17"}
+{"text": "which pipeline was used", "intent": "image_quality", "template_id": "image_quality:18"}
+{"text": "is the input valid", "intent": "image_quality", "template_id": "image_quality:19"}
+{"text": "why the warning banner", "intent": "image_quality", "template_id": "image_quality:20"}
+{"text": "is this out of distribution", "intent": "image_quality", "template_id": "image_quality:21"}
+{"text": "how did you classify the modality", "intent": "image_quality", "template_id": "image_quality:22"}
+{"text": "is the image good enough for analysis", "intent": "image_quality", "template_id": "image_quality:23"}
+{"text": "image quality check", "intent": "image_quality", "template_id": "image_quality:24"}
+{"text": "is this a photo", "intent": "image_quality", "template_id": "image_quality:25"}
+{"text": "why can't you analyze this", "intent": "image_quality", "template_id": "image_quality:26"}
+{"text": "what did the router decide", "intent": "image_quality", "template_id": "image_quality:27"}
+{"text": "is the technique adequate", "intent": "image_quality", "template_id": "image_quality:28"}
+{"text": "is the positioning fine", "intent": "image_quality", "template_id": "image_quality:29"}
+{"text": "is the image too dark", "intent": "image_quality", "template_id": "image_quality:30"}
+{"text": "is the contrast enough", "intent": "image_quality", "template_id": "image_quality:31"}
+{"text": "was this routed to the brain pipeline", "intent": "image_quality", "template_id": "image_quality:32"}
+{"text": "is this a bone x-ray", "intent": "image_quality", "template_id": "image_quality:33"}
+{"text": "detected modality please", "intent": "image_quality", "template_id": "image_quality:34"}
+{"text": "is this image in distribution", "intent": "image_quality", "template_id": "image_quality:35"}
+{"text": "what is the ood score", "intent": "image_quality", "template_id": "image_quality:36"}
+{"text": "why is this flagged as doubtful", "intent": "image_quality", "template_id": "image_quality:37"}
+{"text": "is the uploaded image appropriate", "intent": "image_quality", "template_id": "image_quality:38"}
+{"text": "check the image quality", "intent": "image_quality", "template_id": "image_quality:39"}
+{"text": "what can this copilot do", "intent": "greeting_help", "template_id": "greeting_help:0"}
+{"text": "how do i ask you something", "intent": "greeting_help", "template_id": "greeting_help:1"}
+{"text": "teach me how to use the chat", "intent": "greeting_help", "template_id": "greeting_help:2"}
+{"text": "what kind of help do you offer", "intent": "greeting_help", "template_id": "greeting_help:3"}
+{"text": "what topics can you cover", "intent": "greeting_help", "template_id": "greeting_help:4"}
+{"text": "give me a few things to ask", "intent": "greeting_help", "template_id": "greeting_help:5"}
+{"text": "hiya", "intent": "greeting_help", "template_id": "greeting_help:6"}
+{"text": "good evening", "intent": "greeting_help", "template_id": "greeting_help:7"}
+{"text": "hi", "intent": "greeting_help", "template_id": "greeting_help:8"}
+{"text": "hello", "intent": "greeting_help", "template_id": "greeting_help:9"}
+{"text": "hey there", "intent": "greeting_help", "template_id": "greeting_help:10"}
+{"text": "what can you do", "intent": "greeting_help", "template_id": "greeting_help:11"}
+{"text": "help", "intent": "greeting_help", "template_id": "greeting_help:12"}
+{"text": "how do i use this", "intent": "greeting_help", "template_id": "greeting_help:13"}
+{"text": "what questions can i ask", "intent": "greeting_help", "template_id": "greeting_help:14"}
+{"text": "good morning", "intent": "greeting_help", "template_id": "greeting_help:15"}
+{"text": "who are you", "intent": "greeting_help", "template_id": "greeting_help:16"}
+{"text": "what are you", "intent": "greeting_help", "template_id": "greeting_help:17"}
+{"text": "how can you help me", "intent": "greeting_help", "template_id": "greeting_help:18"}
+{"text": "what kind of questions do you answer", "intent": "greeting_help", "template_id": "greeting_help:19"}
+{"text": "show me what you can do", "intent": "greeting_help", "template_id": "greeting_help:20"}
+{"text": "hello copilot", "intent": "greeting_help", "template_id": "greeting_help:21"}
+{"text": "hey copilot", "intent": "greeting_help", "template_id": "greeting_help:22"}
+{"text": "help me", "intent": "greeting_help", "template_id": "greeting_help:23"}
+{"text": "i need help", "intent": "greeting_help", "template_id": "greeting_help:24"}
+{"text": "what are your features", "intent": "greeting_help", "template_id": "greeting_help:25"}
+{"text": "how does this chat work", "intent": "greeting_help", "template_id": "greeting_help:26"}
+{"text": "suggest some questions", "intent": "greeting_help", "template_id": "greeting_help:27"}
+{"text": "give me example questions", "intent": "greeting_help", "template_id": "greeting_help:28"}
+{"text": "what should i ask", "intent": "greeting_help", "template_id": "greeting_help:29"}
+{"text": "thanks", "intent": "greeting_help", "template_id": "greeting_help:30"}
+{"text": "thank you", "intent": "greeting_help", "template_id": "greeting_help:31"}
+{"text": "ok thanks", "intent": "greeting_help", "template_id": "greeting_help:32"}
+{"text": "great thanks", "intent": "greeting_help", "template_id": "greeting_help:33"}
+{"text": "hi there what can you help with", "intent": "greeting_help", "template_id": "greeting_help:34"}
+{"text": "start", "intent": "greeting_help", "template_id": "greeting_help:35"}
+{"text": "menu", "intent": "greeting_help", "template_id": "greeting_help:36"}
+{"text": "options", "intent": "greeting_help", "template_id": "greeting_help:37"}
+{"text": "what can i ask you", "intent": "greeting_help", "template_id": "greeting_help:38"}
+{"text": "how do i get started", "intent": "greeting_help", "template_id": "greeting_help:39"}
+{"text": "introduce yourself", "intent": "greeting_help", "template_id": "greeting_help:40"}
+{"text": "can you assist me", "intent": "greeting_help", "template_id": "greeting_help:41"}
+{"text": "good afternoon", "intent": "greeting_help", "template_id": "greeting_help:42"}
+{"text": "yo", "intent": "greeting_help", "template_id": "greeting_help:43"}
+{"text": "hello there", "intent": "greeting_help", "template_id": "greeting_help:44"}
+{"text": "help please", "intent": "greeting_help", "template_id": "greeting_help:45"}
+{"text": "what commands are available", "intent": "greeting_help", "template_id": "greeting_help:46"}
+{"text": "list your capabilities", "intent": "greeting_help", "template_id": "greeting_help:47"}
+{"text": "explain this to the patient", "intent": "patient_explanation", "template_id": "patient_explanation:0"}
+{"text": "how do i explain this to the patient", "intent": "patient_explanation", "template_id": "patient_explanation:1"}
+{"text": "explain in simple terms", "intent": "patient_explanation", "template_id": "patient_explanation:2"}
+{"text": "what do i tell the family", "intent": "patient_explanation", "template_id": "patient_explanation:3"}
+{"text": "explain like i'm five", "intent": "patient_explanation", "template_id": "patient_explanation:4"}
+{"text": "explain it for a non doctor", "intent": "patient_explanation", "template_id": "patient_explanation:5"}
+{"text": "in layman's terms what is this", "intent": "patient_explanation", "template_id": "patient_explanation:6"}
+{"text": "simple explanation please", "intent": "patient_explanation", "template_id": "patient_explanation:7"}
+{"text": "how would you explain consolidation to a patient", "intent": "patient_explanation", "template_id": "patient_explanation:8"}
+{"text": "how would you explain edema to a patient", "intent": "patient_explanation", "template_id": "patient_explanation:8"}
+{"text": "patient explanation of pleural effusion", "intent": "patient_explanation", "template_id": "patient_explanation:9"}
+{"text": "patient explanation of brain tumor", "intent": "patient_explanation", "template_id": "patient_explanation:9"}
+{"text": "explain cardiomegaly in plain words", "intent": "patient_explanation", "template_id": "patient_explanation:10"}
+{"text": "explain fibrosis in plain words", "intent": "patient_explanation", "template_id": "patient_explanation:10"}
+{"text": "what does this mean for the patient in simple words", "intent": "patient_explanation", "template_id": "patient_explanation:11"}
+{"text": "explain without jargon", "intent": "patient_explanation", "template_id": "patient_explanation:12"}
+{"text": "make it understandable for a patient", "intent": "patient_explanation", "template_id": "patient_explanation:13"}
+{"text": "explain to someone without medical training", "intent": "patient_explanation", "template_id": "patient_explanation:14"}
+{"text": "explain this simply", "intent": "patient_explanation", "template_id": "patient_explanation:15"}
+{"text": "i'm the patient what does this mean", "intent": "patient_explanation", "template_id": "patient_explanation:16"}
+{"text": "what does this mean for me", "intent": "patient_explanation", "template_id": "patient_explanation:17"}
+{"text": "tell me in simple language", "intent": "patient_explanation", "template_id": "patient_explanation:18"}
+{"text": "plain language explanation", "intent": "patient_explanation", "template_id": "patient_explanation:19"}
+{"text": "lay explanation", "intent": "patient_explanation", "template_id": "patient_explanation:20"}
+{"text": "what would you tell a worried patient", "intent": "patient_explanation", "template_id": "patient_explanation:21"}
+{"text": "simple words please", "intent": "patient_explanation", "template_id": "patient_explanation:22"}
+{"text": "explain the result to my mother", "intent": "patient_explanation", "template_id": "patient_explanation:23"}
+{"text": "explain the scan to a child", "intent": "patient_explanation", "template_id": "patient_explanation:24"}
+{"text": "how do i talk to the patient about infiltrate", "intent": "patient_explanation", "template_id": "patient_explanation:25"}
+{"text": "how do i talk to the patient about pleural thickening", "intent": "patient_explanation", "template_id": "patient_explanation:25"}
+{"text": "non technical explanation", "intent": "patient_explanation", "template_id": "patient_explanation:26"}
+{"text": "describe it in everyday language", "intent": "patient_explanation", "template_id": "patient_explanation:27"}
+{"text": "what is effusion in simple words", "intent": "patient_explanation", "template_id": "patient_explanation:28"}
+{"text": "what is brain tumor in simple words", "intent": "patient_explanation", "template_id": "patient_explanation:28"}
+{"text": "explain the report to a patient", "intent": "patient_explanation", "template_id": "patient_explanation:29"}
+{"text": "can you put it in plain english", "intent": "patient_explanation", "template_id": "patient_explanation:30"}
+{"text": "explain the findings to a lay person", "intent": "patient_explanation", "template_id": "patient_explanation:31"}
+{"text": "eli5 pneumothorax", "intent": "patient_explanation", "template_id": "patient_explanation:32"}
+{"text": "eli5 infiltrate", "intent": "patient_explanation", "template_id": "patient_explanation:32"}
+{"text": "explain like i'm not a doctor", "intent": "patient_explanation", "template_id": "patient_explanation:33"}
+{"text": "say it simply", "intent": "patient_explanation", "template_id": "patient_explanation:34"}
+{"text": "how do i describe this to the patient", "intent": "patient_explanation", "template_id": "patient_explanation:35"}
+{"text": "patient-friendly explanation", "intent": "patient_explanation", "template_id": "patient_explanation:36"}
+{"text": "explain it gently", "intent": "patient_explanation", "template_id": "patient_explanation:37"}
+{"text": "what does this result mean in normal words", "intent": "patient_explanation", "template_id": "patient_explanation:38"}
+{"text": "dumb it down for me", "intent": "patient_explanation", "template_id": "patient_explanation:39"}
+{"text": "is a mass present here", "intent": "check_finding", "template_id": "check_finding:0"}
+{"text": "is a fracture present here", "intent": "check_finding", "template_id": "check_finding:0"}
+{"text": "any fibrosis on this film", "intent": "check_finding", "template_id": "check_finding:1"}
+{"text": "any fracture on this film", "intent": "check_finding", "template_id": "check_finding:1"}
+{"text": "could there be fibrosis", "intent": "check_finding", "template_id": "check_finding:2"}
+{"text": "could there be consolidation", "intent": "check_finding", "template_id": "check_finding:2"}
+{"text": "does this show any pituitary tumor", "intent": "check_finding", "template_id": "check_finding:3"}
+{"text": "does this show any edema", "intent": "check_finding", "template_id": "check_finding:3"}
+{"text": "is there a hint of infiltrate", "intent": "check_finding", "template_id": "check_finding:4"}
+{"text": "is there a hint of fibrosis", "intent": "check_finding", "template_id": "check_finding:4"}
+{"text": "is pleural thickening identified", "intent": "check_finding", "template_id": "check_finding:5"}
+{"text": "is opacity identified", "intent": "check_finding", "template_id": "check_finding:5"}
+{"text": "have you found any emphysema", "intent": "check_finding", "template_id": "check_finding:6"}
+{"text": "have you found any fibrosis", "intent": "check_finding", "template_id": "check_finding:6"}
+{"text": "tell me if there is pneumonia", "intent": "check_finding", "template_id": "check_finding:7"}
+{"text": "tell me if there is pituitary tumor", "intent": "check_finding", "template_id": "check_finding:7"}
+{"text": "is there fibrosis", "intent": "check_finding", "template_id": "check_finding:8"}
+{"text": "is there edema", "intent": "check_finding", "template_id": "check_finding:8"}
+{"text": "is there a pleural thickening", "intent": "check_finding", "template_id": "check_finding:9"}
+{"text": "is there a consolidation", "intent": "check_finding", "template_id": "check_finding:9"}
+{"text": "any infiltrate", "intent": "check_finding", "template_id": "check_finding:10"}
+{"text": "any enlarged heart", "intent": "check_finding", "template_id": "check_finding:10"}
+{"text": "do you see infiltration", "intent": "check_finding", "template_id": "check_finding:11"}
+{"text": "do you see cardiomegaly", "intent": "check_finding", "template_id": "check_finding:11"}
+{"text": "does the patient have lung nodule", "intent": "check_finding", "template_id": "check_finding:12"}
+{"text": "does the patient have infiltrate", "intent": "check_finding", "template_id": "check_finding:12"}
+{"text": "is mass present", "intent": "check_finding", "template_id": "check_finding:13"}
+{"text": "is pneumothorax present", "intent": "check_finding", "template_id": "check_finding:13"}
+{"text": "is there any evidence of meningioma", "intent": "check_finding", "template_id": "check_finding:14"}
+{"text": "is there any evidence of pneumonia", "intent": "check_finding", "template_id": "check_finding:14"}
+{"text": "can you rule out infiltration", "intent": "check_finding", "template_id": "check_finding:15"}
+{"text": "can you rule out pneumothorax", "intent": "check_finding", "template_id": "check_finding:15"}
+{"text": "rule out consolidation", "intent": "check_finding", "template_id": "check_finding:16"}
+{"text": "rule out meningioma", "intent": "check_finding", "template_id": "check_finding:16"}
+{"text": "any sign of pulmonary edema", "intent": "check_finding", "template_id": "check_finding:17"}
+{"text": "any sign of opacity", "intent": "check_finding", "template_id": "check_finding:17"}
+{"text": "is cardiomegaly seen", "intent": "check_finding", "template_id": "check_finding:18"}
+{"text": "is brain tumor seen", "intent": "check_finding", "template_id": "check_finding:18"}
+{"text": "do they have enlarged heart", "intent": "check_finding", "template_id": "check_finding:19"}
+{"text": "do they have pituitary tumor", "intent": "check_finding", "template_id": "check_finding:19"}
+{"text": "is there glioma on this image", "intent": "check_finding", "template_id": "check_finding:20"}
+{"text": "is there meningioma on this image", "intent": "check_finding", "template_id": "check_finding:20"}
+{"text": "check for nodule", "intent": "check_finding", "template_id": "check_finding:21"}
+{"text": "check for enlarged heart", "intent": "check_finding", "template_id": "check_finding:21"}
+{"text": "look for edema", "intent": "check_finding", "template_id": "check_finding:22"}
+{"text": "look for enlarged heart", "intent": "check_finding", "template_id": "check_finding:22"}
+{"text": "did you find infiltrate", "intent": "check_finding", "template_id": "check_finding:23"}
+{"text": "did you find pneumonia", "intent": "check_finding", "template_id": "check_finding:23"}
+{"text": "is tumour detected", "intent": "check_finding", "template_id": "check_finding:24"}
+{"text": "is cardiomegaly detected", "intent": "check_finding", "template_id": "check_finding:24"}
+{"text": "is there no lung nodule", "intent": "check_finding", "template_id": "check_finding:25"}
+{"text": "is there no emphysema", "intent": "check_finding", "template_id": "check_finding:25"}
+{"text": "can we exclude atelectasis", "intent": "check_finding", "template_id": "check_finding:26"}
+{"text": "can we exclude meningioma", "intent": "check_finding", "template_id": "check_finding:26"}
+{"text": "is pneumonia absent", "intent": "check_finding", "template_id": "check_finding:27"}
+{"text": "is atelectasis absent", "intent": "check_finding", "template_id": "check_finding:27"}
+{"text": "has pituitary tumor been excluded", "intent": "check_finding", "template_id": "check_finding:28"}
+{"text": "has infiltration been excluded", "intent": "check_finding", "template_id": "check_finding:28"}
+{"text": "any evidence of fibrosis here", "intent": "check_finding", "template_id": "check_finding:29"}
+{"text": "any evidence of lung nodule here", "intent": "check_finding", "template_id": "check_finding:29"}
+{"text": "mass?", "intent": "check_finding", "template_id": "check_finding:30"}
+{"text": "infiltration?", "intent": "check_finding", "template_id": "check_finding:30"}
+{"text": "consolidation yes or no", "intent": "check_finding", "template_id": "check_finding:31"}
+{"text": "nodule yes or no", "intent": "check_finding", "template_id": "check_finding:31"}
+{"text": "is it mass", "intent": "check_finding", "template_id": "check_finding:32"}
+{"text": "is it pneumothorax", "intent": "check_finding", "template_id": "check_finding:32"}
+{"text": "does it show tumour", "intent": "check_finding", "template_id": "check_finding:33"}
+{"text": "does it show nodule", "intent": "check_finding", "template_id": "check_finding:33"}
+{"text": "is there a sign of effusion", "intent": "check_finding", "template_id": "check_finding:34"}
+{"text": "is there a sign of mass", "intent": "check_finding", "template_id": "check_finding:34"}
+{"text": "do you detect any pleural thickening", "intent": "check_finding", "template_id": "check_finding:35"}
+{"text": "do you detect any infiltrate", "intent": "check_finding", "template_id": "check_finding:35"}
+{"text": "positive for infiltrate", "intent": "check_finding", "template_id": "check_finding:36"}
+{"text": "positive for pituitary tumor", "intent": "check_finding", "template_id": "check_finding:36"}
+{"text": "negative for effusion", "intent": "check_finding", "template_id": "check_finding:37"}
+{"text": "negative for lung nodule", "intent": "check_finding", "template_id": "check_finding:37"}
+{"text": "is mass there", "intent": "check_finding", "template_id": "check_finding:38"}
+{"text": "is fibrosis there", "intent": "check_finding", "template_id": "check_finding:38"}
+{"text": "can you check whether there is fracture", "intent": "check_finding", "template_id": "check_finding:39"}
+{"text": "can you check whether there is pulmonary edema", "intent": "check_finding", "template_id": "check_finding:39"}
+{"text": "is fibrosis visible", "intent": "check_finding", "template_id": "check_finding:40"}
+{"text": "is pneumothorax visible", "intent": "check_finding", "template_id": "check_finding:40"}
+{"text": "do i see cardiomegaly here", "intent": "check_finding", "template_id": "check_finding:41"}
+{"text": "do i see opacity here", "intent": "check_finding", "template_id": "check_finding:41"}
+{"text": "is this pneumonia", "intent": "check_finding", "template_id": "check_finding:42"}
+{"text": "is this cardiomegaly", "intent": "check_finding", "template_id": "check_finding:42"}
+{"text": "does this look like pneumothorax", "intent": "check_finding", "template_id": "check_finding:43"}
+{"text": "does this look like edema", "intent": "check_finding", "template_id": "check_finding:43"}
+{"text": "is edema likely", "intent": "check_finding", "template_id": "check_finding:44"}
+{"text": "is pleural effusion likely", "intent": "check_finding", "template_id": "check_finding:44"}
+{"text": "is brain tumor possible", "intent": "check_finding", "template_id": "check_finding:45"}
+{"text": "is atelectasis possible", "intent": "check_finding", "template_id": "check_finding:45"}
+{"text": "is there evidence of edema or not", "intent": "check_finding", "template_id": "check_finding:46"}
+{"text": "is there evidence of brain tumor or not", "intent": "check_finding", "template_id": "check_finding:46"}
+{"text": "please check for enlarged heart", "intent": "check_finding", "template_id": "check_finding:47"}
+{"text": "please check for infiltration", "intent": "check_finding", "template_id": "check_finding:47"}

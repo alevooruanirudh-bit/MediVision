@@ -1,0 +1,3101 @@
+id,cls,split
+COVID-3450,COVID,train
+COVID-3447,COVID,val
+COVID-1558,COVID,train
+COVID-1270,COVID,train
+COVID-747,COVID,train
+COVID-1221,COVID,train
+COVID-820,COVID,test
+COVID-2398,COVID,train
+COVID-613,COVID,train
+COVID-1962,COVID,train
+COVID-419,COVID,val
+COVID-1868,COVID,train
+COVID-1078,COVID,train
+COVID-1742,COVID,train
+COVID-3284,COVID,test
+COVID-3001,COVID,test
+COVID-2218,COVID,test
+COVID-214,COVID,test
+COVID-1504,COVID,train
+COVID-1791,COVID,train
+COVID-481,COVID,train
+COVID-1461,COVID,train
+COVID-610,COVID,test
+COVID-948,COVID,test
+COVID-3534,COVID,train
+COVID-1975,COVID,train
+COVID-401,COVID,train
+COVID-1339,COVID,train
+COVID-626,COVID,train
+COVID-927,COVID,train
+COVID-1315,COVID,train
+COVID-1039,COVID,test
+COVID-1900,COVID,train
+COVID-1175,COVID,train
+COVID-2562,COVID,test
+COVID-178,COVID,test
+COVID-1616,COVID,test
+COVID-1553,COVID,train
+COVID-3280,COVID,train
+COVID-730,COVID,train
+COVID-1165,COVID,train
+COVID-3590,COVID,test
+COVID-1513,COVID,test
+COVID-2043,COVID,test
+COVID-2303,COVID,train
+COVID-1898,COVID,train
+COVID-1570,COVID,train
+COVID-3271,COVID,train
+COVID-1448,COVID,train
+COVID-737,COVID,test
+COVID-1939,COVID,train
+COVID-1375,COVID,train
+COVID-1613,COVID,train
+COVID-1432,COVID,train
+COVID-1910,COVID,train
+COVID-2150,COVID,train
+COVID-209,COVID,train
+COVID-1510,COVID,test
+COVID-1588,COVID,train
+COVID-2997,COVID,train
+COVID-1594,COVID,train
+COVID-979,COVID,train
+COVID-1883,COVID,train
+COVID-3096,COVID,val
+COVID-371,COVID,train
+COVID-2523,COVID,val
+COVID-10,COVID,train
+COVID-825,COVID,train
+COVID-982,COVID,train
+COVID-2529,COVID,val
+COVID-120,COVID,train
+COVID-671,COVID,val
+COVID-3208,COVID,train
+COVID-3428,COVID,train
+COVID-859,COVID,val
+COVID-2554,COVID,train
+COVID-1292,COVID,test
+COVID-258,COVID,train
+COVID-2005,COVID,val
+COVID-91,COVID,train
+COVID-1264,COVID,train
+COVID-3243,COVID,train
+COVID-1500,COVID,train
+COVID-2412,COVID,train
+COVID-2427,COVID,train
+COVID-2761,COVID,train
+COVID-575,COVID,train
+COVID-836,COVID,val
+COVID-1423,COVID,train
+COVID-2013,COVID,train
+COVID-584,COVID,val
+COVID-2636,COVID,train
+COVID-786,COVID,train
+COVID-1578,COVID,train
+COVID-336,COVID,train
+COVID-1932,COVID,train
+COVID-2402,COVID,train
+COVID-2375,COVID,test
+COVID-96,COVID,train
+COVID-981,COVID,val
+COVID-3276,COVID,train
+COVID-2859,COVID,train
+COVID-2754,COVID,test
+COVID-75,COVID,val
+COVID-1751,COVID,train
+COVID-2864,COVID,test
+COVID-1573,COVID,train
+COVID-3553,COVID,train
+COVID-2179,COVID,train
+COVID-1357,COVID,test
+COVID-411,COVID,test
+COVID-1790,COVID,val
+COVID-2626,COVID,train
+COVID-724,COVID,test
+COVID-416,COVID,val
+COVID-662,COVID,train
+COVID-1103,COVID,val
+COVID-2228,COVID,val
+COVID-454,COVID,train
+COVID-2194,COVID,train
+COVID-1440,COVID,train
+COVID-2582,COVID,train
+COVID-2744,COVID,test
+COVID-711,COVID,val
+COVID-1226,COVID,train
+COVID-1368,COVID,val
+COVID-1450,COVID,train
+COVID-301,COVID,train
+COVID-1488,COVID,train
+COVID-410,COVID,test
+COVID-1918,COVID,train
+COVID-422,COVID,train
+COVID-2941,COVID,train
+COVID-1507,COVID,train
+COVID-1643,COVID,train
+COVID-2064,COVID,train
+COVID-1028,COVID,test
+COVID-2846,COVID,test
+COVID-693,COVID,train
+COVID-1033,COVID,test
+COVID-1267,COVID,train
+COVID-1634,COVID,test
+COVID-2121,COVID,val
+COVID-2339,COVID,train
+COVID-667,COVID,train
+COVID-2737,COVID,train
+COVID-2279,COVID,train
+COVID-891,COVID,train
+COVID-1119,COVID,train
+COVID-1807,COVID,train
+COVID-3307,COVID,train
+COVID-3375,COVID,train
+COVID-1299,COVID,train
+COVID-3352,COVID,train
+COVID-2006,COVID,train
+COVID-1272,COVID,train
+COVID-2583,COVID,train
+COVID-3596,COVID,val
+COVID-372,COVID,train
+COVID-871,COVID,train
+COVID-430,COVID,test
+COVID-2316,COVID,train
+COVID-365,COVID,train
+COVID-3203,COVID,test
+COVID-72,COVID,train
+COVID-2816,COVID,train
+COVID-141,COVID,train
+COVID-1445,COVID,test
+COVID-374,COVID,train
+COVID-87,COVID,train
+COVID-1521,COVID,val
+COVID-972,COVID,train
+COVID-3587,COVID,train
+COVID-632,COVID,train
+COVID-976,COVID,train
+COVID-2129,COVID,test
+COVID-3355,COVID,train
+COVID-3025,COVID,val
+COVID-3495,COVID,train
+COVID-1191,COVID,train
+COVID-1774,COVID,train
+COVID-2879,COVID,train
+COVID-1793,COVID,test
+COVID-1983,COVID,train
+COVID-1430,COVID,train
+COVID-1713,COVID,train
+COVID-1104,COVID,train
+COVID-1171,COVID,val
+COVID-958,COVID,train
+COVID-644,COVID,train
+COVID-726,COVID,test
+COVID-2008,COVID,train
+COVID-1490,COVID,train
+COVID-58,COVID,train
+COVID-812,COVID,test
+COVID-2856,COVID,test
+COVID-3314,COVID,train
+COVID-991,COVID,train
+COVID-614,COVID,train
+COVID-1474,COVID,val
+COVID-2185,COVID,train
+COVID-1527,COVID,train
+COVID-2462,COVID,train
+COVID-1360,COVID,train
+COVID-1880,COVID,train
+COVID-2892,COVID,train
+COVID-1497,COVID,val
+COVID-1891,COVID,train
+COVID-131,COVID,test
+COVID-1804,COVID,train
+COVID-2329,COVID,train
+COVID-956,COVID,train
+COVID-1479,COVID,test
+COVID-3404,COVID,train
+COVID-480,COVID,train
+COVID-1825,COVID,train
+COVID-1483,COVID,train
+COVID-848,COVID,train
+COVID-1202,COVID,train
+COVID-3560,COVID,train
+COVID-7,COVID,train
+COVID-604,COVID,val
+COVID-2299,COVID,train
+COVID-1486,COVID,val
+COVID-1734,COVID,val
+COVID-346,COVID,train
+COVID-1431,COVID,train
+COVID-2444,COVID,train
+COVID-384,COVID,train
+COVID-3063,COVID,train
+COVID-918,COVID,train
+COVID-3321,COVID,train
+COVID-508,COVID,train
+COVID-2526,COVID,train
+COVID-484,COVID,train
+COVID-1640,COVID,train
+COVID-1162,COVID,train
+COVID-307,COVID,test
+COVID-2235,COVID,train
+COVID-3482,COVID,train
+COVID-619,COVID,test
+COVID-2192,COVID,train
+COVID-851,COVID,train
+COVID-1018,COVID,train
+COVID-1843,COVID,train
+COVID-2684,COVID,train
+COVID-223,COVID,train
+COVID-1279,COVID,train
+COVID-846,COVID,train
+COVID-3518,COVID,train
+COVID-771,COVID,train
+COVID-2723,COVID,train
+COVID-1615,COVID,train
+COVID-164,COVID,train
+COVID-2393,COVID,train
+COVID-1755,COVID,train
+COVID-340,COVID,train
+COVID-1415,COVID,train
+COVID-1715,COVID,train
+COVID-2984,COVID,train
+COVID-2326,COVID,train
+COVID-33,COVID,train
+COVID-1508,COVID,train
+COVID-3468,COVID,train
+COVID-932,COVID,train
+COVID-2520,COVID,train
+COVID-685,COVID,train
+COVID-995,COVID,test
+COVID-433,COVID,train
+COVID-3385,COVID,train
+COVID-2458,COVID,train
+COVID-929,COVID,train
+COVID-636,COVID,test
+COVID-111,COVID,train
+COVID-1687,COVID,val
+COVID-1180,COVID,test
+COVID-363,COVID,train
+COVID-2641,COVID,val
+COVID-2198,COVID,val
+COVID-2033,COVID,test
+COVID-160,COVID,train
+COVID-1522,COVID,train
+COVID-3051,COVID,train
+COVID-1941,COVID,train
+COVID-2345,COVID,train
+COVID-1398,COVID,train
+COVID-2277,COVID,test
+COVID-1435,COVID,test
+COVID-275,COVID,train
+COVID-690,COVID,train
+COVID-1945,COVID,test
+COVID-1081,COVID,train
+COVID-99,COVID,train
+COVID-3138,COVID,train
+COVID-2060,COVID,train
+COVID-1025,COVID,train
+COVID-1647,COVID,test
+COVID-971,COVID,test
+COVID-318,COVID,train
+COVID-451,COVID,train
+COVID-2448,COVID,test
+COVID-267,COVID,val
+COVID-2314,COVID,train
+COVID-2319,COVID,test
+COVID-844,COVID,train
+COVID-3333,COVID,train
+COVID-1697,COVID,train
+COVID-3575,COVID,train
+COVID-2589,COVID,train
+COVID-1424,COVID,test
+COVID-738,COVID,train
+COVID-1276,COVID,train
+COVID-3000,COVID,train
+COVID-1042,COVID,test
+COVID-2600,COVID,test
+COVID-1698,COVID,train
+COVID-1809,COVID,test
+COVID-564,COVID,test
+COVID-2153,COVID,train
+COVID-2107,COVID,train
+COVID-2256,COVID,test
+COVID-1509,COVID,train
+COVID-3205,COVID,train
+COVID-1464,COVID,train
+COVID-1265,COVID,train
+COVID-2261,COVID,test
+COVID-3039,COVID,train
+COVID-937,COVID,train
+COVID-3233,COVID,train
+COVID-231,COVID,val
+COVID-695,COVID,train
+COVID-408,COVID,train
+COVID-1467,COVID,val
+COVID-2954,COVID,test
+COVID-1651,COVID,train
+COVID-2255,COVID,train
+COVID-2823,COVID,train
+COVID-1419,COVID,train
+COVID-3309,COVID,train
+COVID-1472,COVID,val
+COVID-2969,COVID,train
+COVID-259,COVID,train
+COVID-478,COVID,train
+COVID-783,COVID,train
+COVID-1999,COVID,train
+COVID-876,COVID,train
+COVID-2352,COVID,train
+COVID-1864,COVID,train
+COVID-550,COVID,train
+COVID-3310,COVID,val
+COVID-1417,COVID,train
+COVID-452,COVID,train
+COVID-1274,COVID,train
+COVID-1007,COVID,train
+COVID-1010,COVID,train
+COVID-2414,COVID,train
+COVID-2190,COVID,train
+COVID-1001,COVID,train
+COVID-1151,COVID,train
+COVID-615,COVID,val
+COVID-227,COVID,train
+COVID-2483,COVID,train
+COVID-2376,COVID,train
+COVID-34,COVID,train
+COVID-3511,COVID,train
+COVID-2379,COVID,train
+COVID-640,COVID,test
+COVID-3142,COVID,train
+COVID-1672,COVID,train
+COVID-2210,COVID,train
+COVID-2741,COVID,train
+COVID-870,COVID,train
+COVID-254,COVID,val
+COVID-46,COVID,train
+COVID-978,COVID,train
+COVID-920,COVID,val
+COVID-3123,COVID,train
+COVID-882,COVID,train
+COVID-1990,COVID,train
+COVID-1439,COVID,train
+COVID-339,COVID,train
+COVID-2004,COVID,train
+COVID-2952,COVID,train
+COVID-283,COVID,train
+COVID-126,COVID,train
+COVID-1865,COVID,train
+COVID-2814,COVID,train
+COVID-717,COVID,train
+COVID-1800,COVID,train
+COVID-1903,COVID,train
+COVID-2931,COVID,train
+COVID-1582,COVID,train
+COVID-2180,COVID,train
+COVID-1969,COVID,train
+COVID-1366,COVID,train
+COVID-2510,COVID,train
+COVID-3068,COVID,test
+COVID-393,COVID,train
+COVID-274,COVID,test
+COVID-1058,COVID,train
+COVID-1168,COVID,train
+COVID-312,COVID,val
+COVID-1196,COVID,train
+COVID-1340,COVID,train
+COVID-1195,COVID,train
+COVID-1808,COVID,train
+COVID-2142,COVID,train
+COVID-2221,COVID,train
+COVID-74,COVID,val
+COVID-1225,COVID,train
+COVID-2973,COVID,train
+COVID-1406,COVID,train
+COVID-1998,COVID,val
+COVID-447,COVID,train
+COVID-551,COVID,train
+COVID-2588,COVID,train
+COVID-634,COVID,train
+COVID-2784,COVID,train
+COVID-588,COVID,train
+COVID-1011,COVID,train
+COVID-3451,COVID,test
+COVID-83,COVID,train
+COVID-2491,COVID,val
+COVID-878,COVID,train
+COVID-2178,COVID,train
+COVID-192,COVID,train
+COVID-2144,COVID,train
+COVID-1201,COVID,train
+COVID-910,COVID,train
+COVID-986,COVID,train
+COVID-804,COVID,val
+COVID-2706,COVID,test
+COVID-1209,COVID,test
+COVID-2360,COVID,train
+COVID-492,COVID,train
+COVID-3173,COVID,train
+COVID-2325,COVID,train
+COVID-1538,COVID,test
+COVID-3013,COVID,train
+COVID-2794,COVID,train
+COVID-3122,COVID,test
+COVID-212,COVID,train
+COVID-2982,COVID,train
+COVID-1961,COVID,train
+COVID-2283,COVID,train
+COVID-157,COVID,train
+COVID-1405,COVID,train
+COVID-386,COVID,train
+COVID-2014,COVID,train
+COVID-2751,COVID,test
+COVID-2962,COVID,train
+COVID-1158,COVID,test
+COVID-436,COVID,train
+COVID-1391,COVID,train
+COVID-1849,COVID,train
+COVID-1056,COVID,train
+COVID-729,COVID,val
+COVID-2161,COVID,train
+COVID-2781,COVID,test
+COVID-943,COVID,train
+COVID-47,COVID,train
+COVID-824,COVID,test
+COVID-392,COVID,val
+COVID-1537,COVID,train
+COVID-3555,COVID,train
+COVID-3323,COVID,train
+COVID-2836,COVID,train
+COVID-1358,COVID,test
+COVID-758,COVID,train
+COVID-309,COVID,train
+COVID-2524,COVID,train
+COVID-2899,COVID,train
+COVID-707,COVID,train
+COVID-3057,COVID,train
+COVID-2629,COVID,val
+COVID-622,COVID,train
+COVID-225,COVID,train
+COVID-1741,COVID,train
+COVID-2171,COVID,train
+COVID-148,COVID,train
+COVID-1638,COVID,test
+COVID-3527,COVID,val
+COVID-3066,COVID,val
+COVID-2212,COVID,train
+COVID-1247,COVID,train
+COVID-2624,COVID,train
+COVID-905,COVID,train
+COVID-2710,COVID,train
+COVID-1901,COVID,train
+COVID-2666,COVID,train
+COVID-2839,COVID,train
+COVID-525,COVID,test
+COVID-794,COVID,train
+COVID-397,COVID,train
+COVID-515,COVID,train
+COVID-2291,COVID,train
+COVID-2759,COVID,train
+COVID-1170,COVID,val
+COVID-1169,COVID,train
+COVID-1131,COVID,train
+Lung_Opacity-4922,Lung_Opacity,train
+Lung_Opacity-4957,Lung_Opacity,train
+Lung_Opacity-3553,Lung_Opacity,train
+Lung_Opacity-2572,Lung_Opacity,train
+Lung_Opacity-4264,Lung_Opacity,val
+Lung_Opacity-917,Lung_Opacity,train
+Lung_Opacity-5750,Lung_Opacity,train
+Lung_Opacity-3653,Lung_Opacity,train
+Lung_Opacity-5683,Lung_Opacity,test
+Lung_Opacity-1115,Lung_Opacity,train
+Lung_Opacity-5966,Lung_Opacity,train
+Lung_Opacity-4007,Lung_Opacity,train
+Lung_Opacity-3888,Lung_Opacity,val
+Lung_Opacity-1594,Lung_Opacity,train
+Lung_Opacity-2065,Lung_Opacity,train
+Lung_Opacity-1473,Lung_Opacity,train
+Lung_Opacity-3330,Lung_Opacity,train
+Lung_Opacity-5050,Lung_Opacity,train
+Lung_Opacity-3134,Lung_Opacity,test
+Lung_Opacity-2757,Lung_Opacity,train
+Lung_Opacity-4444,Lung_Opacity,train
+Lung_Opacity-1881,Lung_Opacity,train
+Lung_Opacity-3375,Lung_Opacity,val
+Lung_Opacity-1675,Lung_Opacity,train
+Lung_Opacity-5422,Lung_Opacity,train
+Lung_Opacity-948,Lung_Opacity,train
+Lung_Opacity-2499,Lung_Opacity,test
+Lung_Opacity-1220,Lung_Opacity,train
+Lung_Opacity-2214,Lung_Opacity,train
+Lung_Opacity-760,Lung_Opacity,train
+Lung_Opacity-312,Lung_Opacity,train
+Lung_Opacity-5344,Lung_Opacity,train
+Lung_Opacity-5623,Lung_Opacity,test
+Lung_Opacity-4512,Lung_Opacity,train
+Lung_Opacity-4861,Lung_Opacity,val
+Lung_Opacity-3560,Lung_Opacity,train
+Lung_Opacity-5935,Lung_Opacity,train
+Lung_Opacity-1180,Lung_Opacity,test
+Lung_Opacity-6010,Lung_Opacity,train
+Lung_Opacity-1128,Lung_Opacity,train
+Lung_Opacity-5332,Lung_Opacity,test
+Lung_Opacity-2362,Lung_Opacity,train
+Lung_Opacity-4017,Lung_Opacity,train
+Lung_Opacity-2344,Lung_Opacity,train
+Lung_Opacity-5913,Lung_Opacity,val
+Lung_Opacity-1348,Lung_Opacity,train
+Lung_Opacity-2764,Lung_Opacity,test
+Lung_Opacity-2922,Lung_Opacity,train
+Lung_Opacity-1010,Lung_Opacity,val
+Lung_Opacity-3430,Lung_Opacity,train
+Lung_Opacity-354,Lung_Opacity,test
+Lung_Opacity-2238,Lung_Opacity,train
+Lung_Opacity-3562,Lung_Opacity,train
+Lung_Opacity-2518,Lung_Opacity,train
+Lung_Opacity-1501,Lung_Opacity,test
+Lung_Opacity-4592,Lung_Opacity,train
+Lung_Opacity-1353,Lung_Opacity,test
+Lung_Opacity-1119,Lung_Opacity,val
+Lung_Opacity-613,Lung_Opacity,test
+Lung_Opacity-2200,Lung_Opacity,test
+Lung_Opacity-588,Lung_Opacity,val
+Lung_Opacity-2974,Lung_Opacity,train
+Lung_Opacity-598,Lung_Opacity,val
+Lung_Opacity-3385,Lung_Opacity,train
+Lung_Opacity-5284,Lung_Opacity,train
+Lung_Opacity-5211,Lung_Opacity,train
+Lung_Opacity-1385,Lung_Opacity,train
+Lung_Opacity-2636,Lung_Opacity,train
+Lung_Opacity-5802,Lung_Opacity,train
+Lung_Opacity-5006,Lung_Opacity,train
+Lung_Opacity-4370,Lung_Opacity,test
+Lung_Opacity-3849,Lung_Opacity,val
+Lung_Opacity-1825,Lung_Opacity,train
+Lung_Opacity-980,Lung_Opacity,train
+Lung_Opacity-413,Lung_Opacity,val
+Lung_Opacity-3164,Lung_Opacity,train
+Lung_Opacity-3685,Lung_Opacity,test
+Lung_Opacity-5249,Lung_Opacity,val
+Lung_Opacity-4407,Lung_Opacity,train
+Lung_Opacity-4002,Lung_Opacity,train
+Lung_Opacity-1757,Lung_Opacity,val
+Lung_Opacity-5717,Lung_Opacity,train
+Lung_Opacity-5165,Lung_Opacity,train
+Lung_Opacity-1009,Lung_Opacity,train
+Lung_Opacity-4821,Lung_Opacity,train
+Lung_Opacity-3370,Lung_Opacity,test
+Lung_Opacity-5145,Lung_Opacity,train
+Lung_Opacity-3307,Lung_Opacity,train
+Lung_Opacity-5582,Lung_Opacity,train
+Lung_Opacity-969,Lung_Opacity,test
+Lung_Opacity-4737,Lung_Opacity,test
+Lung_Opacity-4986,Lung_Opacity,train
+Lung_Opacity-856,Lung_Opacity,val
+Lung_Opacity-5349,Lung_Opacity,train
+Lung_Opacity-4769,Lung_Opacity,train
+Lung_Opacity-4656,Lung_Opacity,train
+Lung_Opacity-3260,Lung_Opacity,train
+Lung_Opacity-2714,Lung_Opacity,train
+Lung_Opacity-1499,Lung_Opacity,train
+Lung_Opacity-5253,Lung_Opacity,train
+Lung_Opacity-3645,Lung_Opacity,train
+Lung_Opacity-1184,Lung_Opacity,val
+Lung_Opacity-3016,Lung_Opacity,train
+Lung_Opacity-1474,Lung_Opacity,train
+Lung_Opacity-3659,Lung_Opacity,val
+Lung_Opacity-2370,Lung_Opacity,test
+Lung_Opacity-1930,Lung_Opacity,train
+Lung_Opacity-3009,Lung_Opacity,train
+Lung_Opacity-3473,Lung_Opacity,train
+Lung_Opacity-3069,Lung_Opacity,train
+Lung_Opacity-3324,Lung_Opacity,train
+Lung_Opacity-1945,Lung_Opacity,val
+Lung_Opacity-2994,Lung_Opacity,train
+Lung_Opacity-4284,Lung_Opacity,train
+Lung_Opacity-4882,Lung_Opacity,test
+Lung_Opacity-3746,Lung_Opacity,train
+Lung_Opacity-2271,Lung_Opacity,train
+Lung_Opacity-1818,Lung_Opacity,train
+Lung_Opacity-3039,Lung_Opacity,train
+Lung_Opacity-1151,Lung_Opacity,train
+Lung_Opacity-1466,Lung_Opacity,train
+Lung_Opacity-2918,Lung_Opacity,val
+Lung_Opacity-55,Lung_Opacity,train
+Lung_Opacity-2936,Lung_Opacity,val
+Lung_Opacity-504,Lung_Opacity,test
+Lung_Opacity-4805,Lung_Opacity,train
+Lung_Opacity-3208,Lung_Opacity,train
+Lung_Opacity-5697,Lung_Opacity,train
+Lung_Opacity-438,Lung_Opacity,train
+Lung_Opacity-4588,Lung_Opacity,train
+Lung_Opacity-5798,Lung_Opacity,train
+Lung_Opacity-3587,Lung_Opacity,train
+Lung_Opacity-3881,Lung_Opacity,train
+Lung_Opacity-1257,Lung_Opacity,train
+Lung_Opacity-1416,Lung_Opacity,val
+Lung_Opacity-1657,Lung_Opacity,train
+Lung_Opacity-5958,Lung_Opacity,train
+Lung_Opacity-2672,Lung_Opacity,test
+Lung_Opacity-1448,Lung_Opacity,train
+Lung_Opacity-3528,Lung_Opacity,train
+Lung_Opacity-2561,Lung_Opacity,train
+Lung_Opacity-1191,Lung_Opacity,train
+Lung_Opacity-3201,Lung_Opacity,train
+Lung_Opacity-475,Lung_Opacity,train
+Lung_Opacity-1126,Lung_Opacity,test
+Lung_Opacity-2023,Lung_Opacity,train
+Lung_Opacity-1660,Lung_Opacity,train
+Lung_Opacity-210,Lung_Opacity,train
+Lung_Opacity-1823,Lung_Opacity,train
+Lung_Opacity-2193,Lung_Opacity,train
+Lung_Opacity-4909,Lung_Opacity,train
+Lung_Opacity-3494,Lung_Opacity,train
+Lung_Opacity-1919,Lung_Opacity,train
+Lung_Opacity-4319,Lung_Opacity,test
+Lung_Opacity-2029,Lung_Opacity,train
+Lung_Opacity-2881,Lung_Opacity,test
+Lung_Opacity-3523,Lung_Opacity,train
+Lung_Opacity-5664,Lung_Opacity,train
+Lung_Opacity-1557,Lung_Opacity,train
+Lung_Opacity-937,Lung_Opacity,test
+Lung_Opacity-2701,Lung_Opacity,train
+Lung_Opacity-4555,Lung_Opacity,test
+Lung_Opacity-1791,Lung_Opacity,train
+Lung_Opacity-2289,Lung_Opacity,val
+Lung_Opacity-1565,Lung_Opacity,val
+Lung_Opacity-2303,Lung_Opacity,train
+Lung_Opacity-2525,Lung_Opacity,train
+Lung_Opacity-3687,Lung_Opacity,train
+Lung_Opacity-650,Lung_Opacity,test
+Lung_Opacity-4688,Lung_Opacity,train
+Lung_Opacity-796,Lung_Opacity,test
+Lung_Opacity-3536,Lung_Opacity,train
+Lung_Opacity-860,Lung_Opacity,test
+Lung_Opacity-123,Lung_Opacity,train
+Lung_Opacity-2529,Lung_Opacity,test
+Lung_Opacity-4739,Lung_Opacity,train
+Lung_Opacity-4267,Lung_Opacity,test
+Lung_Opacity-4386,Lung_Opacity,train
+Lung_Opacity-4439,Lung_Opacity,train
+Lung_Opacity-5487,Lung_Opacity,train
+Lung_Opacity-3627,Lung_Opacity,train
+Lung_Opacity-5673,Lung_Opacity,train
+Lung_Opacity-2624,Lung_Opacity,test
+Lung_Opacity-2468,Lung_Opacity,test
+Lung_Opacity-2060,Lung_Opacity,train
+Lung_Opacity-5420,Lung_Opacity,train
+Lung_Opacity-5685,Lung_Opacity,train
+Lung_Opacity-6009,Lung_Opacity,train
+Lung_Opacity-4845,Lung_Opacity,test
+Lung_Opacity-3003,Lung_Opacity,train
+Lung_Opacity-3216,Lung_Opacity,train
+Lung_Opacity-4282,Lung_Opacity,train
+Lung_Opacity-5500,Lung_Opacity,train
+Lung_Opacity-1894,Lung_Opacity,train
+Lung_Opacity-477,Lung_Opacity,val
+Lung_Opacity-5161,Lung_Opacity,train
+Lung_Opacity-5463,Lung_Opacity,train
+Lung_Opacity-6005,Lung_Opacity,train
+Lung_Opacity-4674,Lung_Opacity,train
+Lung_Opacity-231,Lung_Opacity,train
+Lung_Opacity-853,Lung_Opacity,train
+Lung_Opacity-3927,Lung_Opacity,train
+Lung_Opacity-2768,Lung_Opacity,val
+Lung_Opacity-6001,Lung_Opacity,train
+Lung_Opacity-1480,Lung_Opacity,test
+Lung_Opacity-1011,Lung_Opacity,train
+Lung_Opacity-5448,Lung_Opacity,train
+Lung_Opacity-3366,Lung_Opacity,val
+Lung_Opacity-1985,Lung_Opacity,train
+Lung_Opacity-1755,Lung_Opacity,test
+Lung_Opacity-1906,Lung_Opacity,train
+Lung_Opacity-3038,Lung_Opacity,train
+Lung_Opacity-2134,Lung_Opacity,train
+Lung_Opacity-1484,Lung_Opacity,train
+Lung_Opacity-4926,Lung_Opacity,train
+Lung_Opacity-5601,Lung_Opacity,test
+Lung_Opacity-4871,Lung_Opacity,test
+Lung_Opacity-3739,Lung_Opacity,train
+Lung_Opacity-1853,Lung_Opacity,train
+Lung_Opacity-3331,Lung_Opacity,test
+Lung_Opacity-4484,Lung_Opacity,train
+Lung_Opacity-5905,Lung_Opacity,train
+Lung_Opacity-4125,Lung_Opacity,train
+Lung_Opacity-3608,Lung_Opacity,train
+Lung_Opacity-4495,Lung_Opacity,train
+Lung_Opacity-995,Lung_Opacity,test
+Lung_Opacity-2042,Lung_Opacity,test
+Lung_Opacity-3159,Lung_Opacity,val
+Lung_Opacity-2342,Lung_Opacity,test
+Lung_Opacity-418,Lung_Opacity,train
+Lung_Opacity-4126,Lung_Opacity,train
+Lung_Opacity-943,Lung_Opacity,train
+Lung_Opacity-1824,Lung_Opacity,train
+Lung_Opacity-5559,Lung_Opacity,train
+Lung_Opacity-2538,Lung_Opacity,train
+Lung_Opacity-3327,Lung_Opacity,train
+Lung_Opacity-2381,Lung_Opacity,train
+Lung_Opacity-4777,Lung_Opacity,train
+Lung_Opacity-396,Lung_Opacity,train
+Lung_Opacity-2895,Lung_Opacity,train
+Lung_Opacity-4490,Lung_Opacity,train
+Lung_Opacity-1804,Lung_Opacity,train
+Lung_Opacity-5151,Lung_Opacity,train
+Lung_Opacity-594,Lung_Opacity,train
+Lung_Opacity-2075,Lung_Opacity,val
+Lung_Opacity-2186,Lung_Opacity,train
+Lung_Opacity-3121,Lung_Opacity,train
+Lung_Opacity-5308,Lung_Opacity,train
+Lung_Opacity-2170,Lung_Opacity,train
+Lung_Opacity-2809,Lung_Opacity,train
+Lung_Opacity-4454,Lung_Opacity,train
+Lung_Opacity-1127,Lung_Opacity,train
+Lung_Opacity-5318,Lung_Opacity,train
+Lung_Opacity-2700,Lung_Opacity,train
+Lung_Opacity-2308,Lung_Opacity,train
+Lung_Opacity-3810,Lung_Opacity,val
+Lung_Opacity-3455,Lung_Opacity,val
+Lung_Opacity-4711,Lung_Opacity,test
+Lung_Opacity-2647,Lung_Opacity,test
+Lung_Opacity-3079,Lung_Opacity,val
+Lung_Opacity-2231,Lung_Opacity,train
+Lung_Opacity-690,Lung_Opacity,train
+Lung_Opacity-4300,Lung_Opacity,train
+Lung_Opacity-1279,Lung_Opacity,train
+Lung_Opacity-5082,Lung_Opacity,train
+Lung_Opacity-923,Lung_Opacity,test
+Lung_Opacity-4624,Lung_Opacity,train
+Lung_Opacity-5486,Lung_Opacity,train
+Lung_Opacity-5816,Lung_Opacity,train
+Lung_Opacity-1087,Lung_Opacity,train
+Lung_Opacity-4601,Lung_Opacity,train
+Lung_Opacity-4901,Lung_Opacity,test
+Lung_Opacity-4726,Lung_Opacity,test
+Lung_Opacity-5159,Lung_Opacity,train
+Lung_Opacity-3189,Lung_Opacity,val
+Lung_Opacity-2609,Lung_Opacity,test
+Lung_Opacity-2312,Lung_Opacity,train
+Lung_Opacity-4208,Lung_Opacity,train
+Lung_Opacity-3869,Lung_Opacity,train
+Lung_Opacity-1024,Lung_Opacity,train
+Lung_Opacity-658,Lung_Opacity,train
+Lung_Opacity-1479,Lung_Opacity,train
+Lung_Opacity-7,Lung_Opacity,train
+Lung_Opacity-1398,Lung_Opacity,train
+Lung_Opacity-1478,Lung_Opacity,train
+Lung_Opacity-5833,Lung_Opacity,train
+Lung_Opacity-5127,Lung_Opacity,train
+Lung_Opacity-3340,Lung_Opacity,train
+Lung_Opacity-2871,Lung_Opacity,test
+Lung_Opacity-5491,Lung_Opacity,val
+Lung_Opacity-3274,Lung_Opacity,val
+Lung_Opacity-3904,Lung_Opacity,train
+Lung_Opacity-1662,Lung_Opacity,train
+Lung_Opacity-2872,Lung_Opacity,train
+Lung_Opacity-5036,Lung_Opacity,train
+Lung_Opacity-318,Lung_Opacity,train
+Lung_Opacity-5783,Lung_Opacity,train
+Lung_Opacity-3481,Lung_Opacity,train
+Lung_Opacity-3339,Lung_Opacity,test
+Lung_Opacity-188,Lung_Opacity,train
+Lung_Opacity-5849,Lung_Opacity,train
+Lung_Opacity-1891,Lung_Opacity,train
+Lung_Opacity-3882,Lung_Opacity,train
+Lung_Opacity-2229,Lung_Opacity,test
+Lung_Opacity-2826,Lung_Opacity,train
+Lung_Opacity-2649,Lung_Opacity,val
+Lung_Opacity-2410,Lung_Opacity,train
+Lung_Opacity-4730,Lung_Opacity,train
+Lung_Opacity-71,Lung_Opacity,train
+Lung_Opacity-5842,Lung_Opacity,train
+Lung_Opacity-24,Lung_Opacity,train
+Lung_Opacity-4732,Lung_Opacity,train
+Lung_Opacity-1270,Lung_Opacity,train
+Lung_Opacity-3752,Lung_Opacity,train
+Lung_Opacity-3662,Lung_Opacity,train
+Lung_Opacity-1036,Lung_Opacity,train
+Lung_Opacity-3031,Lung_Opacity,train
+Lung_Opacity-3512,Lung_Opacity,train
+Lung_Opacity-5122,Lung_Opacity,train
+Lung_Opacity-2853,Lung_Opacity,train
+Lung_Opacity-5302,Lung_Opacity,train
+Lung_Opacity-1793,Lung_Opacity,train
+Lung_Opacity-1194,Lung_Opacity,train
+Lung_Opacity-3228,Lung_Opacity,test
+Lung_Opacity-3545,Lung_Opacity,train
+Lung_Opacity-4063,Lung_Opacity,val
+Lung_Opacity-609,Lung_Opacity,train
+Lung_Opacity-1450,Lung_Opacity,train
+Lung_Opacity-5974,Lung_Opacity,train
+Lung_Opacity-1783,Lung_Opacity,train
+Lung_Opacity-4857,Lung_Opacity,train
+Lung_Opacity-5590,Lung_Opacity,train
+Lung_Opacity-4860,Lung_Opacity,train
+Lung_Opacity-3135,Lung_Opacity,train
+Lung_Opacity-956,Lung_Opacity,train
+Lung_Opacity-2542,Lung_Opacity,train
+Lung_Opacity-3020,Lung_Opacity,train
+Lung_Opacity-3386,Lung_Opacity,train
+Lung_Opacity-815,Lung_Opacity,train
+Lung_Opacity-5663,Lung_Opacity,train
+Lung_Opacity-5227,Lung_Opacity,train
+Lung_Opacity-2790,Lung_Opacity,train
+Lung_Opacity-2379,Lung_Opacity,train
+Lung_Opacity-4049,Lung_Opacity,train
+Lung_Opacity-5218,Lung_Opacity,train
+Lung_Opacity-3101,Lung_Opacity,train
+Lung_Opacity-2862,Lung_Opacity,train
+Lung_Opacity-2570,Lung_Opacity,train
+Lung_Opacity-3476,Lung_Opacity,train
+Lung_Opacity-3935,Lung_Opacity,train
+Lung_Opacity-5812,Lung_Opacity,train
+Lung_Opacity-5472,Lung_Opacity,test
+Lung_Opacity-713,Lung_Opacity,train
+Lung_Opacity-4602,Lung_Opacity,val
+Lung_Opacity-3160,Lung_Opacity,train
+Lung_Opacity-216,Lung_Opacity,test
+Lung_Opacity-4895,Lung_Opacity,train
+Lung_Opacity-3574,Lung_Opacity,train
+Lung_Opacity-4698,Lung_Opacity,test
+Lung_Opacity-2669,Lung_Opacity,train
+Lung_Opacity-1977,Lung_Opacity,train
+Lung_Opacity-1256,Lung_Opacity,train
+Lung_Opacity-3198,Lung_Opacity,train
+Lung_Opacity-2224,Lung_Opacity,train
+Lung_Opacity-5880,Lung_Opacity,train
+Lung_Opacity-4998,Lung_Opacity,train
+Lung_Opacity-1272,Lung_Opacity,train
+Lung_Opacity-5721,Lung_Opacity,train
+Lung_Opacity-2533,Lung_Opacity,train
+Lung_Opacity-1927,Lung_Opacity,train
+Lung_Opacity-4501,Lung_Opacity,train
+Lung_Opacity-5124,Lung_Opacity,train
+Lung_Opacity-3715,Lung_Opacity,train
+Lung_Opacity-4859,Lung_Opacity,test
+Lung_Opacity-4393,Lung_Opacity,train
+Lung_Opacity-791,Lung_Opacity,test
+Lung_Opacity-2313,Lung_Opacity,train
+Lung_Opacity-5909,Lung_Opacity,train
+Lung_Opacity-3484,Lung_Opacity,train
+Lung_Opacity-1593,Lung_Opacity,train
+Lung_Opacity-5375,Lung_Opacity,train
+Lung_Opacity-157,Lung_Opacity,train
+Lung_Opacity-2163,Lung_Opacity,val
+Lung_Opacity-671,Lung_Opacity,train
+Lung_Opacity-3037,Lung_Opacity,test
+Lung_Opacity-3561,Lung_Opacity,train
+Lung_Opacity-150,Lung_Opacity,test
+Lung_Opacity-268,Lung_Opacity,train
+Lung_Opacity-2490,Lung_Opacity,train
+Lung_Opacity-332,Lung_Opacity,train
+Lung_Opacity-4050,Lung_Opacity,train
+Lung_Opacity-5982,Lung_Opacity,train
+Lung_Opacity-4131,Lung_Opacity,val
+Lung_Opacity-3648,Lung_Opacity,test
+Lung_Opacity-5772,Lung_Opacity,train
+Lung_Opacity-4903,Lung_Opacity,train
+Lung_Opacity-422,Lung_Opacity,train
+Lung_Opacity-346,Lung_Opacity,train
+Lung_Opacity-2938,Lung_Opacity,train
+Lung_Opacity-4729,Lung_Opacity,test
+Lung_Opacity-222,Lung_Opacity,train
+Lung_Opacity-5803,Lung_Opacity,train
+Lung_Opacity-2732,Lung_Opacity,val
+Lung_Opacity-4146,Lung_Opacity,train
+Lung_Opacity-3206,Lung_Opacity,val
+Lung_Opacity-2436,Lung_Opacity,test
+Lung_Opacity-1419,Lung_Opacity,train
+Lung_Opacity-5194,Lung_Opacity,train
+Lung_Opacity-313,Lung_Opacity,train
+Lung_Opacity-4748,Lung_Opacity,val
+Lung_Opacity-2723,Lung_Opacity,test
+Lung_Opacity-4325,Lung_Opacity,train
+Lung_Opacity-2867,Lung_Opacity,test
+Lung_Opacity-2375,Lung_Opacity,train
+Lung_Opacity-986,Lung_Opacity,train
+Lung_Opacity-4349,Lung_Opacity,test
+Lung_Opacity-1613,Lung_Opacity,val
+Lung_Opacity-2589,Lung_Opacity,test
+Lung_Opacity-2283,Lung_Opacity,train
+Lung_Opacity-2181,Lung_Opacity,train
+Lung_Opacity-1981,Lung_Opacity,val
+Lung_Opacity-5703,Lung_Opacity,train
+Lung_Opacity-3610,Lung_Opacity,test
+Lung_Opacity-3231,Lung_Opacity,train
+Lung_Opacity-10,Lung_Opacity,test
+Lung_Opacity-1404,Lung_Opacity,train
+Lung_Opacity-2257,Lung_Opacity,train
+Lung_Opacity-5432,Lung_Opacity,train
+Lung_Opacity-2645,Lung_Opacity,train
+Lung_Opacity-1883,Lung_Opacity,train
+Lung_Opacity-120,Lung_Opacity,val
+Lung_Opacity-5887,Lung_Opacity,train
+Lung_Opacity-1880,Lung_Opacity,train
+Lung_Opacity-4169,Lung_Opacity,train
+Lung_Opacity-3692,Lung_Opacity,val
+Lung_Opacity-327,Lung_Opacity,train
+Lung_Opacity-735,Lung_Opacity,train
+Lung_Opacity-601,Lung_Opacity,train
+Lung_Opacity-4784,Lung_Opacity,train
+Lung_Opacity-3677,Lung_Opacity,train
+Lung_Opacity-4166,Lung_Opacity,train
+Lung_Opacity-1016,Lung_Opacity,val
+Lung_Opacity-4144,Lung_Opacity,train
+Lung_Opacity-3185,Lung_Opacity,train
+Lung_Opacity-3861,Lung_Opacity,train
+Lung_Opacity-535,Lung_Opacity,val
+Lung_Opacity-1735,Lung_Opacity,train
+Lung_Opacity-1698,Lung_Opacity,train
+Lung_Opacity-2761,Lung_Opacity,train
+Lung_Opacity-2225,Lung_Opacity,train
+Lung_Opacity-1253,Lung_Opacity,train
+Lung_Opacity-2804,Lung_Opacity,train
+Lung_Opacity-5219,Lung_Opacity,train
+Lung_Opacity-3729,Lung_Opacity,train
+Lung_Opacity-1785,Lung_Opacity,val
+Lung_Opacity-4345,Lung_Opacity,train
+Lung_Opacity-5221,Lung_Opacity,val
+Lung_Opacity-1423,Lung_Opacity,train
+Lung_Opacity-4341,Lung_Opacity,train
+Lung_Opacity-3782,Lung_Opacity,train
+Lung_Opacity-3419,Lung_Opacity,val
+Lung_Opacity-5175,Lung_Opacity,train
+Lung_Opacity-5055,Lung_Opacity,train
+Lung_Opacity-4572,Lung_Opacity,train
+Lung_Opacity-6011,Lung_Opacity,test
+Lung_Opacity-5067,Lung_Opacity,train
+Lung_Opacity-1063,Lung_Opacity,train
+Lung_Opacity-3265,Lung_Opacity,train
+Lung_Opacity-5671,Lung_Opacity,train
+Lung_Opacity-2385,Lung_Opacity,train
+Lung_Opacity-3444,Lung_Opacity,train
+Lung_Opacity-4942,Lung_Opacity,train
+Lung_Opacity-4925,Lung_Opacity,train
+Lung_Opacity-136,Lung_Opacity,train
+Lung_Opacity-1284,Lung_Opacity,train
+Lung_Opacity-2297,Lung_Opacity,train
+Lung_Opacity-5193,Lung_Opacity,train
+Lung_Opacity-953,Lung_Opacity,train
+Lung_Opacity-2151,Lung_Opacity,test
+Lung_Opacity-3581,Lung_Opacity,train
+Lung_Opacity-5330,Lung_Opacity,train
+Lung_Opacity-5042,Lung_Opacity,test
+Lung_Opacity-741,Lung_Opacity,test
+Lung_Opacity-4186,Lung_Opacity,train
+Lung_Opacity-2932,Lung_Opacity,train
+Lung_Opacity-4544,Lung_Opacity,train
+Lung_Opacity-1355,Lung_Opacity,test
+Lung_Opacity-3095,Lung_Opacity,train
+Lung_Opacity-1033,Lung_Opacity,train
+Lung_Opacity-4574,Lung_Opacity,train
+Lung_Opacity-1439,Lung_Opacity,train
+Lung_Opacity-761,Lung_Opacity,train
+Lung_Opacity-2534,Lung_Opacity,train
+Lung_Opacity-4902,Lung_Opacity,val
+Lung_Opacity-4015,Lung_Opacity,train
+Lung_Opacity-3126,Lung_Opacity,train
+Lung_Opacity-2444,Lung_Opacity,test
+Lung_Opacity-376,Lung_Opacity,train
+Lung_Opacity-194,Lung_Opacity,train
+Lung_Opacity-1614,Lung_Opacity,train
+Lung_Opacity-1202,Lung_Opacity,train
+Lung_Opacity-4399,Lung_Opacity,train
+Lung_Opacity-4928,Lung_Opacity,train
+Lung_Opacity-5657,Lung_Opacity,train
+Lung_Opacity-4140,Lung_Opacity,train
+Lung_Opacity-3436,Lung_Opacity,train
+Lung_Opacity-5179,Lung_Opacity,train
+Lung_Opacity-2414,Lung_Opacity,train
+Lung_Opacity-2371,Lung_Opacity,train
+Lung_Opacity-3780,Lung_Opacity,train
+Lung_Opacity-2359,Lung_Opacity,train
+Lung_Opacity-5964,Lung_Opacity,train
+Lung_Opacity-31,Lung_Opacity,train
+Lung_Opacity-1959,Lung_Opacity,train
+Lung_Opacity-1690,Lung_Opacity,train
+Lung_Opacity-2452,Lung_Opacity,val
+Lung_Opacity-3563,Lung_Opacity,val
+Lung_Opacity-1174,Lung_Opacity,train
+Lung_Opacity-1513,Lung_Opacity,train
+Lung_Opacity-1997,Lung_Opacity,train
+Lung_Opacity-3655,Lung_Opacity,train
+Lung_Opacity-5268,Lung_Opacity,train
+Lung_Opacity-4723,Lung_Opacity,test
+Lung_Opacity-2141,Lung_Opacity,val
+Lung_Opacity-4409,Lung_Opacity,train
+Lung_Opacity-2389,Lung_Opacity,test
+Lung_Opacity-38,Lung_Opacity,test
+Lung_Opacity-4657,Lung_Opacity,test
+Lung_Opacity-463,Lung_Opacity,test
+Lung_Opacity-2500,Lung_Opacity,val
+Lung_Opacity-4541,Lung_Opacity,train
+Lung_Opacity-4021,Lung_Opacity,test
+Lung_Opacity-476,Lung_Opacity,test
+Lung_Opacity-3980,Lung_Opacity,train
+Lung_Opacity-2334,Lung_Opacity,train
+Lung_Opacity-4201,Lung_Opacity,train
+Lung_Opacity-4135,Lung_Opacity,train
+Lung_Opacity-2992,Lung_Opacity,train
+Lung_Opacity-1363,Lung_Opacity,train
+Lung_Opacity-2275,Lung_Opacity,test
+Lung_Opacity-3447,Lung_Opacity,train
+Lung_Opacity-674,Lung_Opacity,train
+Lung_Opacity-811,Lung_Opacity,train
+Lung_Opacity-5105,Lung_Opacity,train
+Lung_Opacity-1659,Lung_Opacity,train
+Lung_Opacity-3644,Lung_Opacity,test
+Lung_Opacity-5480,Lung_Opacity,train
+Lung_Opacity-4172,Lung_Opacity,val
+Lung_Opacity-5991,Lung_Opacity,train
+Lung_Opacity-5431,Lung_Opacity,train
+Lung_Opacity-502,Lung_Opacity,train
+Lung_Opacity-5950,Lung_Opacity,test
+Lung_Opacity-5895,Lung_Opacity,test
+Lung_Opacity-5401,Lung_Opacity,train
+Lung_Opacity-5398,Lung_Opacity,test
+Lung_Opacity-635,Lung_Opacity,val
+Lung_Opacity-5039,Lung_Opacity,train
+Lung_Opacity-3872,Lung_Opacity,train
+Lung_Opacity-961,Lung_Opacity,train
+Lung_Opacity-4378,Lung_Opacity,val
+Lung_Opacity-1777,Lung_Opacity,train
+Lung_Opacity-4843,Lung_Opacity,train
+Lung_Opacity-134,Lung_Opacity,train
+Lung_Opacity-3992,Lung_Opacity,train
+Lung_Opacity-1028,Lung_Opacity,train
+Lung_Opacity-2858,Lung_Opacity,test
+Lung_Opacity-5121,Lung_Opacity,train
+Lung_Opacity-4513,Lung_Opacity,train
+Lung_Opacity-2366,Lung_Opacity,train
+Lung_Opacity-2678,Lung_Opacity,train
+Lung_Opacity-5914,Lung_Opacity,train
+Lung_Opacity-2567,Lung_Opacity,train
+Lung_Opacity-1744,Lung_Opacity,train
+Lung_Opacity-424,Lung_Opacity,train
+Lung_Opacity-1873,Lung_Opacity,train
+Lung_Opacity-4382,Lung_Opacity,train
+Lung_Opacity-4209,Lung_Opacity,val
+Lung_Opacity-1042,Lung_Opacity,test
+Lung_Opacity-190,Lung_Opacity,val
+Lung_Opacity-836,Lung_Opacity,train
+Lung_Opacity-1341,Lung_Opacity,train
+Lung_Opacity-5756,Lung_Opacity,train
+Lung_Opacity-4275,Lung_Opacity,train
+Lung_Opacity-3007,Lung_Opacity,train
+Lung_Opacity-931,Lung_Opacity,train
+Lung_Opacity-737,Lung_Opacity,train
+Lung_Opacity-977,Lung_Opacity,train
+Lung_Opacity-5343,Lung_Opacity,train
+Lung_Opacity-3293,Lung_Opacity,train
+Lung_Opacity-5948,Lung_Opacity,train
+Lung_Opacity-4233,Lung_Opacity,test
+Lung_Opacity-682,Lung_Opacity,train
+Lung_Opacity-5652,Lung_Opacity,train
+Lung_Opacity-3631,Lung_Opacity,train
+Lung_Opacity-5949,Lung_Opacity,train
+Lung_Opacity-1937,Lung_Opacity,train
+Lung_Opacity-5555,Lung_Opacity,train
+Lung_Opacity-5779,Lung_Opacity,train
+Lung_Opacity-2391,Lung_Opacity,train
+Lung_Opacity-2910,Lung_Opacity,test
+Normal-4009,Normal,train
+Normal-421,Normal,train
+Normal-3263,Normal,test
+Normal-7181,Normal,train
+Normal-10156,Normal,train
+Normal-8237,Normal,train
+Normal-3840,Normal,train
+Normal-8887,Normal,test
+Normal-1362,Normal,train
+Normal-5746,Normal,train
+Normal-4091,Normal,train
+Normal-3369,Normal,val
+Normal-178,Normal,val
+Normal-5732,Normal,train
+Normal-7706,Normal,test
+Normal-4842,Normal,train
+Normal-2699,Normal,train
+Normal-654,Normal,train
+Normal-1164,Normal,train
+Normal-1969,Normal,val
+Normal-7970,Normal,train
+Normal-1274,Normal,val
+Normal-5887,Normal,test
+Normal-9169,Normal,test
+Normal-6840,Normal,train
+Normal-3412,Normal,train
+Normal-3638,Normal,val
+Normal-7514,Normal,test
+Normal-5138,Normal,train
+Normal-4799,Normal,train
+Normal-8548,Normal,train
+Normal-4641,Normal,val
+Normal-9090,Normal,train
+Normal-4910,Normal,test
+Normal-6630,Normal,train
+Normal-1414,Normal,train
+Normal-9310,Normal,train
+Normal-4364,Normal,train
+Normal-1831,Normal,train
+Normal-3711,Normal,test
+Normal-4116,Normal,test
+Normal-1941,Normal,train
+Normal-190,Normal,train
+Normal-4431,Normal,test
+Normal-4763,Normal,train
+Normal-9457,Normal,train
+Normal-1323,Normal,test
+Normal-6336,Normal,train
+Normal-9093,Normal,train
+Normal-1856,Normal,train
+Normal-7657,Normal,train
+Normal-5780,Normal,train
+Normal-2902,Normal,train
+Normal-5683,Normal,test
+Normal-9300,Normal,train
+Normal-8975,Normal,test
+Normal-1363,Normal,test
+Normal-3678,Normal,test
+Normal-7608,Normal,train
+Normal-1990,Normal,test
+Normal-9626,Normal,train
+Normal-8210,Normal,train
+Normal-1823,Normal,test
+Normal-9839,Normal,train
+Normal-262,Normal,train
+Normal-8783,Normal,train
+Normal-8062,Normal,val
+Normal-3943,Normal,train
+Normal-5845,Normal,train
+Normal-7499,Normal,test
+Normal-1868,Normal,train
+Normal-4201,Normal,train
+Normal-9906,Normal,train
+Normal-2300,Normal,train
+Normal-8988,Normal,val
+Normal-287,Normal,train
+Normal-3017,Normal,test
+Normal-2431,Normal,train
+Normal-4777,Normal,train
+Normal-3053,Normal,train
+Normal-2529,Normal,train
+Normal-8619,Normal,val
+Normal-680,Normal,train
+Normal-735,Normal,train
+Normal-3662,Normal,train
+Normal-2763,Normal,test
+Normal-10117,Normal,val
+Normal-479,Normal,train
+Normal-894,Normal,test
+Normal-8641,Normal,train
+Normal-6093,Normal,train
+Normal-6348,Normal,test
+Normal-9718,Normal,train
+Normal-5484,Normal,train
+Normal-4529,Normal,train
+Normal-1649,Normal,test
+Normal-1939,Normal,train
+Normal-4551,Normal,test
+Normal-10136,Normal,train
+Normal-3980,Normal,train
+Normal-6105,Normal,test
+Normal-10032,Normal,train
+Normal-6564,Normal,train
+Normal-8318,Normal,train
+Normal-2848,Normal,train
+Normal-6254,Normal,train
+Normal-6898,Normal,train
+Normal-3052,Normal,train
+Normal-8780,Normal,train
+Normal-5092,Normal,train
+Normal-2414,Normal,test
+Normal-7548,Normal,train
+Normal-6469,Normal,test
+Normal-6350,Normal,train
+Normal-7328,Normal,train
+Normal-9501,Normal,train
+Normal-10140,Normal,train
+Normal-9030,Normal,train
+Normal-5618,Normal,train
+Normal-2442,Normal,train
+Normal-6531,Normal,train
+Normal-74,Normal,train
+Normal-4048,Normal,val
+Normal-5949,Normal,train
+Normal-10005,Normal,train
+Normal-8205,Normal,train
+Normal-9323,Normal,val
+Normal-4673,Normal,train
+Normal-7404,Normal,train
+Normal-7096,Normal,train
+Normal-4906,Normal,train
+Normal-1526,Normal,train
+Normal-9548,Normal,train
+Normal-4088,Normal,test
+Normal-616,Normal,train
+Normal-9165,Normal,train
+Normal-1834,Normal,train
+Normal-6127,Normal,test
+Normal-7786,Normal,val
+Normal-9380,Normal,train
+Normal-7198,Normal,train
+Normal-2200,Normal,train
+Normal-7257,Normal,train
+Normal-8442,Normal,train
+Normal-7187,Normal,train
+Normal-1245,Normal,train
+Normal-2737,Normal,train
+Normal-9039,Normal,train
+Normal-1125,Normal,test
+Normal-7584,Normal,train
+Normal-711,Normal,train
+Normal-7345,Normal,train
+Normal-8127,Normal,train
+Normal-3768,Normal,train
+Normal-8676,Normal,train
+Normal-4344,Normal,train
+Normal-2069,Normal,val
+Normal-2313,Normal,train
+Normal-9215,Normal,train
+Normal-5565,Normal,train
+Normal-827,Normal,test
+Normal-1745,Normal,train
+Normal-6247,Normal,train
+Normal-3456,Normal,train
+Normal-5487,Normal,train
+Normal-4857,Normal,train
+Normal-283,Normal,train
+Normal-8688,Normal,train
+Normal-9272,Normal,train
+Normal-9219,Normal,train
+Normal-7223,Normal,train
+Normal-8604,Normal,train
+Normal-1960,Normal,val
+Normal-8396,Normal,train
+Normal-9606,Normal,train
+Normal-4869,Normal,train
+Normal-6790,Normal,train
+Normal-6702,Normal,train
+Normal-8686,Normal,train
+Normal-1933,Normal,test
+Normal-6252,Normal,train
+Normal-9292,Normal,train
+Normal-6174,Normal,test
+Normal-5337,Normal,train
+Normal-2523,Normal,train
+Normal-8942,Normal,train
+Normal-624,Normal,train
+Normal-3488,Normal,val
+Normal-6709,Normal,train
+Normal-3094,Normal,train
+Normal-569,Normal,train
+Normal-4502,Normal,train
+Normal-6638,Normal,train
+Normal-107,Normal,test
+Normal-8707,Normal,train
+Normal-7085,Normal,train
+Normal-3194,Normal,train
+Normal-8541,Normal,test
+Normal-7998,Normal,train
+Normal-1544,Normal,train
+Normal-5279,Normal,val
+Normal-8392,Normal,train
+Normal-7852,Normal,train
+Normal-5469,Normal,train
+Normal-1263,Normal,val
+Normal-728,Normal,train
+Normal-2653,Normal,train
+Normal-6788,Normal,train
+Normal-9558,Normal,train
+Normal-9914,Normal,train
+Normal-8417,Normal,train
+Normal-7195,Normal,train
+Normal-9411,Normal,train
+Normal-7943,Normal,test
+Normal-6582,Normal,train
+Normal-7528,Normal,train
+Normal-6849,Normal,train
+Normal-5129,Normal,train
+Normal-8944,Normal,train
+Normal-8906,Normal,test
+Normal-9070,Normal,train
+Normal-2040,Normal,train
+Normal-1810,Normal,val
+Normal-7351,Normal,train
+Normal-6033,Normal,train
+Normal-444,Normal,test
+Normal-6609,Normal,train
+Normal-3563,Normal,train
+Normal-6373,Normal,val
+Normal-4818,Normal,train
+Normal-2862,Normal,train
+Normal-4137,Normal,train
+Normal-7425,Normal,train
+Normal-241,Normal,val
+Normal-2473,Normal,train
+Normal-9100,Normal,train
+Normal-7740,Normal,val
+Normal-9391,Normal,train
+Normal-7341,Normal,test
+Normal-8368,Normal,train
+Normal-9063,Normal,test
+Normal-7530,Normal,train
+Normal-6304,Normal,train
+Normal-815,Normal,test
+Normal-831,Normal,train
+Normal-7012,Normal,train
+Normal-4494,Normal,val
+Normal-1169,Normal,train
+Normal-1346,Normal,train
+Normal-9098,Normal,train
+Normal-8179,Normal,train
+Normal-5470,Normal,train
+Normal-3192,Normal,train
+Normal-455,Normal,train
+Normal-2771,Normal,train
+Normal-9975,Normal,train
+Normal-9053,Normal,train
+Normal-1726,Normal,train
+Normal-8367,Normal,val
+Normal-9432,Normal,val
+Normal-8426,Normal,train
+Normal-8765,Normal,train
+Normal-5034,Normal,train
+Normal-9650,Normal,train
+Normal-1576,Normal,train
+Normal-2397,Normal,test
+Normal-3919,Normal,train
+Normal-4543,Normal,val
+Normal-2157,Normal,train
+Normal-7163,Normal,val
+Normal-4955,Normal,val
+Normal-5635,Normal,train
+Normal-6014,Normal,test
+Normal-7416,Normal,train
+Normal-6781,Normal,train
+Normal-6632,Normal,train
+Normal-9025,Normal,train
+Normal-3171,Normal,train
+Normal-932,Normal,test
+Normal-7815,Normal,train
+Normal-9102,Normal,train
+Normal-7994,Normal,train
+Normal-6545,Normal,train
+Normal-2746,Normal,train
+Normal-4992,Normal,train
+Normal-9389,Normal,train
+Normal-6140,Normal,train
+Normal-7950,Normal,test
+Normal-7206,Normal,train
+Normal-2145,Normal,train
+Normal-2437,Normal,test
+Normal-9295,Normal,train
+Normal-9084,Normal,val
+Normal-5353,Normal,train
+Normal-1820,Normal,train
+Normal-7741,Normal,test
+Normal-6445,Normal,train
+Normal-7147,Normal,train
+Normal-5473,Normal,train
+Normal-5644,Normal,train
+Normal-785,Normal,train
+Normal-6931,Normal,train
+Normal-806,Normal,train
+Normal-3023,Normal,train
+Normal-8271,Normal,train
+Normal-5202,Normal,test
+Normal-172,Normal,val
+Normal-2146,Normal,train
+Normal-3100,Normal,test
+Normal-6959,Normal,train
+Normal-4032,Normal,test
+Normal-6839,Normal,train
+Normal-6824,Normal,train
+Normal-6467,Normal,train
+Normal-9290,Normal,train
+Normal-5014,Normal,train
+Normal-10148,Normal,train
+Normal-3426,Normal,test
+Normal-7275,Normal,train
+Normal-4273,Normal,train
+Normal-1028,Normal,train
+Normal-9425,Normal,val
+Normal-8635,Normal,test
+Normal-737,Normal,train
+Normal-1374,Normal,test
+Normal-3373,Normal,train
+Normal-9779,Normal,train
+Normal-6429,Normal,train
+Normal-9051,Normal,train
+Normal-6280,Normal,train
+Normal-5447,Normal,train
+Normal-5257,Normal,train
+Normal-9972,Normal,test
+Normal-1091,Normal,test
+Normal-8317,Normal,train
+Normal-8144,Normal,val
+Normal-2188,Normal,train
+Normal-8633,Normal,train
+Normal-5533,Normal,train
+Normal-5240,Normal,val
+Normal-1757,Normal,train
+Normal-5391,Normal,train
+Normal-7128,Normal,train
+Normal-2259,Normal,train
+Normal-8638,Normal,train
+Normal-4327,Normal,train
+Normal-775,Normal,train
+Normal-829,Normal,train
+Normal-1333,Normal,train
+Normal-755,Normal,train
+Normal-5334,Normal,train
+Normal-2181,Normal,train
+Normal-3959,Normal,train
+Normal-2001,Normal,train
+Normal-8918,Normal,train
+Normal-705,Normal,test
+Normal-2477,Normal,train
+Normal-18,Normal,train
+Normal-8498,Normal,train
+Normal-7765,Normal,train
+Normal-9329,Normal,train
+Normal-563,Normal,train
+Normal-9869,Normal,train
+Normal-1653,Normal,val
+Normal-3869,Normal,val
+Normal-3080,Normal,train
+Normal-4592,Normal,train
+Normal-9116,Normal,train
+Normal-6159,Normal,train
+Normal-7133,Normal,train
+Normal-3936,Normal,train
+Normal-9240,Normal,train
+Normal-8513,Normal,test
+Normal-1031,Normal,train
+Normal-8968,Normal,train
+Normal-9566,Normal,test
+Normal-1561,Normal,train
+Normal-4456,Normal,train
+Normal-9434,Normal,val
+Normal-312,Normal,train
+Normal-4559,Normal,val
+Normal-9584,Normal,train
+Normal-6806,Normal,train
+Normal-3616,Normal,train
+Normal-3028,Normal,train
+Normal-4516,Normal,train
+Normal-1345,Normal,train
+Normal-6057,Normal,train
+Normal-5579,Normal,val
+Normal-9228,Normal,train
+Normal-8680,Normal,train
+Normal-3026,Normal,val
+Normal-9047,Normal,train
+Normal-5702,Normal,train
+Normal-4172,Normal,train
+Normal-9478,Normal,train
+Normal-7102,Normal,train
+Normal-845,Normal,test
+Normal-2268,Normal,train
+Normal-6516,Normal,train
+Normal-9751,Normal,train
+Normal-6203,Normal,train
+Normal-290,Normal,train
+Normal-6942,Normal,train
+Normal-4401,Normal,train
+Normal-9034,Normal,train
+Normal-9636,Normal,train
+Normal-3695,Normal,val
+Normal-5369,Normal,train
+Normal-2262,Normal,train
+Normal-4290,Normal,test
+Normal-7791,Normal,test
+Normal-6636,Normal,train
+Normal-9737,Normal,val
+Normal-2235,Normal,val
+Normal-8861,Normal,train
+Normal-396,Normal,train
+Normal-2553,Normal,train
+Normal-8905,Normal,train
+Normal-7122,Normal,train
+Normal-8286,Normal,test
+Normal-3188,Normal,train
+Normal-9683,Normal,train
+Normal-9730,Normal,train
+Normal-6815,Normal,val
+Normal-7192,Normal,train
+Normal-9768,Normal,train
+Normal-4731,Normal,train
+Normal-5309,Normal,train
+Normal-4700,Normal,train
+Normal-6459,Normal,test
+Normal-1267,Normal,test
+Normal-3206,Normal,val
+Normal-1844,Normal,train
+Normal-982,Normal,train
+Normal-4160,Normal,train
+Normal-7617,Normal,train
+Normal-3552,Normal,train
+Normal-2740,Normal,train
+Normal-7127,Normal,train
+Normal-3222,Normal,train
+Normal-1055,Normal,test
+Normal-6543,Normal,train
+Normal-3242,Normal,train
+Normal-4937,Normal,train
+Normal-9764,Normal,test
+Normal-3465,Normal,val
+Normal-3228,Normal,train
+Normal-1475,Normal,train
+Normal-5692,Normal,train
+Normal-7937,Normal,train
+Normal-8468,Normal,train
+Normal-5101,Normal,train
+Normal-1633,Normal,train
+Normal-4824,Normal,train
+Normal-1270,Normal,train
+Normal-2260,Normal,train
+Normal-6020,Normal,test
+Normal-8569,Normal,train
+Normal-1718,Normal,train
+Normal-8347,Normal,test
+Normal-7900,Normal,train
+Normal-4926,Normal,train
+Normal-8230,Normal,train
+Normal-2981,Normal,train
+Normal-1578,Normal,train
+Normal-2983,Normal,train
+Normal-3201,Normal,test
+Normal-8956,Normal,train
+Normal-2087,Normal,test
+Normal-2132,Normal,train
+Normal-130,Normal,train
+Normal-4187,Normal,train
+Normal-2934,Normal,train
+Normal-8824,Normal,test
+Normal-10169,Normal,test
+Normal-5236,Normal,train
+Normal-6039,Normal,train
+Normal-2392,Normal,train
+Normal-6588,Normal,train
+Normal-6835,Normal,train
+Normal-1324,Normal,train
+Normal-9847,Normal,train
+Normal-9111,Normal,train
+Normal-5934,Normal,train
+Normal-2315,Normal,train
+Normal-1906,Normal,train
+Normal-4853,Normal,train
+Normal-10040,Normal,train
+Normal-7755,Normal,train
+Normal-8648,Normal,train
+Normal-6043,Normal,test
+Normal-6321,Normal,val
+Normal-250,Normal,test
+Normal-8584,Normal,train
+Normal-9337,Normal,train
+Normal-6152,Normal,train
+Normal-6320,Normal,train
+Normal-9311,Normal,train
+Normal-5211,Normal,train
+Normal-8701,Normal,train
+Normal-7382,Normal,test
+Normal-8251,Normal,train
+Normal-5889,Normal,val
+Normal-9465,Normal,val
+Normal-6078,Normal,test
+Normal-4547,Normal,train
+Normal-8330,Normal,test
+Normal-7437,Normal,test
+Normal-5086,Normal,train
+Normal-2394,Normal,train
+Normal-6952,Normal,train
+Normal-7779,Normal,train
+Normal-9242,Normal,train
+Normal-5742,Normal,train
+Normal-5498,Normal,train
+Normal-1803,Normal,train
+Normal-5018,Normal,train
+Normal-2170,Normal,train
+Normal-8141,Normal,train
+Normal-4877,Normal,test
+Normal-8912,Normal,val
+Normal-4176,Normal,test
+Normal-9494,Normal,train
+Normal-3074,Normal,test
+Normal-2885,Normal,train
+Normal-3913,Normal,train
+Normal-927,Normal,train
+Normal-4987,Normal,test
+Normal-8028,Normal,train
+Normal-8788,Normal,train
+Normal-4890,Normal,train
+Normal-4729,Normal,train
+Normal-2204,Normal,val
+Normal-7742,Normal,train
+Normal-5885,Normal,train
+Normal-9953,Normal,train
+Normal-5393,Normal,train
+Normal-6359,Normal,train
+Normal-2506,Normal,train
+Normal-5227,Normal,train
+Normal-7821,Normal,train
+Normal-6192,Normal,val
+Normal-3707,Normal,val
+Normal-7606,Normal,train
+Normal-1807,Normal,train
+Normal-8961,Normal,train
+Normal-1063,Normal,val
+Normal-841,Normal,train
+Normal-2731,Normal,train
+Normal-3856,Normal,val
+Normal-7757,Normal,train
+Normal-58,Normal,train
+Normal-7034,Normal,train
+Normal-6496,Normal,train
+Normal-970,Normal,train
+Normal-4552,Normal,test
+Normal-7803,Normal,train
+Normal-6355,Normal,val
+Normal-962,Normal,train
+Normal-4178,Normal,train
+Normal-3544,Normal,val
+Normal-9164,Normal,train
+Normal-3675,Normal,train
+Normal-6925,Normal,test
+Normal-267,Normal,train
+Normal-2471,Normal,val
+Normal-2790,Normal,train
+Normal-3120,Normal,train
+Normal-4360,Normal,train
+Normal-1230,Normal,train
+Normal-1011,Normal,test
+Normal-3083,Normal,train
+Normal-1047,Normal,test
+Normal-7029,Normal,test
+Normal-4016,Normal,val
+Normal-8613,Normal,test
+Normal-7842,Normal,train
+Normal-2183,Normal,train
+Normal-2100,Normal,train
+Normal-5978,Normal,train
+Normal-7682,Normal,train
+Normal-6886,Normal,train
+Normal-3036,Normal,train
+Normal-6208,Normal,val
+Normal-34,Normal,train
+Normal-9659,Normal,train
+Normal-1347,Normal,train
+Normal-9984,Normal,train
+Normal-1467,Normal,test
+Normal-7274,Normal,train
+Normal-6379,Normal,train
+Normal-6724,Normal,train
+Normal-322,Normal,train
+Normal-8674,Normal,train
+Normal-5268,Normal,train
+Normal-771,Normal,train
+Normal-3764,Normal,train
+Normal-6941,Normal,train
+Normal-6083,Normal,train
+Normal-1293,Normal,test
+Normal-8646,Normal,train
+Normal-7670,Normal,val
+Normal-1294,Normal,train
+Normal-7738,Normal,train
+Normal-9567,Normal,test
+Normal-5979,Normal,val
+Normal-7947,Normal,train
+Normal-8046,Normal,train
+Normal-1042,Normal,train
+Normal-134,Normal,train
+Normal-5044,Normal,train
+Normal-6423,Normal,train
+Normal-7503,Normal,test
+Normal-289,Normal,test
+Normal-10179,Normal,train
+Normal-2693,Normal,train
+Normal-8553,Normal,train
+Normal-7703,Normal,val
+Normal-6722,Normal,train
+Normal-9031,Normal,test
+Normal-1023,Normal,train
+Normal-1709,Normal,train
+Normal-9487,Normal,test
+Normal-75,Normal,train
+Normal-9372,Normal,train
+Normal-6370,Normal,test
+Normal-10035,Normal,test
+Normal-2633,Normal,train
+Normal-10168,Normal,test
+Normal-6953,Normal,val
+Normal-3762,Normal,train
+Normal-2449,Normal,train
+Normal-4022,Normal,train
+Normal-3540,Normal,train
+Normal-1993,Normal,train
+Normal-979,Normal,test
+Normal-7423,Normal,train
+Normal-2508,Normal,train
+Normal-5682,Normal,train
+Normal-7789,Normal,train
+Normal-4567,Normal,train
+Normal-310,Normal,train
+Normal-8810,Normal,val
+Normal-9701,Normal,train
+Normal-1448,Normal,train
+Normal-3076,Normal,train
+Normal-2549,Normal,test
+Normal-5354,Normal,val
+Normal-1233,Normal,test
+Normal-5928,Normal,train
+Normal-4681,Normal,train
+Normal-4948,Normal,train
+Normal-70,Normal,train
+Normal-6200,Normal,train
+Normal-8264,Normal,train
+Normal-7047,Normal,train
+Normal-4900,Normal,train
+Normal-763,Normal,train
+Normal-8945,Normal,train
+Normal-2245,Normal,train
+Normal-9801,Normal,train
+Normal-3413,Normal,train
+Normal-3225,Normal,train
+Normal-7046,Normal,train
+Normal-9180,Normal,train
+Normal-2866,Normal,train
+Normal-4331,Normal,test
+Normal-4882,Normal,train
+Normal-3958,Normal,train
+Normal-5666,Normal,train
+Normal-6089,Normal,train
+Normal-9721,Normal,train
+Normal-6016,Normal,val
+Normal-2327,Normal,train
+Normal-9352,Normal,train
+Normal-8190,Normal,train
+Normal-382,Normal,test
+Normal-8618,Normal,train
+Normal-1582,Normal,train
+Normal-10025,Normal,test
+Normal-9483,Normal,val
+Normal-4598,Normal,train
+Normal-1240,Normal,train
+Normal-7248,Normal,test
+Normal-5435,Normal,train
+Normal-2305,Normal,train
+Normal-4283,Normal,train
+Normal-5797,Normal,val
+Normal-6633,Normal,test
+Normal-5249,Normal,train
+Normal-4548,Normal,train
+Normal-6911,Normal,train
+Normal-3813,Normal,train
+Normal-9615,Normal,val
+Normal-3939,Normal,train
+Normal-4047,Normal,train
+Normal-37,Normal,train
+Normal-7390,Normal,val
+Normal-4492,Normal,val
+Normal-885,Normal,train
+Normal-7398,Normal,train
+Normal-2366,Normal,train
+Normal-9094,Normal,val
+Normal-5955,Normal,train
+Normal-6372,Normal,val
+Normal-1701,Normal,train
+Normal-4248,Normal,train
+Normal-8220,Normal,test
+Normal-5577,Normal,train
+Normal-6527,Normal,train
+Normal-6606,Normal,test
+Normal-7283,Normal,train
+Normal-5713,Normal,train
+Normal-5289,Normal,train
+Normal-8235,Normal,train
+Normal-3387,Normal,test
+Normal-2236,Normal,train
+Normal-9618,Normal,train
+Normal-7881,Normal,train
+Normal-10104,Normal,train
+Normal-9921,Normal,train
+Normal-9420,Normal,train
+Normal-1206,Normal,train
+Normal-6961,Normal,train
+Normal-6663,Normal,train
+Normal-7492,Normal,train
+Normal-4429,Normal,train
+Normal-3597,Normal,train
+Normal-1112,Normal,train
+Normal-7219,Normal,train
+Normal-2655,Normal,train
+Normal-3864,Normal,train
+Normal-2718,Normal,train
+Normal-1751,Normal,train
+Normal-6673,Normal,train
+Normal-5627,Normal,train
+Normal-9705,Normal,test
+Normal-2492,Normal,train
+Normal-8214,Normal,train
+Normal-9162,Normal,train
+Normal-2133,Normal,val
+Normal-6432,Normal,train
+Normal-2483,Normal,train
+Normal-2706,Normal,train
+Normal-5218,Normal,test
+Normal-6803,Normal,train
+Normal-6291,Normal,train
+Normal-3560,Normal,train
+Normal-9392,Normal,train
+Normal-7537,Normal,test
+Normal-9542,Normal,train
+Normal-8665,Normal,train
+Normal-4846,Normal,test
+Normal-9785,Normal,train
+Normal-5886,Normal,train
+Normal-1035,Normal,test
+Normal-7599,Normal,train
+Normal-5946,Normal,train
+Normal-6747,Normal,train
+Normal-5157,Normal,test
+Normal-1003,Normal,train
+Normal-6288,Normal,train
+Normal-9824,Normal,train
+Normal-9503,Normal,test
+Normal-6656,Normal,train
+Normal-6298,Normal,train
+Normal-3172,Normal,train
+Normal-360,Normal,train
+Normal-7108,Normal,train
+Normal-471,Normal,train
+Normal-9702,Normal,train
+Normal-9235,Normal,train
+Normal-10106,Normal,train
+Normal-1580,Normal,val
+Normal-5818,Normal,train
+Normal-9288,Normal,train
+Normal-6302,Normal,train
+Normal-3035,Normal,train
+Normal-1423,Normal,test
+Normal-6058,Normal,train
+Normal-2940,Normal,train
+Normal-219,Normal,train
+Normal-2063,Normal,train
+Normal-4810,Normal,val
+Normal-8422,Normal,test
+Normal-1190,Normal,train
+Normal-5481,Normal,train
+Normal-749,Normal,train
+Normal-2732,Normal,val
+Normal-6659,Normal,train
+Normal-9662,Normal,train
+Normal-6705,Normal,train
+Normal-3644,Normal,train
+Normal-8047,Normal,train
+Normal-5461,Normal,train
+Normal-1817,Normal,val
+Normal-3867,Normal,train
+Normal-4668,Normal,train
+Normal-2005,Normal,train
+Normal-2399,Normal,train
+Normal-3256,Normal,test
+Normal-10013,Normal,train
+Normal-8299,Normal,train
+Normal-5328,Normal,test
+Normal-9843,Normal,train
+Normal-2310,Normal,train
+Normal-83,Normal,train
+Normal-10132,Normal,test
+Normal-8940,Normal,train
+Normal-2644,Normal,train
+Normal-2320,Normal,test
+Normal-3220,Normal,train
+Normal-9113,Normal,train
+Normal-8546,Normal,train
+Normal-6418,Normal,test
+Normal-1818,Normal,train
+Normal-5754,Normal,test
+Normal-6013,Normal,train
+Normal-4566,Normal,train
+Normal-3154,Normal,train
+Normal-942,Normal,train
+Normal-4737,Normal,test
+Normal-2842,Normal,train
+Normal-4964,Normal,test
+Normal-8358,Normal,test
+Normal-6068,Normal,train
+Normal-8793,Normal,train
+Normal-5308,Normal,train
+Normal-8526,Normal,val
+Normal-3298,Normal,train
+Normal-955,Normal,train
+Normal-5294,Normal,train
+Normal-3811,Normal,test
+Normal-4873,Normal,val
+Normal-9140,Normal,train
+Normal-4432,Normal,train
+Normal-7904,Normal,train
+Normal-56,Normal,train
+Normal-2467,Normal,train
+Normal-1410,Normal,train
+Normal-7908,Normal,train
+Normal-4015,Normal,test
+Normal-8768,Normal,test
+Normal-9256,Normal,train
+Normal-10037,Normal,train
+Normal-3832,Normal,train
+Normal-5406,Normal,train
+Normal-10160,Normal,train
+Normal-2103,Normal,train
+Normal-6284,Normal,train
+Normal-9172,Normal,train
+Normal-9402,Normal,train
+Normal-1396,Normal,train
+Normal-2877,Normal,train
+Normal-6132,Normal,val
+Normal-9999,Normal,train
+Normal-6793,Normal,train
+Normal-3680,Normal,val
+Normal-8728,Normal,train
+Normal-5438,Normal,test
+Normal-7553,Normal,train
+Normal-2967,Normal,test
+Normal-1229,Normal,train
+Normal-8897,Normal,val
+Normal-7039,Normal,train
+Normal-3208,Normal,train
+Normal-7226,Normal,train
+Normal-10183,Normal,test
+Normal-6903,Normal,train
+Normal-10123,Normal,train
+Normal-320,Normal,train
+Normal-5434,Normal,train
+Normal-859,Normal,train
+Normal-9825,Normal,train
+Normal-1937,Normal,train
+Normal-8354,Normal,train
+Normal-71,Normal,train
+Normal-1813,Normal,train
+Normal-1788,Normal,train
+Normal-9067,Normal,train
+Normal-4788,Normal,test
+Normal-7853,Normal,train
+Normal-2773,Normal,train
+Normal-2379,Normal,train
+Normal-3534,Normal,train
+Normal-6906,Normal,val
+Normal-5303,Normal,train
+Normal-6519,Normal,train
+Normal-4762,Normal,train
+Normal-4198,Normal,train
+Normal-924,Normal,train
+Normal-4209,Normal,train
+Normal-1075,Normal,train
+Normal-1194,Normal,train
+Normal-345,Normal,train
+Normal-8152,Normal,val
+Normal-1449,Normal,train
+Normal-7025,Normal,train
+Normal-6052,Normal,train
+Normal-1239,Normal,train
+Normal-9144,Normal,test
+Normal-3193,Normal,train
+Normal-9159,Normal,train
+Normal-8712,Normal,test
+Normal-6187,Normal,train
+Normal-5825,Normal,train
+Normal-9991,Normal,test
+Normal-6462,Normal,train
+Normal-5494,Normal,train
+Normal-3143,Normal,train
+Normal-5534,Normal,train
+Normal-7368,Normal,test
+Normal-6913,Normal,train
+Normal-2572,Normal,test
+Normal-464,Normal,test
+Normal-1866,Normal,train
+Normal-1320,Normal,train
+Normal-3177,Normal,train
+Normal-4897,Normal,val
+Normal-9512,Normal,train
+Normal-3951,Normal,train
+Normal-8195,Normal,train
+Normal-5118,Normal,test
+Normal-9246,Normal,test
+Normal-7759,Normal,test
+Normal-3477,Normal,train
+Normal-9759,Normal,train
+Normal-4638,Normal,train
+Normal-5122,Normal,train
+Normal-8027,Normal,test
+Normal-495,Normal,train
+Normal-8844,Normal,test
+Normal-8927,Normal,train
+Normal-2640,Normal,val
+Normal-5483,Normal,train
+Normal-7104,Normal,train
+Normal-2810,Normal,train
+Normal-5936,Normal,train
+Normal-7393,Normal,test
+Normal-8170,Normal,train
+Normal-4530,Normal,train
+Normal-632,Normal,train
+Normal-7535,Normal,train
+Normal-8059,Normal,train
+Normal-10110,Normal,train
+Normal-6362,Normal,test
+Normal-1311,Normal,train
+Normal-6012,Normal,train
+Normal-7235,Normal,train
+Normal-3726,Normal,train
+Normal-4075,Normal,train
+Normal-8692,Normal,val
+Normal-3772,Normal,test
+Normal-3048,Normal,train
+Normal-9672,Normal,test
+Normal-938,Normal,train
+Normal-8509,Normal,train
+Normal-1811,Normal,train
+Normal-1052,Normal,val
+Normal-2457,Normal,test
+Normal-1419,Normal,train
+Normal-5975,Normal,train
+Normal-2996,Normal,train
+Normal-6983,Normal,train
+Normal-1341,Normal,train
+Normal-4354,Normal,test
+Normal-5079,Normal,train
+Normal-1584,Normal,test
+Normal-3093,Normal,val
+Normal-2823,Normal,train
+Normal-3760,Normal,train
+Normal-9689,Normal,train
+Normal-5573,Normal,train
+Normal-8881,Normal,train
+Normal-9577,Normal,train
+Normal-6714,Normal,train
+Normal-7172,Normal,train
+Normal-3378,Normal,train
+Normal-3009,Normal,val
+Normal-2210,Normal,train
+Normal-5904,Normal,train
+Normal-7032,Normal,train
+Normal-3524,Normal,train
+Normal-4949,Normal,train
+Normal-6214,Normal,train
+Normal-4795,Normal,train
+Normal-2304,Normal,test
+Normal-5287,Normal,train
+Normal-7177,Normal,test
+Normal-2066,Normal,train
+Normal-7845,Normal,train
+Normal-8213,Normal,train
+Normal-28,Normal,train
+Normal-796,Normal,train
+Normal-9736,Normal,train
+Normal-3330,Normal,train
+Normal-1764,Normal,val
+Normal-8928,Normal,train
+Normal-10027,Normal,test
+Normal-2622,Normal,train
+Normal-2196,Normal,train
+Normal-2520,Normal,train
+Normal-144,Normal,test
+Normal-6779,Normal,train
+Normal-4418,Normal,train
+Normal-1044,Normal,train
+Normal-1624,Normal,train
+Normal-1074,Normal,train
+Normal-2850,Normal,train
+Normal-8208,Normal,test
+Normal-3550,Normal,train
+Normal-9794,Normal,train
+Normal-8816,Normal,train
+Normal-4534,Normal,train
+Normal-4919,Normal,train
+Normal-7569,Normal,train
+Normal-5426,Normal,val
+Normal-9937,Normal,val
+Normal-2134,Normal,test
+Normal-4633,Normal,train
+Normal-3317,Normal,train
+Normal-1459,Normal,test
+Normal-3070,Normal,train
+Normal-5183,Normal,train
+Normal-5858,Normal,train
+Normal-4577,Normal,test
+Normal-572,Normal,val
+Normal-9269,Normal,train
+Normal-2469,Normal,train
+Normal-2460,Normal,train
+Normal-584,Normal,train
+Normal-3992,Normal,train
+Normal-5454,Normal,train
+Normal-951,Normal,train
+Normal-7630,Normal,val
+Normal-3287,Normal,train
+Normal-9575,Normal,train
+Normal-630,Normal,train
+Normal-3303,Normal,val
+Normal-2507,Normal,train
+Normal-8915,Normal,val
+Normal-2573,Normal,train
+Normal-4867,Normal,train
+Normal-4324,Normal,train
+Normal-439,Normal,train
+Normal-3554,Normal,train
+Normal-965,Normal,train
+Normal-3078,Normal,train
+Normal-3005,Normal,train
+Normal-4655,Normal,train
+Normal-2654,Normal,train
+Normal-2986,Normal,train
+Normal-880,Normal,train
+Normal-1976,Normal,train
+Normal-8929,Normal,train
+Normal-1176,Normal,train
+Normal-1727,Normal,train
+Normal-8681,Normal,train
+Normal-4288,Normal,train
+Normal-335,Normal,train
+Normal-3588,Normal,test
+Normal-1876,Normal,train
+Normal-2560,Normal,train
+Normal-9092,Normal,test
+Normal-351,Normal,train
+Normal-3170,Normal,train
+Normal-515,Normal,train
+Normal-10150,Normal,train
+Normal-4525,Normal,train
+Normal-4932,Normal,train
+Normal-5102,Normal,train
+Normal-339,Normal,train
+Normal-7798,Normal,train
+Normal-6199,Normal,val
+Normal-7217,Normal,train
+Normal-855,Normal,test
+Normal-8394,Normal,train
+Normal-3037,Normal,train
+Normal-1923,Normal,val
+Normal-1026,Normal,test
+Normal-1487,Normal,train
+Normal-5811,Normal,train
+Normal-7162,Normal,train
+Normal-1429,Normal,train
+Normal-9349,Normal,test
+Normal-7013,Normal,test
+Normal-2324,Normal,train
+Normal-503,Normal,train
+Normal-4774,Normal,train
+Normal-6476,Normal,train
+Normal-4518,Normal,val
+Normal-627,Normal,train
+Normal-4237,Normal,train
+Normal-3260,Normal,train
+Normal-4006,Normal,train
+Normal-9857,Normal,train
+Normal-3917,Normal,train
+Normal-5297,Normal,val
+Normal-243,Normal,train
+Normal-3631,Normal,train
+Normal-4281,Normal,val
+Normal-1199,Normal,train
+Normal-2708,Normal,train
+Normal-5681,Normal,train
+Normal-3699,Normal,train
+Normal-7645,Normal,train
+Normal-6650,Normal,train
+Normal-9142,Normal,train
+Normal-1980,Normal,train
+Normal-4787,Normal,train
+Normal-9969,Normal,train
+Normal-9810,Normal,train
+Normal-7624,Normal,train
+Normal-5800,Normal,test
+Normal-5583,Normal,test
+Normal-8408,Normal,train
+Normal-350,Normal,test
+Normal-6460,Normal,train
+Normal-3462,Normal,train
+Normal-5232,Normal,train
+Normal-1183,Normal,train
+Normal-8667,Normal,test
+Normal-7626,Normal,train
+Normal-1789,Normal,train
+Normal-7635,Normal,train
+Normal-7896,Normal,train
+Normal-7453,Normal,train
+Normal-4125,Normal,train
+Normal-7348,Normal,train
+Normal-7184,Normal,train
+Normal-1556,Normal,train
+Normal-1253,Normal,train
+Normal-341,Normal,train
+Normal-6499,Normal,val
+Normal-8260,Normal,train
+Normal-8469,Normal,train
+Normal-3689,Normal,val
+Normal-8535,Normal,train
+Normal-10018,Normal,test
+Normal-2205,Normal,train
+Normal-3344,Normal,train
+Normal-6617,Normal,train
+Normal-5836,Normal,train
+Normal-8324,Normal,train
+Normal-4263,Normal,train
+Normal-4888,Normal,train
+Normal-2155,Normal,test
+Normal-9726,Normal,train
+Normal-4099,Normal,train
+Normal-6723,Normal,val
+Normal-4383,Normal,val
+Normal-8645,Normal,train
+Normal-6501,Normal,train
+Normal-2629,Normal,test
+Normal-1157,Normal,train
+Normal-9532,Normal,test
+Normal-7242,Normal,train
+Normal-8035,Normal,train
+Normal-5802,Normal,test
+Normal-7797,Normal,train
+Normal-5819,Normal,train
+Normal-7607,Normal,val
+Normal-2605,Normal,train
+Normal-9216,Normal,train
+Normal-162,Normal,train
+Normal-8020,Normal,test
+Normal-4707,Normal,train
+Normal-2966,Normal,train
+Normal-6399,Normal,val
+Normal-9306,Normal,train
+Normal-3717,Normal,test
+Normal-592,Normal,train
+Normal-6153,Normal,val
+Normal-915,Normal,train
+Normal-2280,Normal,train
+Normal-4925,Normal,train
+Normal-7079,Normal,val
+Normal-945,Normal,train
+Normal-6015,Normal,train
+Normal-8606,Normal,test
+Normal-5632,Normal,test
+Normal-7165,Normal,train
+Normal-1070,Normal,train
+Normal-608,Normal,train
+Normal-333,Normal,train
+Normal-2060,Normal,train
+Normal-4139,Normal,train
+Normal-8575,Normal,train
+Normal-2511,Normal,train
+Normal-3551,Normal,train
+Normal-5857,Normal,train
+Normal-3180,Normal,test
+Normal-3615,Normal,train
+Normal-8123,Normal,train
+Normal-8696,Normal,train
+Normal-5285,Normal,train
+Normal-8530,Normal,test
+Normal-7208,Normal,train
+Normal-6050,Normal,train
+Normal-3771,Normal,train
+Normal-1292,Normal,train
+Normal-251,Normal,train
+Normal-7945,Normal,train
+Normal-1327,Normal,train
+Normal-7882,Normal,val
+Normal-1621,Normal,train
+Normal-3144,Normal,train
+Normal-9356,Normal,train
+Normal-186,Normal,val
+Normal-2651,Normal,test
+Normal-3241,Normal,train
+Normal-10174,Normal,val
+Normal-7780,Normal,train
+Normal-2434,Normal,train
+Normal-9101,Normal,train
+Normal-5913,Normal,train
+Normal-8842,Normal,train
+Normal-1523,Normal,train
+Normal-3713,Normal,test
+Normal-9097,Normal,train
+Normal-3382,Normal,train
+Normal-7483,Normal,train
+Normal-10010,Normal,train
+Normal-6409,Normal,train
+Normal-10026,Normal,train
+Normal-6892,Normal,val
+Normal-6354,Normal,train
+Normal-8238,Normal,train
+Normal-7748,Normal,train
+Normal-1917,Normal,train
+Normal-9449,Normal,test
+Normal-8771,Normal,train
+Normal-3533,Normal,train
+Normal-9527,Normal,train
+Normal-9886,Normal,test
+Normal-8774,Normal,train
+Normal-1303,Normal,train
+Normal-9326,Normal,train
+Normal-1056,Normal,train
+Normal-6678,Normal,test
+Normal-6075,Normal,train
+Normal-2783,Normal,train
+Normal-6640,Normal,train
+Normal-8781,Normal,train
+Normal-4716,Normal,train
+Normal-5658,Normal,train
+Normal-8889,Normal,train
+Normal-2867,Normal,train
+Normal-4195,Normal,val
+Normal-4154,Normal,test
+Normal-2776,Normal,train
+Normal-1801,Normal,train
+Normal-9852,Normal,train
+Normal-6726,Normal,train
+Normal-5293,Normal,test
+Normal-2787,Normal,train
+Normal-3925,Normal,train
+Normal-6427,Normal,val
+Normal-9723,Normal,train
+Normal-1861,Normal,val
+Normal-7549,Normal,test
+Normal-4419,Normal,train
+Normal-4875,Normal,train
+Normal-9069,Normal,train
+Normal-1187,Normal,train
+Normal-2413,Normal,val
+Normal-3113,Normal,train
+Normal-2764,Normal,train
+Normal-2251,Normal,test
+Normal-2231,Normal,train
+Normal-6401,Normal,train
+Normal-4698,Normal,train
+Normal-359,Normal,train
+Normal-279,Normal,train
+Normal-7588,Normal,val
+Normal-4285,Normal,train
+Normal-9809,Normal,test
+Normal-7212,Normal,train
+Normal-1117,Normal,train
+Normal-2051,Normal,test
+Normal-2652,Normal,train
+Normal-2048,Normal,train
+Normal-611,Normal,val
+Normal-6486,Normal,train
+Normal-5110,Normal,train
+Normal-8198,Normal,train
+Normal-3643,Normal,train
+Normal-3233,Normal,test
+Normal-1884,Normal,train
+Normal-3793,Normal,train
+Normal-6771,Normal,train
+Normal-6854,Normal,val
+Normal-10118,Normal,train
+Normal-2752,Normal,train
+Normal-8050,Normal,test
+Normal-4380,Normal,train
+Normal-804,Normal,test
+Normal-9443,Normal,train
+Normal-7938,Normal,train
+Normal-7318,Normal,train
+Normal-6653,Normal,test
+Normal-8833,Normal,train
+Normal-7723,Normal,train
+Normal-3257,Normal,train
+Normal-2382,Normal,train
+Normal-1880,Normal,train
+Normal-1390,Normal,train
+Normal-4078,Normal,train
+Normal-6368,Normal,train
+Normal-8234,Normal,val
+Normal-5991,Normal,train
+Normal-2968,Normal,train
+Normal-8902,Normal,val
+Normal-6482,Normal,test
+Normal-8909,Normal,val
+Normal-519,Normal,test
+Normal-2870,Normal,test
+Normal-3211,Normal,train
+Normal-1629,Normal,test
+Normal-4256,Normal,train
+Normal-3564,Normal,train
+Normal-8896,Normal,train
+Normal-4206,Normal,test
+Normal-2658,Normal,train
+Normal-967,Normal,train
+Normal-4988,Normal,train
+Normal-9279,Normal,train
+Normal-5646,Normal,train
+Normal-6491,Normal,val
+Normal-9379,Normal,val
+Normal-5062,Normal,test
+Normal-7941,Normal,train
+Normal-3282,Normal,train
+Normal-3571,Normal,train
+Normal-1383,Normal,train
+Normal-4571,Normal,test
+Normal-1919,Normal,test
+Normal-7486,Normal,val
+Normal-417,Normal,train
+Normal-4658,Normal,train
+Normal-1480,Normal,train
+Normal-2577,Normal,train
+Normal-7911,Normal,train
+Normal-8036,Normal,test
+Normal-405,Normal,train
+Normal-2777,Normal,train
+Normal-3138,Normal,train
+Normal-3679,Normal,train
+Normal-3329,Normal,train
+Normal-1132,Normal,train
+Normal-4121,Normal,train
+Normal-4648,Normal,train
+Normal-3926,Normal,train
+Normal-9423,Normal,val
+Normal-3585,Normal,train
+Normal-2084,Normal,train
+Normal-9283,Normal,train
+Normal-264,Normal,train
+Normal-10129,Normal,train
+Normal-3567,Normal,train
+Normal-5772,Normal,val
+Normal-7788,Normal,train
+Normal-2546,Normal,train
+Normal-4711,Normal,train
+Normal-10127,Normal,val
+Normal-7068,Normal,train
+Normal-2929,Normal,train
+Normal-3670,Normal,test
+Normal-3940,Normal,train
+Normal-5747,Normal,train
+Normal-52,Normal,train
+Normal-5648,Normal,train
+Normal-3491,Normal,train
+Normal-194,Normal,train
+Normal-2223,Normal,train
+Normal-3032,Normal,train
+Normal-9913,Normal,train
+Normal-6997,Normal,test
+Normal-2977,Normal,train
+Normal-2228,Normal,test
+Normal-416,Normal,train
+Normal-352,Normal,train
+Normal-8418,Normal,val
+Normal-43,Normal,test
+Normal-7444,Normal,train
+Normal-7098,Normal,train
+Normal-9138,Normal,test
+Normal-9950,Normal,train
+Normal-4977,Normal,train
+Normal-6126,Normal,train
+Normal-5378,Normal,test
+Normal-777,Normal,train
+Normal-7783,Normal,train
+Normal-406,Normal,train
+Normal-6002,Normal,train
+Normal-8520,Normal,train
+Normal-2674,Normal,val
+Normal-2192,Normal,train
+Normal-9534,Normal,train
+Normal-4778,Normal,test
+Normal-4562,Normal,train
+Normal-9926,Normal,train
+Normal-8337,Normal,train
+Normal-202,Normal,train
+Normal-7229,Normal,train
+Normal-7449,Normal,train
+Normal-7363,Normal,train
+Normal-5198,Normal,train
+Normal-2271,Normal,train
+Normal-5693,Normal,train
+Normal-8736,Normal,train
+Normal-8296,Normal,train
+Normal-8755,Normal,val
+Normal-7174,Normal,train
+Normal-8852,Normal,test
+Normal-4475,Normal,train
+Normal-9273,Normal,val
+Normal-5496,Normal,train
+Normal-7464,Normal,train
+Normal-167,Normal,train
+Normal-6045,Normal,train
+Normal-5296,Normal,train
+Normal-3150,Normal,test
+Normal-2244,Normal,test
+Normal-4539,Normal,test
+Normal-67,Normal,train
+Normal-9864,Normal,test
+Normal-9066,Normal,train
+Normal-1397,Normal,val
+Normal-5537,Normal,val
+Normal-2422,Normal,train
+Normal-2264,Normal,test
+Normal-9071,Normal,train
+Normal-2104,Normal,train
+Normal-4493,Normal,train
+Normal-2144,Normal,train
+Normal-4362,Normal,train
+Normal-3203,Normal,train
+Normal-9780,Normal,val
+Normal-5269,Normal,train
+Normal-1265,Normal,train
+Normal-4754,Normal,train
+Normal-1786,Normal,train
+Normal-9775,Normal,train
+Normal-7704,Normal,train
+Normal-4111,Normal,train
+Normal-1983,Normal,test
+Normal-3718,Normal,test
+Normal-9816,Normal,val
+Normal-7715,Normal,train
+Normal-1519,Normal,train
+Normal-7892,Normal,val
+Normal-8761,Normal,val
+Normal-9511,Normal,val
+Normal-4363,Normal,train
+Normal-5274,Normal,train
+Normal-2675,Normal,test
+Normal-5650,Normal,train
+Normal-9851,Normal,train
+Normal-5706,Normal,train
+Normal-7455,Normal,train
+Normal-2496,Normal,train
+Normal-9896,Normal,train
+Normal-8966,Normal,train
+Normal-3277,Normal,train
+Normal-2946,Normal,train
+Normal-7965,Normal,train
+Normal-4177,Normal,train
+Normal-976,Normal,train
+Normal-9470,Normal,train
+Normal-8130,Normal,test
+Normal-9445,Normal,train
+Normal-7284,Normal,train
+Normal-9492,Normal,train
+Normal-5089,Normal,test
+Normal-448,Normal,train
+Normal-4986,Normal,test
+Normal-5752,Normal,train
+Normal-3888,Normal,test
+Normal-4404,Normal,train
+Normal-6289,Normal,train
+Normal-2109,Normal,train
+Normal-7360,Normal,train
+Normal-9697,Normal,test
+Normal-9649,Normal,train
+Normal-2328,Normal,train
+Normal-2528,Normal,train
+Normal-1353,Normal,test
+Normal-1850,Normal,train
+Normal-5356,Normal,train
+Normal-6375,Normal,train
+Normal-6872,Normal,test
+Normal-6585,Normal,val
+Normal-652,Normal,train
+Normal-9738,Normal,train
+Normal-3012,Normal,train
+Normal-8419,Normal,test
+Normal-6598,Normal,train
+Normal-3741,Normal,train
+Normal-4208,Normal,train
+Normal-6029,Normal,train
+Normal-5647,Normal,val
+Normal-514,Normal,val
+Normal-3364,Normal,train
+Normal-5098,Normal,train
+Normal-742,Normal,train
+Normal-8470,Normal,train
+Normal-8967,Normal,test
+Normal-8724,Normal,val
+Normal-5737,Normal,train
+Normal-1914,Normal,train
+Normal-4693,Normal,train
+Normal-8607,Normal,train
+Normal-214,Normal,test
+Normal-5970,Normal,train
+Normal-6081,Normal,train
+Normal-3169,Normal,train
+Normal-2631,Normal,val
+Normal-5530,Normal,train
+Normal-9918,Normal,train
+Normal-8037,Normal,train
+Normal-585,Normal,val
+Normal-7891,Normal,test
+Normal-9911,Normal,test
+Normal-6623,Normal,train
+Normal-4582,Normal,train
+Normal-4180,Normal,train
+Normal-5373,Normal,val
+Normal-9717,Normal,train
+Normal-5567,Normal,train
+Normal-8563,Normal,train
+Normal-239,Normal,train
+Normal-1181,Normal,train
+Normal-8668,Normal,val
+Normal-9424,Normal,train
+Normal-3140,Normal,train
+Normal-1282,Normal,train
+Normal-5292,Normal,train
+Normal-7204,Normal,train
+Normal-10041,Normal,test
+Normal-9482,Normal,train
+Normal-2991,Normal,train
+Normal-817,Normal,train
+Normal-2952,Normal,train
+Normal-8182,Normal,train
+Normal-4618,Normal,train
+Normal-3950,Normal,val
+Normal-348,Normal,val
+Normal-9429,Normal,train
+Normal-684,Normal,train
+Normal-8281,Normal,train
+Normal-8496,Normal,train
+Normal-3716,Normal,train
+Normal-9395,Normal,train
+Normal-2689,Normal,val
+Normal-5611,Normal,train
+Normal-5516,Normal,val
+Normal-8843,Normal,val
+Normal-1038,Normal,train
+Normal-7851,Normal,train
+Normal-7669,Normal,train
+Normal-7,Normal,train
+Normal-10031,Normal,val
+Normal-369,Normal,train
+Normal-8207,Normal,train
+Normal-8150,Normal,train
+Normal-7883,Normal,val
+Normal-6757,Normal,train
+Normal-8128,Normal,train
+Normal-3651,Normal,train
+Normal-9112,Normal,val
+Normal-3129,Normal,val
+Normal-3691,Normal,test
+Normal-6926,Normal,test
+Normal-1106,Normal,train
+Normal-7299,Normal,train
+Normal-4265,Normal,train
+Normal-8452,Normal,train
+Normal-3106,Normal,train
+Normal-1592,Normal,test
+Normal-8543,Normal,train
+Normal-4060,Normal,train
+Normal-5901,Normal,val
+Normal-2207,Normal,train
+Normal-6339,Normal,test
+Normal-8319,Normal,train
+Normal-6610,Normal,train
+Normal-4358,Normal,test
+Normal-2275,Normal,train
+Normal-2796,Normal,train
+Normal-8227,Normal,train
+Normal-5468,Normal,train
+Normal-9207,Normal,train
+Normal-486,Normal,test
+Normal-862,Normal,train
+Normal-1204,Normal,train
+Normal-574,Normal,train
+Normal-3119,Normal,train
+Normal-3360,Normal,train
+Viral Pneumonia-894,Viral Pneumonia,train
+Viral Pneumonia-1296,Viral Pneumonia,train
+Viral Pneumonia-882,Viral Pneumonia,train
+Viral Pneumonia-182,Viral Pneumonia,val
+Viral Pneumonia-971,Viral Pneumonia,train
+Viral Pneumonia-1126,Viral Pneumonia,test
+Viral Pneumonia-507,Viral Pneumonia,train
+Viral Pneumonia-731,Viral Pneumonia,train
+Viral Pneumonia-687,Viral Pneumonia,train
+Viral Pneumonia-1047,Viral Pneumonia,train
+Viral Pneumonia-1164,Viral Pneumonia,train
+Viral Pneumonia-372,Viral Pneumonia,train
+Viral Pneumonia-211,Viral Pneumonia,train
+Viral Pneumonia-242,Viral Pneumonia,train
+Viral Pneumonia-268,Viral Pneumonia,train
+Viral Pneumonia-347,Viral Pneumonia,train
+Viral Pneumonia-312,Viral Pneumonia,train
+Viral Pneumonia-1026,Viral Pneumonia,train
+Viral Pneumonia-1143,Viral Pneumonia,train
+Viral Pneumonia-1287,Viral Pneumonia,train
+Viral Pneumonia-491,Viral Pneumonia,train
+Viral Pneumonia-1226,Viral Pneumonia,train
+Viral Pneumonia-1241,Viral Pneumonia,train
+Viral Pneumonia-668,Viral Pneumonia,train
+Viral Pneumonia-153,Viral Pneumonia,train
+Viral Pneumonia-617,Viral Pneumonia,test
+Viral Pneumonia-975,Viral Pneumonia,train
+Viral Pneumonia-1289,Viral Pneumonia,train
+Viral Pneumonia-263,Viral Pneumonia,train
+Viral Pneumonia-942,Viral Pneumonia,val
+Viral Pneumonia-1326,Viral Pneumonia,train
+Viral Pneumonia-1220,Viral Pneumonia,test
+Viral Pneumonia-504,Viral Pneumonia,test
+Viral Pneumonia-1177,Viral Pneumonia,train
+Viral Pneumonia-714,Viral Pneumonia,train
+Viral Pneumonia-849,Viral Pneumonia,train
+Viral Pneumonia-70,Viral Pneumonia,train
+Viral Pneumonia-78,Viral Pneumonia,test
+Viral Pneumonia-936,Viral Pneumonia,train
+Viral Pneumonia-226,Viral Pneumonia,train
+Viral Pneumonia-691,Viral Pneumonia,val
+Viral Pneumonia-179,Viral Pneumonia,train
+Viral Pneumonia-693,Viral Pneumonia,train
+Viral Pneumonia-484,Viral Pneumonia,train
+Viral Pneumonia-879,Viral Pneumonia,train
+Viral Pneumonia-195,Viral Pneumonia,train
+Viral Pneumonia-1202,Viral Pneumonia,val
+Viral Pneumonia-793,Viral Pneumonia,train
+Viral Pneumonia-757,Viral Pneumonia,train
+Viral Pneumonia-310,Viral Pneumonia,train
+Viral Pneumonia-1276,Viral Pneumonia,train
+Viral Pneumonia-661,Viral Pneumonia,train
+Viral Pneumonia-569,Viral Pneumonia,train
+Viral Pneumonia-472,Viral Pneumonia,val
+Viral Pneumonia-802,Viral Pneumonia,train
+Viral Pneumonia-1002,Viral Pneumonia,train
+Viral Pneumonia-1075,Viral Pneumonia,test
+Viral Pneumonia-1189,Viral Pneumonia,train
+Viral Pneumonia-213,Viral Pneumonia,test
+Viral Pneumonia-1125,Viral Pneumonia,val
+Viral Pneumonia-256,Viral Pneumonia,train
+Viral Pneumonia-781,Viral Pneumonia,train
+Viral Pneumonia-6,Viral Pneumonia,test
+Viral Pneumonia-1029,Viral Pneumonia,train
+Viral Pneumonia-1039,Viral Pneumonia,train
+Viral Pneumonia-239,Viral Pneumonia,train
+Viral Pneumonia-1048,Viral Pneumonia,val
+Viral Pneumonia-470,Viral Pneumonia,test
+Viral Pneumonia-660,Viral Pneumonia,train
+Viral Pneumonia-710,Viral Pneumonia,test
+Viral Pneumonia-451,Viral Pneumonia,train
+Viral Pneumonia-1045,Viral Pneumonia,train
+Viral Pneumonia-65,Viral Pneumonia,val
+Viral Pneumonia-683,Viral Pneumonia,train
+Viral Pneumonia-905,Viral Pneumonia,train
+Viral Pneumonia-46,Viral Pneumonia,train
+Viral Pneumonia-62,Viral Pneumonia,test
+Viral Pneumonia-94,Viral Pneumonia,val
+Viral Pneumonia-44,Viral Pneumonia,train
+Viral Pneumonia-518,Viral Pneumonia,train
+Viral Pneumonia-1180,Viral Pneumonia,train
+Viral Pneumonia-601,Viral Pneumonia,train
+Viral Pneumonia-743,Viral Pneumonia,train
+Viral Pneumonia-1135,Viral Pneumonia,test
+Viral Pneumonia-712,Viral Pneumonia,train
+Viral Pneumonia-438,Viral Pneumonia,val
+Viral Pneumonia-1096,Viral Pneumonia,train
+Viral Pneumonia-572,Viral Pneumonia,train
+Viral Pneumonia-551,Viral Pneumonia,train
+Viral Pneumonia-206,Viral Pneumonia,train
+Viral Pneumonia-704,Viral Pneumonia,test
+Viral Pneumonia-966,Viral Pneumonia,train
+Viral Pneumonia-1271,Viral Pneumonia,train
+Viral Pneumonia-155,Viral Pneumonia,val
+Viral Pneumonia-543,Viral Pneumonia,test
+Viral Pneumonia-240,Viral Pneumonia,train
+Viral Pneumonia-58,Viral Pneumonia,train
+Viral Pneumonia-834,Viral Pneumonia,train
+Viral Pneumonia-172,Viral Pneumonia,train
+Viral Pneumonia-641,Viral Pneumonia,test
+Viral Pneumonia-880,Viral Pneumonia,train
+Viral Pneumonia-1232,Viral Pneumonia,train
+Viral Pneumonia-896,Viral Pneumonia,train
+Viral Pneumonia-1215,Viral Pneumonia,test
+Viral Pneumonia-725,Viral Pneumonia,train
+Viral Pneumonia-906,Viral Pneumonia,train
+Viral Pneumonia-921,Viral Pneumonia,test
+Viral Pneumonia-1015,Viral Pneumonia,train
+Viral Pneumonia-1182,Viral Pneumonia,train
+Viral Pneumonia-1325,Viral Pneumonia,val
+Viral Pneumonia-897,Viral Pneumonia,val
+Viral Pneumonia-865,Viral Pneumonia,train
+Viral Pneumonia-68,Viral Pneumonia,train
+Viral Pneumonia-399,Viral Pneumonia,train
+Viral Pneumonia-1141,Viral Pneumonia,train
+Viral Pneumonia-85,Viral Pneumonia,val
+Viral Pneumonia-677,Viral Pneumonia,train
+Viral Pneumonia-1014,Viral Pneumonia,train
+Viral Pneumonia-446,Viral Pneumonia,train
+Viral Pneumonia-1282,Viral Pneumonia,train
+Viral Pneumonia-128,Viral Pneumonia,train
+Viral Pneumonia-1046,Viral Pneumonia,val
+Viral Pneumonia-23,Viral Pneumonia,train
+Viral Pneumonia-545,Viral Pneumonia,train
+Viral Pneumonia-1227,Viral Pneumonia,train
+Viral Pneumonia-1040,Viral Pneumonia,train
+Viral Pneumonia-371,Viral Pneumonia,train
+Viral Pneumonia-954,Viral Pneumonia,train
+Viral Pneumonia-243,Viral Pneumonia,train
+Viral Pneumonia-147,Viral Pneumonia,train
+Viral Pneumonia-1306,Viral Pneumonia,train
+Viral Pneumonia-539,Viral Pneumonia,train
+Viral Pneumonia-1264,Viral Pneumonia,train
+Viral Pneumonia-166,Viral Pneumonia,val
+Viral Pneumonia-974,Viral Pneumonia,train
+Viral Pneumonia-902,Viral Pneumonia,train
+Viral Pneumonia-38,Viral Pneumonia,test
+Viral Pneumonia-1033,Viral Pneumonia,test
+Viral Pneumonia-788,Viral Pneumonia,val
+Viral Pneumonia-228,Viral Pneumonia,train
+Viral Pneumonia-10,Viral Pneumonia,train
+Viral Pneumonia-984,Viral Pneumonia,train
+Viral Pneumonia-261,Viral Pneumonia,train
+Viral Pneumonia-1278,Viral Pneumonia,val
+Viral Pneumonia-141,Viral Pneumonia,val
+Viral Pneumonia-579,Viral Pneumonia,train
+Viral Pneumonia-679,Viral Pneumonia,train
+Viral Pneumonia-1050,Viral Pneumonia,train
+Viral Pneumonia-487,Viral Pneumonia,train
+Viral Pneumonia-1269,Viral Pneumonia,train
+Viral Pneumonia-48,Viral Pneumonia,train
+Viral Pneumonia-590,Viral Pneumonia,train
+Viral Pneumonia-772,Viral Pneumonia,train
+Viral Pneumonia-983,Viral Pneumonia,test
+Viral Pneumonia-1208,Viral Pneumonia,val
+Viral Pneumonia-28,Viral Pneumonia,train
+Viral Pneumonia-411,Viral Pneumonia,train
+Viral Pneumonia-835,Viral Pneumonia,train
+Viral Pneumonia-523,Viral Pneumonia,train
+Viral Pneumonia-597,Viral Pneumonia,train
+Viral Pneumonia-391,Viral Pneumonia,train
+Viral Pneumonia-1010,Viral Pneumonia,test
+Viral Pneumonia-790,Viral Pneumonia,train
+Viral Pneumonia-753,Viral Pneumonia,val
+Viral Pneumonia-526,Viral Pneumonia,train
+Viral Pneumonia-533,Viral Pneumonia,train
+Viral Pneumonia-478,Viral Pneumonia,train
+Viral Pneumonia-604,Viral Pneumonia,train
+Viral Pneumonia-336,Viral Pneumonia,train
+Viral Pneumonia-581,Viral Pneumonia,train
+Viral Pneumonia-111,Viral Pneumonia,train
+Viral Pneumonia-726,Viral Pneumonia,train
+Viral Pneumonia-362,Viral Pneumonia,test
+Viral Pneumonia-1006,Viral Pneumonia,train
+Viral Pneumonia-214,Viral Pneumonia,test
+Viral Pneumonia-359,Viral Pneumonia,train
+Viral Pneumonia-823,Viral Pneumonia,train
+Viral Pneumonia-219,Viral Pneumonia,train
+Viral Pneumonia-120,Viral Pneumonia,train
+Viral Pneumonia-1070,Viral Pneumonia,train
+Viral Pneumonia-800,Viral Pneumonia,train
+Viral Pneumonia-456,Viral Pneumonia,train
+Viral Pneumonia-798,Viral Pneumonia,train
+Viral Pneumonia-302,Viral Pneumonia,train
+Viral Pneumonia-273,Viral Pneumonia,train
+Viral Pneumonia-838,Viral Pneumonia,train
+Viral Pneumonia-681,Viral Pneumonia,test
+Viral Pneumonia-1053,Viral Pneumonia,test
+Viral Pneumonia-176,Viral Pneumonia,val
+Viral Pneumonia-299,Viral Pneumonia,train
+Viral Pneumonia-1081,Viral Pneumonia,train
+Viral Pneumonia-594,Viral Pneumonia,train
+Viral Pneumonia-7,Viral Pneumonia,train
+Viral Pneumonia-1034,Viral Pneumonia,test
+Viral Pneumonia-1066,Viral Pneumonia,train
+Viral Pneumonia-528,Viral Pneumonia,train
+Viral Pneumonia-1124,Viral Pneumonia,train
+Viral Pneumonia-282,Viral Pneumonia,train
+Viral Pneumonia-751,Viral Pneumonia,train
+Viral Pneumonia-84,Viral Pneumonia,test
+Viral Pneumonia-556,Viral Pneumonia,train
+Viral Pneumonia-674,Viral Pneumonia,train
+Viral Pneumonia-305,Viral Pneumonia,train
+Viral Pneumonia-1166,Viral Pneumonia,train
+Viral Pneumonia-124,Viral Pneumonia,train
+Viral Pneumonia-1139,Viral Pneumonia,val
+Viral Pneumonia-264,Viral Pneumonia,test
+Viral Pneumonia-709,Viral Pneumonia,train
+Viral Pneumonia-1005,Viral Pneumonia,val
+Viral Pneumonia-374,Viral Pneumonia,train
+Viral Pneumonia-890,Viral Pneumonia,train
+Viral Pneumonia-977,Viral Pneumonia,train
+Viral Pneumonia-1268,Viral Pneumonia,train
+Viral Pneumonia-534,Viral Pneumonia,train
+Viral Pneumonia-1022,Viral Pneumonia,train
+Viral Pneumonia-563,Viral Pneumonia,train
+Viral Pneumonia-319,Viral Pneumonia,train
+Viral Pneumonia-354,Viral Pneumonia,train
+Viral Pneumonia-524,Viral Pneumonia,train
+Viral Pneumonia-186,Viral Pneumonia,train
+Viral Pneumonia-583,Viral Pneumonia,train
+Viral Pneumonia-1267,Viral Pneumonia,train
+Viral Pneumonia-274,Viral Pneumonia,train
+Viral Pneumonia-969,Viral Pneumonia,train
+Viral Pneumonia-918,Viral Pneumonia,train
+Viral Pneumonia-238,Viral Pneumonia,train
+Viral Pneumonia-164,Viral Pneumonia,train
+Viral Pneumonia-705,Viral Pneumonia,train
+Viral Pneumonia-212,Viral Pneumonia,train
+Viral Pneumonia-578,Viral Pneumonia,train
+Viral Pneumonia-787,Viral Pneumonia,test
+Viral Pneumonia-750,Viral Pneumonia,train
+Viral Pneumonia-1206,Viral Pneumonia,test
+Viral Pneumonia-139,Viral Pneumonia,train
+Viral Pneumonia-443,Viral Pneumonia,train
+Viral Pneumonia-465,Viral Pneumonia,val
+Viral Pneumonia-901,Viral Pneumonia,val
+Viral Pneumonia-320,Viral Pneumonia,train
+Viral Pneumonia-177,Viral Pneumonia,test
+Viral Pneumonia-951,Viral Pneumonia,train
+Viral Pneumonia-1341,Viral Pneumonia,train
+Viral Pneumonia-208,Viral Pneumonia,train
+Viral Pneumonia-170,Viral Pneumonia,train
+Viral Pneumonia-220,Viral Pneumonia,train
+Viral Pneumonia-1171,Viral Pneumonia,val
+Viral Pneumonia-1192,Viral Pneumonia,train
+Viral Pneumonia-316,Viral Pneumonia,train
+Viral Pneumonia-735,Viral Pneumonia,train
+Viral Pneumonia-950,Viral Pneumonia,train
+Viral Pneumonia-30,Viral Pneumonia,train
+Viral Pneumonia-1324,Viral Pneumonia,train
+Viral Pneumonia-52,Viral Pneumonia,train
+Viral Pneumonia-993,Viral Pneumonia,train
+Viral Pneumonia-935,Viral Pneumonia,train
+Viral Pneumonia-819,Viral Pneumonia,test
+Viral Pneumonia-1323,Viral Pneumonia,test
+Viral Pneumonia-920,Viral Pneumonia,train
+Viral Pneumonia-184,Viral Pneumonia,val
+Viral Pneumonia-829,Viral Pneumonia,train
+Viral Pneumonia-473,Viral Pneumonia,train
+Viral Pneumonia-365,Viral Pneumonia,test
+Viral Pneumonia-1224,Viral Pneumonia,train
+Viral Pneumonia-495,Viral Pneumonia,train
+Viral Pneumonia-379,Viral Pneumonia,train
+Viral Pneumonia-754,Viral Pneumonia,train
+Viral Pneumonia-60,Viral Pneumonia,train
+Viral Pneumonia-666,Viral Pneumonia,train
+Viral Pneumonia-792,Viral Pneumonia,train
+Viral Pneumonia-432,Viral Pneumonia,train
+Viral Pneumonia-999,Viral Pneumonia,test
+Viral Pneumonia-1286,Viral Pneumonia,train
+Viral Pneumonia-297,Viral Pneumonia,train
+Viral Pneumonia-189,Viral Pneumonia,test
+Viral Pneumonia-759,Viral Pneumonia,train
+Viral Pneumonia-643,Viral Pneumonia,train
+Viral Pneumonia-425,Viral Pneumonia,train
+Viral Pneumonia-952,Viral Pneumonia,train
+Viral Pneumonia-1173,Viral Pneumonia,test
+Viral Pneumonia-1214,Viral Pneumonia,train
+Viral Pneumonia-845,Viral Pneumonia,val
+Viral Pneumonia-499,Viral Pneumonia,test
+Viral Pneumonia-946,Viral Pneumonia,test
+Viral Pneumonia-1042,Viral Pneumonia,train
+Viral Pneumonia-337,Viral Pneumonia,train
+Viral Pneumonia-678,Viral Pneumonia,train
+Viral Pneumonia-187,Viral Pneumonia,train
+Viral Pneumonia-375,Viral Pneumonia,val
+Viral Pneumonia-225,Viral Pneumonia,test
+Viral Pneumonia-77,Viral Pneumonia,train
+Viral Pneumonia-180,Viral Pneumonia,train
+Viral Pneumonia-207,Viral Pneumonia,val
+Viral Pneumonia-701,Viral Pneumonia,test
+Viral Pneumonia-1038,Viral Pneumonia,train
+Viral Pneumonia-777,Viral Pneumonia,train
+Viral Pneumonia-535,Viral Pneumonia,train
+Viral Pneumonia-939,Viral Pneumonia,train
+Viral Pneumonia-266,Viral Pneumonia,train
+Viral Pneumonia-275,Viral Pneumonia,train
+Viral Pneumonia-1247,Viral Pneumonia,train
+Viral Pneumonia-948,Viral Pneumonia,train
+Viral Pneumonia-1240,Viral Pneumonia,train
+Viral Pneumonia-1270,Viral Pneumonia,train
+Viral Pneumonia-697,Viral Pneumonia,train
+Viral Pneumonia-1253,Viral Pneumonia,train
+Viral Pneumonia-565,Viral Pneumonia,val
+Viral Pneumonia-1284,Viral Pneumonia,train
+Viral Pneumonia-566,Viral Pneumonia,train
+Viral Pneumonia-377,Viral Pneumonia,train
+Viral Pneumonia-696,Viral Pneumonia,train
+Viral Pneumonia-1174,Viral Pneumonia,val
+Viral Pneumonia-329,Viral Pneumonia,train
+Viral Pneumonia-850,Viral Pneumonia,train
+Viral Pneumonia-1061,Viral Pneumonia,test
+Viral Pneumonia-448,Viral Pneumonia,train
+Viral Pneumonia-1007,Viral Pneumonia,val
+Viral Pneumonia-576,Viral Pneumonia,train
+Viral Pneumonia-820,Viral Pneumonia,test
+Viral Pneumonia-494,Viral Pneumonia,test
+Viral Pneumonia-1292,Viral Pneumonia,train
+Viral Pneumonia-662,Viral Pneumonia,train
+Viral Pneumonia-848,Viral Pneumonia,train
+Viral Pneumonia-474,Viral Pneumonia,val
+Viral Pneumonia-1056,Viral Pneumonia,train
+Viral Pneumonia-308,Viral Pneumonia,train
+Viral Pneumonia-249,Viral Pneumonia,train
+Viral Pneumonia-619,Viral Pneumonia,train
+Viral Pneumonia-440,Viral Pneumonia,train
+Viral Pneumonia-544,Viral Pneumonia,train
+Viral Pneumonia-91,Viral Pneumonia,train
+Viral Pneumonia-1294,Viral Pneumonia,test
+Viral Pneumonia-325,Viral Pneumonia,train
+Viral Pneumonia-368,Viral Pneumonia,val
+Viral Pneumonia-1299,Viral Pneumonia,train
+Viral Pneumonia-804,Viral Pneumonia,val
+Viral Pneumonia-15,Viral Pneumonia,train
+Viral Pneumonia-947,Viral Pneumonia,test
+Viral Pneumonia-421,Viral Pneumonia,train
+Viral Pneumonia-480,Viral Pneumonia,train
+Viral Pneumonia-19,Viral Pneumonia,train
+Viral Pneumonia-778,Viral Pneumonia,train
+Viral Pneumonia-766,Viral Pneumonia,train
+Viral Pneumonia-870,Viral Pneumonia,train
+Viral Pneumonia-69,Viral Pneumonia,test
+Viral Pneumonia-799,Viral Pneumonia,train
+Viral Pneumonia-571,Viral Pneumonia,test
+Viral Pneumonia-99,Viral Pneumonia,train
+Viral Pneumonia-281,Viral Pneumonia,train
+Viral Pneumonia-863,Viral Pneumonia,test
+Viral Pneumonia-761,Viral Pneumonia,test
+Viral Pneumonia-1116,Viral Pneumonia,train
+Viral Pneumonia-1011,Viral Pneumonia,train
+Viral Pneumonia-95,Viral Pneumonia,train
+Viral Pneumonia-944,Viral Pneumonia,test
+Viral Pneumonia-232,Viral Pneumonia,train
+Viral Pneumonia-345,Viral Pneumonia,train
+Viral Pneumonia-603,Viral Pneumonia,train
+Viral Pneumonia-39,Viral Pneumonia,test
+Viral Pneumonia-795,Viral Pneumonia,train
+Viral Pneumonia-1167,Viral Pneumonia,train
+Viral Pneumonia-1170,Viral Pneumonia,test
+Viral Pneumonia-1091,Viral Pneumonia,train
+Viral Pneumonia-652,Viral Pneumonia,test
+Viral Pneumonia-1052,Viral Pneumonia,test
+Viral Pneumonia-960,Viral Pneumonia,train
+Viral Pneumonia-159,Viral Pneumonia,train
+Viral Pneumonia-217,Viral Pneumonia,train
+Viral Pneumonia-464,Viral Pneumonia,train
+Viral Pneumonia-405,Viral Pneumonia,train
+Viral Pneumonia-1147,Viral Pneumonia,train
+Viral Pneumonia-5,Viral Pneumonia,train
+Viral Pneumonia-990,Viral Pneumonia,train
+Viral Pneumonia-1072,Viral Pneumonia,train
+Viral Pneumonia-287,Viral Pneumonia,train
+Viral Pneumonia-609,Viral Pneumonia,train
+Viral Pneumonia-1312,Viral Pneumonia,test
+Viral Pneumonia-580,Viral Pneumonia,train
+Viral Pneumonia-690,Viral Pneumonia,train
+Viral Pneumonia-806,Viral Pneumonia,train
+Viral Pneumonia-67,Viral Pneumonia,train
+Viral Pneumonia-1225,Viral Pneumonia,val
+Viral Pneumonia-295,Viral Pneumonia,val
+Viral Pneumonia-1279,Viral Pneumonia,train
+Viral Pneumonia-171,Viral Pneumonia,train
+Viral Pneumonia-560,Viral Pneumonia,test
+Viral Pneumonia-110,Viral Pneumonia,train
+Viral Pneumonia-200,Viral Pneumonia,test
+Viral Pneumonia-1222,Viral Pneumonia,train
+Viral Pneumonia-1320,Viral Pneumonia,train
+Viral Pneumonia-813,Viral Pneumonia,test
+Viral Pneumonia-1235,Viral Pneumonia,train
+Viral Pneumonia-304,Viral Pneumonia,train
+Viral Pneumonia-1321,Viral Pneumonia,train
+Viral Pneumonia-3,Viral Pneumonia,train
+Viral Pneumonia-730,Viral Pneumonia,train
+Viral Pneumonia-1242,Viral Pneumonia,train
+Viral Pneumonia-904,Viral Pneumonia,train
+Viral Pneumonia-461,Viral Pneumonia,val
+Viral Pneumonia-384,Viral Pneumonia,train
+Viral Pneumonia-1108,Viral Pneumonia,train
+Viral Pneumonia-309,Viral Pneumonia,test

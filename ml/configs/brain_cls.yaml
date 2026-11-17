@@ -1,0 +1,17 @@
+# Brain MRI 4-class tumour classifier (glioma / meningioma / no tumour / pituitary), ours.
+common:
+  task: multiclass
+  dataset: brain_mri
+  labels: brain4
+  model: {arch: classifier, backbone: efficientnet_b0, dropout: 0.3, hidden: 256}
+  loss: {type: ce, label_smoothing: 0.05}
+  optim: {lr: 5.0e-4, weight_decay: 1.0e-4}
+  augment: {scale: [0.8, 1.0], rotate: 12, brightness: 0.15, contrast: 0.15, clahe_p: 0.2, hflip: true}
+  train: {patience: 4, warmup_epochs: 1, num_workers: 0, monitor: val_macro_f1}
+starter:
+  img_size: 128
+  train: {epochs: 6, batch_size: 48}
+full:
+  img_size: 320
+  train: {epochs: 30, batch_size: 32, num_workers: 4}
+  kaggle: {dataset_sources: [masoudnickparvar/brain-tumor-mri-dataset], gpu_hours: 0.7}

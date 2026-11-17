@@ -1,0 +1,19 @@
+# Lung segmentation U-Net (ours). Masks feed CTR, lung areas, symmetry and lung-zone mapping.
+common:
+  task: segmentation
+  dataset: lung
+  model: {arch: unet, base: 16, depth: 4}
+  loss: {type: bce_dice}
+  optim: {lr: 1.0e-3, weight_decay: 1.0e-5}
+  augment: {scale: [0.85, 1.0], rotate: 8, brightness: 0.1, contrast: 0.1, clahe_p: 0.2}
+  train: {patience: 4, warmup_epochs: 0, num_workers: 0, monitor: val_dice}
+starter:
+  img_size: 128
+  train: {epochs: 8, batch_size: 32}
+full:
+  img_size: 384
+  model: {arch: unet, encoder: resnet34}
+  train: {epochs: 40, batch_size: 16, num_workers: 4}
+  kaggle:
+    dataset_sources: [tawsifurrahman/covid19-radiography-database, nikhilpandey360/chest-xray-masks-and-labels, anasmohammedtahir/covidqu]
+    gpu_hours: 1.5

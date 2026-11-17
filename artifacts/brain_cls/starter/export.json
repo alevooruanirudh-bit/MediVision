@@ -1,0 +1,8 @@
+{
+  "model": "brain_cls",
+  "profile": "starter",
+  "img_size": 128,
+  "onnx": true,
+  "max_abs_diff": 0.007171630859375,
+  "cpu_ms_per_image": 12.3
+}

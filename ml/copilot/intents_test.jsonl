@@ -1,0 +1,110 @@
+{"text": "can you explain what the effusion finding means", "intent": "explain_finding"}
+{"text": "tell me more about this nodule", "intent": "explain_finding"}
+{"text": "what's the deal with the atelectasis", "intent": "explain_finding"}
+{"text": "explain the consolidation result please", "intent": "explain_finding"}
+{"text": "describe the cardiomegaly finding in detail", "intent": "explain_finding"}
+{"text": "why did you flag pneumothorax", "intent": "why_finding"}
+{"text": "what makes you think this is edema", "intent": "why_finding"}
+{"text": "what's the evidence for the mass", "intent": "why_finding"}
+{"text": "why does it say infiltration", "intent": "why_finding"}
+{"text": "how did the model conclude there's a fracture", "intent": "why_finding"}
+{"text": "where is the effusion", "intent": "where_finding"}
+{"text": "which side is the pneumothorax on", "intent": "where_finding"}
+{"text": "what zone is the opacity in", "intent": "where_finding"}
+{"text": "where exactly is the fracture located", "intent": "where_finding"}
+{"text": "is the nodule in the left upper lobe", "intent": "where_finding"}
+{"text": "how confident are you about the effusion", "intent": "confidence"}
+{"text": "what's the probability of pneumonia", "intent": "confidence"}
+{"text": "how likely is cardiomegaly here", "intent": "confidence"}
+{"text": "how sure is the model about the mass", "intent": "confidence"}
+{"text": "what score did edema get", "intent": "confidence"}
+{"text": "what should we do next for this patient", "intent": "next_steps"}
+{"text": "what follow up do you recommend for the nodule", "intent": "next_steps"}
+{"text": "do we need a ct scan", "intent": "next_steps"}
+{"text": "what is the recommended workup", "intent": "next_steps"}
+{"text": "should the patient see a specialist", "intent": "next_steps"}
+{"text": "compare this with the previous x-ray", "intent": "compare_previous"}
+{"text": "has the effusion gotten worse since last time", "intent": "compare_previous"}
+{"text": "any change from the prior study", "intent": "compare_previous"}
+{"text": "is the heart bigger than before", "intent": "compare_previous"}
+{"text": "show me the interval change", "intent": "compare_previous"}
+{"text": "what is atelectasis", "intent": "define_term"}
+{"text": "define pleural effusion", "intent": "define_term"}
+{"text": "what does pneumothorax mean in general", "intent": "define_term"}
+{"text": "what is a glioma", "intent": "define_term"}
+{"text": "what are the common causes of edema", "intent": "define_term"}
+{"text": "show me the heatmap for effusion", "intent": "show_heatmap"}
+{"text": "turn on grad-cam", "intent": "show_heatmap"}
+{"text": "display the saliency map for the mass", "intent": "show_heatmap"}
+{"text": "can i see where the ai was looking", "intent": "show_heatmap"}
+{"text": "overlay the heat map please", "intent": "show_heatmap"}
+{"text": "what is the ctr", "intent": "measurements"}
+{"text": "how big is the heart compared to the chest", "intent": "measurements"}
+{"text": "give me the lung area measurements", "intent": "measurements"}
+{"text": "what's the size of the tumour", "intent": "measurements"}
+{"text": "show me the measurements", "intent": "measurements"}
+{"text": "is this chest x-ray normal", "intent": "normal_or_not"}
+{"text": "is there anything abnormal on this scan", "intent": "normal_or_not"}
+{"text": "does everything look ok", "intent": "normal_or_not"}
+{"text": "is this a normal brain mri", "intent": "normal_or_not"}
+{"text": "should i be concerned about this image", "intent": "normal_or_not"}
+{"text": "how urgent is this case", "intent": "urgency"}
+{"text": "why is this marked critical", "intent": "urgency"}
+{"text": "does this need to be read right away", "intent": "urgency"}
+{"text": "what triage priority did you give", "intent": "urgency"}
+{"text": "is this an emergency", "intent": "urgency"}
+{"text": "what are the limitations of this tool", "intent": "limitations"}
+{"text": "can i trust these results", "intent": "limitations"}
+{"text": "is this approved for clinical use", "intent": "limitations"}
+{"text": "how accurate is this ai", "intent": "limitations"}
+{"text": "could the model be biased", "intent": "limitations"}
+{"text": "rewrite the impression to be patient friendly", "intent": "rewrite_section"}
+{"text": "make the findings more concise", "intent": "rewrite_section"}
+{"text": "rephrase the report in a detailed style", "intent": "rewrite_section"}
+{"text": "shorten the impression section", "intent": "rewrite_section"}
+{"text": "simplify the recommendations section", "intent": "rewrite_section"}
+{"text": "summarize this study for me", "intent": "summary"}
+{"text": "what's the overall impression", "intent": "summary"}
+{"text": "give me the bottom line", "intent": "summary"}
+{"text": "quick summary please", "intent": "summary"}
+{"text": "what's the conclusion of this exam", "intent": "summary"}
+{"text": "list all the findings", "intent": "list_findings"}
+{"text": "what did the ai detect", "intent": "list_findings"}
+{"text": "which findings were flagged", "intent": "list_findings"}
+{"text": "show me the top findings", "intent": "list_findings"}
+{"text": "what are the positive results", "intent": "list_findings"}
+{"text": "what else could this be", "intent": "differential"}
+{"text": "what's the differential for the opacity", "intent": "differential"}
+{"text": "could this be something other than pneumonia", "intent": "differential"}
+{"text": "what conditions mimic a mass", "intent": "differential"}
+{"text": "what alternatives should i consider", "intent": "differential"}
+{"text": "how uncertain is the model about this", "intent": "uncertainty"}
+{"text": "do the ensemble models disagree", "intent": "uncertainty"}
+{"text": "what is the variance across the models", "intent": "uncertainty"}
+{"text": "is the effusion prediction uncertain", "intent": "uncertainty"}
+{"text": "do all three networks agree", "intent": "uncertainty"}
+{"text": "what model are you using", "intent": "model_info"}
+{"text": "what data was this trained on", "intent": "model_info"}
+{"text": "is this the full or starter model", "intent": "model_info"}
+{"text": "are you using an external api", "intent": "model_info"}
+{"text": "what is the architecture of the classifier", "intent": "model_info"}
+{"text": "is this image good enough to analyze", "intent": "image_quality"}
+{"text": "why am i seeing an out of distribution warning", "intent": "image_quality"}
+{"text": "what modality did you detect", "intent": "image_quality"}
+{"text": "is this even a medical image", "intent": "image_quality"}
+{"text": "is the exposure adequate", "intent": "image_quality"}
+{"text": "hello", "intent": "greeting_help"}
+{"text": "what can you help me with", "intent": "greeting_help"}
+{"text": "give me some example questions", "intent": "greeting_help"}
+{"text": "thanks copilot", "intent": "greeting_help"}
+{"text": "how does this chat work", "intent": "greeting_help"}
+{"text": "explain this to the patient in simple words", "intent": "patient_explanation"}
+{"text": "how would i explain the effusion to the family", "intent": "patient_explanation"}
+{"text": "say it in plain english for a non doctor", "intent": "patient_explanation"}
+{"text": "explain like i'm five", "intent": "patient_explanation"}
+{"text": "what does this mean for the patient in lay terms", "intent": "patient_explanation"}
+{"text": "is there a pneumothorax", "intent": "check_finding"}
+{"text": "any effusion", "intent": "check_finding"}
+{"text": "can you rule out pneumonia", "intent": "check_finding"}
+{"text": "do you see a fracture", "intent": "check_finding"}
+{"text": "is there any sign of edema", "intent": "check_finding"}

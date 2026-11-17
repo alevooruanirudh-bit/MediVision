@@ -1,0 +1,18 @@
+# Modality router (our small CNN, from scratch): chest_xray / bone_xray / brain_mri / other_medical / not_medical
+common:
+  task: multiclass
+  dataset: router
+  labels: router5
+  model: {arch: smallcnn, width: 32, dropout: 0.3}
+  loss: {type: ce, label_smoothing: 0.05}
+  optim: {lr: 2.0e-3, weight_decay: 1.0e-4}
+  train: {patience: 3, warmup_epochs: 0, num_workers: 0, monitor: val_macro_f1}
+starter:
+  img_size: 96
+  per_class: 1500
+  train: {epochs: 6, batch_size: 64}
+full:
+  img_size: 128
+  per_class: 8000
+  train: {epochs: 15, batch_size: 128, num_workers: 4}
+  kaggle: {dataset_sources: [orvile/fracatlas, masoudnickparvar/brain-tumor-mri-dataset, mateuszbuda/lgg-mri-segmentation, tawsifurrahman/covid19-radiography-database], gpu_hours: 0.5}

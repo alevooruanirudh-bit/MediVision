@@ -1,0 +1,15 @@
+# EXPERIMENTAL report generator: our CNN encoder + 4-layer Transformer decoder, BPE trained by us.
+common:
+  task: report
+  dataset: iu_xray
+  model: {arch: report_gen, d_model: 384, layers: 4, heads: 6, ffn: 1536, vocab_size: 3000, max_len: 96}
+  optim: {lr: 3.0e-4, weight_decay: 1.0e-2}
+  augment: {scale: [0.85, 1.0], rotate: 5, brightness: 0.1, contrast: 0.1, clahe_p: 0.0}
+  train: {patience: 4, warmup_epochs: 1, num_workers: 0, monitor: val_loss, encoder_init: chest_densenet121}
+starter:
+  img_size: 128
+  train: {epochs: 12, batch_size: 32, freeze_encoder_epochs: 4}
+full:
+  img_size: 224
+  train: {epochs: 40, batch_size: 32, freeze_encoder_epochs: 5, num_workers: 4}
+  kaggle: {dataset_sources: [raddar/chest-xrays-indiana-university], gpu_hours: 1.0}

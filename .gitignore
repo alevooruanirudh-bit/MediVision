@@ -1,0 +1,44 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.DS_Store
+.env
+
+# data (downloaded, never committed)
+data/
+!ml/data/
+
+# artifacts: keep small starter weights + metrics, ignore full + checkpoints
+artifacts/*/full/
+artifacts/**/checkpoints/
+artifacts/**/*.ckpt
+artifacts/**/last.pt
+
+# backend runtime
+backend/storage/
+backend/*.db
+backend/*.db-journal
+
+# frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/test-results/
+frontend/playwright-report/
+frontend/next-env.d.ts
+frontend/tsconfig.tsbuildinfo
+
+# kaggle run outputs
+ml/kaggle/*/output/
+logs/
+# large weights are rebuilt by `make train-starter` (small ones are whitelisted below)
+artifacts/**/*.pt
+artifacts/**/*.onnx
+artifacts/**/*.npz
+!artifacts/router/starter/model.onnx
+!artifacts/lung_unet/starter/model.onnx
+!artifacts/brain_seg/starter/model.onnx
+!artifacts/denoiser/starter/model.onnx

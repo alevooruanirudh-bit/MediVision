@@ -1,0 +1,39 @@
+{
+  "task": "binary",
+  "dataset": "fracatlas_cls",
+  "model": {
+    "arch": "classifier",
+    "backbone": "efficientnet_b0",
+    "dropout": 0.3,
+    "hidden": 256
+  },
+  "loss": {
+    "type": "weighted_bce"
+  },
+  "optim": {
+    "lr": 0.0003,
+    "weight_decay": 0.0001
+  },
+  "augment": {
+    "scale": [
+      0.7,
+      1.0
+    ],
+    "rotate": 15,
+    "brightness": 0.15,
+    "contrast": 0.15,
+    "clahe_p": 0.3,
+    "hflip": true
+  },
+  "train": {
+    "patience": 4,
+    "warmup_epochs": 1,
+    "num_workers": 0,
+    "monitor": "val_auroc",
+    "epochs": 6,
+    "batch_size": 32
+  },
+  "img_size": 192,
+  "name": "fracture_cls",
+  "profile": "starter"
+}

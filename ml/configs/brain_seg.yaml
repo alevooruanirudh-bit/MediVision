@@ -1,0 +1,17 @@
+# Brain tumour segmentation: our Attention U-Net on LGG FLAIR slices (patient-level split).
+common:
+  task: segmentation
+  dataset: lgg
+  model: {arch: attention_unet, base: 16, depth: 4}
+  loss: {type: bce_dice}
+  optim: {lr: 1.0e-3, weight_decay: 1.0e-5}
+  augment: {scale: [0.85, 1.0], rotate: 10, brightness: 0.1, contrast: 0.1, clahe_p: 0.0, hflip: true}
+  train: {patience: 5, warmup_epochs: 0, num_workers: 0, monitor: val_dice}
+starter:
+  img_size: 128
+  train: {epochs: 10, batch_size: 32}
+full:
+  img_size: 256
+  model: {base: 32}
+  train: {epochs: 60, batch_size: 16, num_workers: 4}
+  kaggle: {dataset_sources: [mateuszbuda/lgg-mri-segmentation], gpu_hours: 1.0}

@@ -1,0 +1,9 @@
+{
+  "model": "brain_seg",
+  "profile": "starter",
+  "best": {
+    "val_dice": 0.7798461620215483
+  },
+  "epochs_run": 10,
+  "pretrained_backbone": true
+}

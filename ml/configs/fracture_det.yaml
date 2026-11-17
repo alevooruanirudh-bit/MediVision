@@ -1,0 +1,15 @@
+# Fracture detector: torchvision Faster R-CNN MobileNetV3-Large-FPN (ours; generic COCO init).
+# AGPL-free default. Optional YOLOv8 config in ml/configs/yolo/fracatlas.yaml (ultralytics, AGPL).
+common:
+  task: detection
+  dataset: fracatlas_det
+  model: {arch: fasterrcnn_mobilenet}
+  optim: {lr: 5.0e-3, weight_decay: 1.0e-4, momentum: 0.9}
+  train: {patience: 4, warmup_epochs: 1, num_workers: 0, monitor: val_map50, device: cpu, neg_ratio: 0.3}
+starter:
+  img_size: 384
+  train: {epochs: 6, batch_size: 8}
+full:
+  img_size: 640
+  train: {epochs: 40, batch_size: 8, num_workers: 4, device: auto}
+  kaggle: {dataset_sources: [orvile/fracatlas], gpu_hours: 1.5}

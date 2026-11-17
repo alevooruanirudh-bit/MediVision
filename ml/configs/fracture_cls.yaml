@@ -1,0 +1,16 @@
+# Fracture / no-fracture classifier on FracAtlas (ours).
+common:
+  task: binary
+  dataset: fracatlas_cls
+  model: {arch: classifier, backbone: efficientnet_b0, dropout: 0.3, hidden: 256}
+  loss: {type: weighted_bce}
+  optim: {lr: 3.0e-4, weight_decay: 1.0e-4}
+  augment: {scale: [0.7, 1.0], rotate: 15, brightness: 0.15, contrast: 0.15, clahe_p: 0.3, hflip: true}
+  train: {patience: 4, warmup_epochs: 1, num_workers: 0, monitor: val_auroc}
+starter:
+  img_size: 192
+  train: {epochs: 6, batch_size: 32}
+full:
+  img_size: 512
+  train: {epochs: 30, batch_size: 24, num_workers: 4}
+  kaggle: {dataset_sources: [orvile/fracatlas], gpu_hours: 1.0}

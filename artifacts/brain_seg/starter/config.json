@@ -1,0 +1,38 @@
+{
+  "task": "segmentation",
+  "dataset": "lgg",
+  "model": {
+    "arch": "attention_unet",
+    "base": 16,
+    "depth": 4
+  },
+  "loss": {
+    "type": "bce_dice"
+  },
+  "optim": {
+    "lr": 0.001,
+    "weight_decay": 1e-05
+  },
+  "augment": {
+    "scale": [
+      0.85,
+      1.0
+    ],
+    "rotate": 10,
+    "brightness": 0.1,
+    "contrast": 0.1,
+    "clahe_p": 0.0,
+    "hflip": true
+  },
+  "train": {
+    "patience": 5,
+    "warmup_epochs": 0,
+    "num_workers": 0,
+    "monitor": "val_dice",
+    "epochs": 10,
+    "batch_size": 32
+  },
+  "img_size": 128,
+  "name": "brain_seg",
+  "profile": "starter"
+}
