@@ -11,9 +11,13 @@ class ConvBlock(nn.Module):
     def __init__(self, i: int, o: int, dropout: float = 0.0) -> None:
         super().__init__()
         self.net = nn.Sequential(
-            nn.Conv2d(i, o, 3, padding=1, bias=False), nn.BatchNorm2d(o), nn.ReLU(inplace=True),
+            nn.Conv2d(i, o, 3, padding=1, bias=False),
+            nn.BatchNorm2d(o),
+            nn.ReLU(inplace=True),
             nn.Dropout2d(dropout) if dropout else nn.Identity(),
-            nn.Conv2d(o, o, 3, padding=1, bias=False), nn.BatchNorm2d(o), nn.ReLU(inplace=True),
+            nn.Conv2d(o, o, 3, padding=1, bias=False),
+            nn.BatchNorm2d(o),
+            nn.ReLU(inplace=True),
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -35,8 +39,15 @@ class AttentionGate(nn.Module):
 
 
 class UNet(nn.Module):
-    def __init__(self, in_ch: int = 1, out_ch: int = 1, base: int = 32, depth: int = 4,
-                 attention: bool = False, dropout: float = 0.1) -> None:
+    def __init__(
+        self,
+        in_ch: int = 1,
+        out_ch: int = 1,
+        base: int = 32,
+        depth: int = 4,
+        attention: bool = False,
+        dropout: float = 0.1,
+    ) -> None:
         super().__init__()
         chs = [base * 2**i for i in range(depth + 1)]
         self.downs = nn.ModuleList()
@@ -71,11 +82,21 @@ class UNet(nn.Module):
         return self.out(x)
 
 
-def build_segmenter(arch: str, in_ch: int = 1, base: int = 32, depth: int = 4,
-                    encoder: str | None = None, pretrained: bool = True) -> nn.Module:
+def build_segmenter(
+    arch: str,
+    in_ch: int = 1,
+    base: int = 32,
+    depth: int = 4,
+    encoder: str | None = None,
+    pretrained: bool = True,
+) -> nn.Module:
     if encoder:  # optional ResNet encoder via segmentation-models-pytorch (ImageNet or random init)
         import segmentation_models_pytorch as smp
 
-        return smp.Unet(encoder, encoder_weights="imagenet" if pretrained else None,
-                        in_channels=in_ch, classes=1)
+        return smp.Unet(
+            encoder,
+            encoder_weights="imagenet" if pretrained else None,
+            in_channels=in_ch,
+            classes=1,
+        )
     return UNet(in_ch, 1, base, depth, attention=(arch == "attention_unet"))

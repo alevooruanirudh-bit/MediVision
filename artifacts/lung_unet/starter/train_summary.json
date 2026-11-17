@@ -1,0 +1,9 @@
+{
+  "model": "lung_unet",
+  "profile": "starter",
+  "best": {
+    "val_dice": 0.9728442514438269
+  },
+  "epochs_run": 8,
+  "pretrained_backbone": true
+}

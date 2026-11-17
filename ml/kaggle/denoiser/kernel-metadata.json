@@ -1,0 +1,15 @@
+{
+  "id": "USERNAME/medivision-denoiser",
+  "title": "medivision-denoiser",
+  "code_file": "notebook.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [
+    "nih-chest-xrays/data"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

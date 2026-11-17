@@ -1,0 +1,9 @@
+{
+  "model": "fracture_det",
+  "profile": "starter",
+  "best": {
+    "val_map50": 0.049538841976898944
+  },
+  "epochs_run": 6,
+  "pretrained_backbone": true
+}

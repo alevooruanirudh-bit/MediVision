@@ -52,12 +52,21 @@ from ml.metrics import (  # noqa: E402
 from ml.models import build_model  # noqa: E402
 
 CHEST_MEMBERS = ["chest_densenet121", "chest_efficientnet_b2", "chest_convnext_tiny"]
-PLOT_STYLE = {"figure.facecolor": "#0b1020", "axes.facecolor": "#0b1020", "axes.edgecolor": "#5b6b8c",
-              "text.color": "#e2e8f0", "axes.labelcolor": "#e2e8f0", "xtick.color": "#94a3b8",
-              "ytick.color": "#94a3b8", "grid.color": "#1e293b"}
+PLOT_STYLE = {
+    "figure.facecolor": "#0b1020",
+    "axes.facecolor": "#0b1020",
+    "axes.edgecolor": "#5b6b8c",
+    "text.color": "#e2e8f0",
+    "axes.labelcolor": "#e2e8f0",
+    "xtick.color": "#94a3b8",
+    "ytick.color": "#94a3b8",
+    "grid.color": "#1e293b",
+}
 
 
-def load_trained(name: str, profile: str, device: str = "cpu") -> tuple[torch.nn.Module, dict[str, Any]]:
+def load_trained(
+    name: str, profile: str, device: str = "cpu"
+) -> tuple[torch.nn.Module, dict[str, Any]]:
     ck = torch.load(ARTIFACTS / name / profile / "model.pt", map_location="cpu", weights_only=False)
     cfg = ck["config"]
     model = build_model(cfg, pretrained=False)
@@ -66,7 +75,7 @@ def load_trained(name: str, profile: str, device: str = "cpu") -> tuple[torch.nn
 
 
 def _now() -> str:
-    return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+    return dt.datetime.now(dt.UTC).isoformat(timespec="seconds")
 
 
 def _history(name: str, profile: str) -> list[dict[str, Any]]:
@@ -75,8 +84,9 @@ def _history(name: str, profile: str) -> list[dict[str, Any]]:
 
 
 # ----------------------------------------------------------------------------- plots
-def plot_roc(curves: dict[str, list[list[float]]], aucs: dict[str, float | None], path: Path,
-             title: str) -> None:
+def plot_roc(
+    curves: dict[str, list[list[float]]], aucs: dict[str, float | None], path: Path, title: str
+) -> None:
     with plt.rc_context(PLOT_STYLE):
         fig, ax = plt.subplots(figsize=(6, 6))
         for k, pts in curves.items():
@@ -99,8 +109,11 @@ def plot_reliability(rel: dict[str, Any], path: Path, title: str) -> None:
         a = [b["accuracy"] for b in rel["bins"]]
         ax.plot([0, 1], [0, 1], "--", color="#475569")
         ax.plot(c, a, "o-", color="#22d3ee")
-        ax.set(xlabel="Predicted probability", ylabel="Observed frequency",
-               title=f"{title} (ECE {rel['ece']:.3f})")
+        ax.set(
+            xlabel="Predicted probability",
+            ylabel="Observed frequency",
+            title=f"{title} (ECE {rel['ece']:.3f})",
+        )
         ax.grid(alpha=0.3)
         fig.tight_layout()
         fig.savefig(path, dpi=110)
@@ -116,8 +129,15 @@ def plot_confusion(cm: list[list[int]], classes: list[str], path: Path, title: s
         ax.set_yticks(range(len(classes)), classes, fontsize=8)
         for i in range(len(classes)):
             for j in range(len(classes)):
-                ax.text(j, i, int(m[i, j]), ha="center", va="center", fontsize=8,
-                        color="white" if m[i, j] < m.max() / 2 else "black")
+                ax.text(
+                    j,
+                    i,
+                    int(m[i, j]),
+                    ha="center",
+                    va="center",
+                    fontsize=8,
+                    color="white" if m[i, j] < m.max() / 2 else "black",
+                )
         ax.set(xlabel="Predicted", ylabel="True", title=title)
         fig.tight_layout()
         fig.savefig(path, dpi=110)
@@ -125,19 +145,23 @@ def plot_confusion(cm: list[list[int]], classes: list[str], path: Path, title: s
 
 
 def plot_history(hist: list[dict[str, Any]], path: Path, title: str) -> None:
+    """Two panels (training loss | first validation metric) — never a dual y-axis."""
     if not hist:
         return
+    ep = [h["epoch"] for h in hist]
+    val = next((k for k in hist[0] if k.startswith("val_")), None)
     with plt.rc_context(PLOT_STYLE):
-        fig, ax = plt.subplots(figsize=(6, 3.5))
-        ep = [h["epoch"] for h in hist]
-        ax.plot(ep, [h["train_loss"] for h in hist], color="#8b5cf6", label="train loss")
-        ax2 = ax.twinx()
-        for k in hist[0]:
-            if k.startswith("val_"):
-                ax2.plot(ep, [h[k] for h in hist], color="#22d3ee", label=k)
-                break
-        ax.set(xlabel="epoch", title=title)
-        fig.legend(fontsize=7, frameon=False)
+        fig, axes = plt.subplots(1, 2 if val else 1, figsize=(8, 3.2), squeeze=False)
+        axes[0, 0].plot(
+            ep, [h["train_loss"] for h in hist], color="#d95926", lw=2, marker="o", ms=4
+        )
+        axes[0, 0].set(xlabel="epoch", title="training loss")
+        if val:
+            axes[0, 1].plot(ep, [h[val] for h in hist], color="#3987e5", lw=2, marker="o", ms=4)
+            axes[0, 1].set(xlabel="epoch", title=val.replace("_", " "))
+        for ax in axes.ravel():
+            ax.grid(alpha=0.3)
+        fig.suptitle(title, fontsize=10)
         fig.tight_layout()
         fig.savefig(path, dpi=110)
         plt.close(fig)
@@ -145,8 +169,9 @@ def plot_history(hist: list[dict[str, Any]], path: Path, title: str) -> None:
 
 # ----------------------------------------------------------------------------- chest ensemble
 @torch.no_grad()
-def _logits_and_feats(model: torch.nn.Module, loader: DataLoader, device: str
-                      ) -> tuple[np.ndarray, np.ndarray]:
+def _logits_and_feats(
+    model: torch.nn.Module, loader: DataLoader, device: str
+) -> tuple[np.ndarray, np.ndarray]:
     outs, ys = [], []
     for x, y in loader:
         outs.append(model(x.to(device)).float().cpu().numpy())
@@ -155,8 +180,9 @@ def _logits_and_feats(model: torch.nn.Module, loader: DataLoader, device: str
 
 
 @torch.no_grad()
-def mc_dropout_var(model: torch.nn.Module, loader: DataLoader, device: str, samples: int = 8,
-                   limit: int = 512) -> float:
+def mc_dropout_var(
+    model: torch.nn.Module, loader: DataLoader, device: str, samples: int = 8, limit: int = 512
+) -> float:
     """Mean per-label variance of sigmoid outputs under MC-dropout on the head."""
     model.eval()
     for m in model.head.modules():  # type: ignore[union-attr]
@@ -228,9 +254,14 @@ def evaluate_chest_ensemble(profile: str) -> dict[str, Any]:
     per_label = {}
     for k, lab in enumerate(NIH_LABELS):
         se, sp = sens_spec(y_test[:, k], p_test[:, k], thresholds[k])
-        per_label[lab] = {"auroc": per_auc[k], "threshold": thresholds[k], "sensitivity": se,
-                          "specificity": sp, "prevalence": float(y_test[:, k].mean()),
-                          "roc": roc_points(y_test[:, k], p_test[:, k], 40)}
+        per_label[lab] = {
+            "auroc": per_auc[k],
+            "threshold": thresholds[k],
+            "sensitivity": se,
+            "specificity": sp,
+            "prevalence": float(y_test[:, k].mean()),
+            "roc": roc_points(y_test[:, k], p_test[:, k], 40),
+        }
     uncal = np.mean([sigmoid(lt) for lt in test_l], 0)
     rel_cal = reliability(y_test.ravel(), p_test.ravel(), 10)
     rel_uncal = reliability(y_test.ravel(), uncal.ravel(), 10)
@@ -241,39 +272,76 @@ def evaluate_chest_ensemble(profile: str) -> dict[str, Any]:
     e_thr = float(np.percentile(e_val, 5))
     ood_auc = safe_auroc(np.r_[np.ones(len(e_test)), np.zeros(len(e_ood))], np.r_[e_test, e_ood])
     fairness = {}
-    if nih_l and nih_meta is not None and y_nih is not None:
+    test_meta = getattr(tds, "meta", None)
+    if test_meta is not None and {"sex", "age"} <= set(test_meta.columns):
+        fairness = fairness_report(y_test, p_test, test_meta)  # full profile: NIH test split
+        fairness["dataset"] = "NIH ChestX-ray14 official test split (patient-disjoint)"
+    elif nih_l and nih_meta is not None and y_nih is not None:
         p_nih = np.mean([sigmoid(ln / temps_arr[m]) for ln, m in zip(nih_l, members)], 0)
         fairness = fairness_report(y_nih, p_nih, nih_meta)
     metrics = {
-        "model": "chest_ensemble", "profile": profile, "task": "multilabel",
-        "generated_at": _now(), "members": members, "labels": NIH_LABELS,
-        "dataset": "ChestMNIST+ (NIH ChestX-ray14, official patient-wise split)"
-        if profile == "starter" else "NIH ChestX-ray14 (patient-level split)",
+        "model": "chest_ensemble",
+        "profile": profile,
+        "task": "multilabel",
+        "generated_at": _now(),
+        "members": members,
+        "labels": NIH_LABELS,
+        "dataset": (
+            "ChestMNIST+ (NIH ChestX-ray14, official patient-wise split)"
+            if profile == "starter"
+            else "NIH ChestX-ray14 (patient-level split)"
+        ),
         "n_test": int(len(y_test)),
-        "test": {"macro_auroc": macro, "per_label": per_label,
-                 "reliability_calibrated": rel_cal, "reliability_uncalibrated": rel_uncal,
-                 "mean_ensemble_std": float(std_test.mean()), "mc_dropout_variance": mc_vars,
-                 "ood_energy_auroc": ood_auc},
-        "per_member": per_member, "fairness": fairness,
+        "test": {
+            "macro_auroc": macro,
+            "per_label": per_label,
+            "reliability_calibrated": rel_cal,
+            "reliability_uncalibrated": rel_uncal,
+            "mean_ensemble_std": float(std_test.mean()),
+            "mc_dropout_variance": mc_vars,
+            "ood_energy_auroc": ood_auc,
+        },
+        "per_member": per_member,
+        "fairness": fairness,
         "history": {m: _history(m, profile) for m in members},
     }
-    calib = {"labels": NIH_LABELS, "members": members, "temperatures": temps,
-             "thresholds": dict(zip(NIH_LABELS, thresholds)), "energy_threshold": e_thr,
-             "energy_val_percentiles": {p: float(np.percentile(e_val, p)) for p in (1, 5, 25, 50)}}
+    calib = {
+        "labels": NIH_LABELS,
+        "members": members,
+        "temperatures": temps,
+        "thresholds": dict(zip(NIH_LABELS, thresholds)),
+        "energy_threshold": e_thr,
+        "energy_val_percentiles": {p: float(np.percentile(e_val, p)) for p in (1, 5, 25, 50)},
+    }
     write_json(out / "calibration.json", calib)
     write_json(out / "metrics.json", metrics)
-    plot_roc({k: v["roc"] for k, v in per_label.items()}, {k: v["auroc"] for k, v in per_label.items()},
-             plots / "roc.png", f"Chest ensemble ROC — macro AUROC {macro:.3f}")
+    plot_roc(
+        {k: v["roc"] for k, v in per_label.items()},
+        {k: v["auroc"] for k, v in per_label.items()},
+        plots / "roc.png",
+        f"Chest ensemble ROC — macro AUROC {macro:.3f}",
+    )
     plot_reliability(rel_cal, plots / "reliability.png", "Calibrated ensemble")
     for m in members:
         plot_history(_history(m, profile), plots / f"history_{m}.png", m)
     for m in members:  # copy member summaries next to each member too
-        write_json(ARTIFACTS / m / profile / "metrics.json",
-                   {"model": m, "profile": profile, "task": "multilabel", "generated_at": _now(),
-                    "test": per_member[m], "history": _history(m, profile),
-                    "mc_dropout_variance": mc_vars[m]})
-    print(f"[eval] chest_ensemble/{profile}: macro AUROC {macro:.4f} (members: "
-          + ", ".join(f"{m}={per_member[m]['macro_auroc']:.3f}" for m in members) + ")")
+        write_json(
+            ARTIFACTS / m / profile / "metrics.json",
+            {
+                "model": m,
+                "profile": profile,
+                "task": "multilabel",
+                "generated_at": _now(),
+                "test": per_member[m],
+                "history": _history(m, profile),
+                "mc_dropout_variance": mc_vars[m],
+            },
+        )
+    print(
+        f"[eval] chest_ensemble/{profile}: macro AUROC {macro:.4f} (members: "
+        + ", ".join(f"{m}={per_member[m]['macro_auroc']:.3f}" for m in members)
+        + ")"
+    )
     return metrics
 
 
@@ -308,7 +376,9 @@ def _ood_logits(model: torch.nn.Module, size: int, device: str, n: int = 400) ->
     if not imgs:
         return np.zeros((1, len(NIH_LABELS)))
     x = torch.from_numpy(np.concatenate([preprocess(i, size) for i in imgs]))
-    return np.concatenate([model(x[i : i + 128].to(device)).cpu().numpy() for i in range(0, len(x), 128)])
+    return np.concatenate(
+        [model(x[i : i + 128].to(device)).cpu().numpy() for i in range(0, len(x), 128)]
+    )
 
 
 def fairness_report(y: np.ndarray, p: np.ndarray, meta: Any) -> dict[str, Any]:
@@ -321,17 +391,25 @@ def fairness_report(y: np.ndarray, p: np.ndarray, meta: Any) -> dict[str, Any]:
         "view:PA": (meta["view"] == "PA").to_numpy(),
         "view:AP": (meta["view"] == "AP").to_numpy(),
     }
-    out: dict[str, Any] = {"dataset": "NIH ChestX-ray14 sample — official test-list patients",
-                           "n": int(len(y)), "groups": {}}
+    out: dict[str, Any] = {
+        "dataset": "NIH ChestX-ray14 sample — official test-list patients",
+        "n": int(len(y)),
+        "groups": {},
+    }
     for g, m in groups.items():
         if m.sum() < 20:
             continue
         per, macro = multilabel_auroc(y[m], p[m])
-        out["groups"][g] = {"n": int(m.sum()), "macro_auroc": macro,
-                            "per_label_auroc": dict(zip(NIH_LABELS, per))}
+        out["groups"][g] = {
+            "n": int(m.sum()),
+            "macro_auroc": macro,
+            "per_label_auroc": dict(zip(NIH_LABELS, per)),
+        }
     _, overall = multilabel_auroc(y, p)
     out["overall_macro_auroc"] = overall
-    vals = [v["macro_auroc"] for v in out["groups"].values() if v["macro_auroc"] == v["macro_auroc"]]
+    vals = [
+        v["macro_auroc"] for v in out["groups"].values() if v["macro_auroc"] == v["macro_auroc"]
+    ]
     sex = [out["groups"].get(k, {}).get("macro_auroc") for k in ("sex:F", "sex:M")]
     out["max_gap"] = float(max(vals) - min(vals)) if vals else None
     out["sex_gap"] = float(abs(sex[0] - sex[1])) if all(s is not None for s in sex) else None
@@ -356,11 +434,20 @@ def evaluate_model(name: str, profile: str) -> dict[str, Any]:
     plots.mkdir(exist_ok=True)
     task = cfg["task"]
     train_ds, val_ds, test_ds = make_datasets(cfg)
-    res: dict[str, Any] = {"model": name, "profile": profile, "task": task, "generated_at": _now(),
-                           "n_train": len(train_ds), "n_val": len(val_ds), "n_test": len(test_ds),
-                           "history": _history(name, profile)}
+    res: dict[str, Any] = {
+        "model": name,
+        "profile": profile,
+        "task": task,
+        "generated_at": _now(),
+        "n_train": len(train_ds),
+        "n_val": len(val_ds),
+        "n_test": len(test_ds),
+        "history": _history(name, profile),
+    }
     if task == "detection":
-        preds, gts = predict_detection(model, DataLoader(test_ds, 8, collate_fn=det_collate), device)
+        preds, gts = predict_detection(
+            model, DataLoader(test_ds, 8, collate_fn=det_collate), device
+        )
         res["test"] = map50(preds, gts)
         res["test"]["map50_iou_0.3"] = map50(preds, gts, 0.3)["map50"]
         # image-level detection of "any fracture" using the max box score
@@ -382,8 +469,16 @@ def evaluate_model(name: str, profile: str) -> dict[str, Any]:
             roc = roc_points(yt[:, 0], pt)
             auc = safe_auroc(yt[:, 0], pt)
             rel = reliability(yt[:, 0], pt)
-            res["test"] = {"auroc": auc, "threshold": thr, "sensitivity": se, "specificity": sp,
-                           "f1": float(f1), "temperature": t, "roc": roc, "reliability": rel}
+            res["test"] = {
+                "auroc": auc,
+                "threshold": thr,
+                "sensitivity": se,
+                "specificity": sp,
+                "f1": float(f1),
+                "temperature": t,
+                "roc": roc,
+                "reliability": rel,
+            }
             plot_roc({"fracture": roc}, {"fracture": auc}, plots / "roc.png", f"{name} ROC")
             plot_reliability(rel, plots / "reliability.png", name)
         else:
@@ -404,30 +499,52 @@ def evaluate_model(name: str, profile: str) -> dict[str, Any]:
         d, i = dice_iou(lt[:, 0] > 0, yt[:, 0] > 0.5)
         pos = yt[:, 0].reshape(len(yt), -1).max(1) > 0.5
         dp, ip = dice_iou(lt[pos, 0] > 0, yt[pos, 0] > 0.5) if pos.any() else (None, None)
-        res["test"] = {"dice": d, "iou": i, "dice_positive_slices": dp, "iou_positive_slices": ip,
-                       "n_positive": int(pos.sum())}
+        res["test"] = {
+            "dice": d,
+            "iou": i,
+            "dice_positive_slices": dp,
+            "iou_positive_slices": ip,
+            "n_positive": int(pos.sum()),
+        }
     elif task == "denoise":
         res["test"] = _evaluate_denoiser(model, test_ds, device)
     plot_history(res["history"], plots / "history.png", name)
     write_json(out / "metrics.json", res)
-    print(f"[eval] {name}/{profile}: " + json.dumps(
-        {k: v for k, v in res["test"].items() if isinstance(v, int | float)}, default=str)[:300])
+    print(
+        f"[eval] {name}/{profile}: "
+        + json.dumps(
+            {k: v for k, v in res["test"].items() if isinstance(v, int | float)}, default=str
+        )[:300]
+    )
     return res
 
 
 @torch.no_grad()
-def _evaluate_denoiser(model: torch.nn.Module, ds: Any, device: str, n: int = 200) -> dict[str, Any]:
+def _evaluate_denoiser(
+    model: torch.nn.Module, ds: Any, device: str, n: int = 200
+) -> dict[str, Any]:
     import cv2
 
     from ml.data.transforms import add_low_dose_noise
 
     torch.manual_seed(0)
-    levels = {"very_low_dose (40 photons)": (40, 0.03), "low_dose (100 photons)": (100, 0.02),
-              "moderate (300 photons)": (300, 0.01)}
+    levels = {
+        "very_low_dose (40 photons)": (40, 0.03),
+        "low_dose (100 photons)": (100, 0.02),
+        "moderate (300 photons)": (300, 0.01),
+    }
     out: dict[str, Any] = {"levels": {}}
     for lname, (ph, sg) in levels.items():
-        r: dict[str, list[float]] = {k: [] for k in ("psnr_noisy", "psnr_denoised", "ssim_noisy",
-                                                     "ssim_denoised", "psnr_gaussian_blur")}
+        r: dict[str, list[float]] = {
+            k: []
+            for k in (
+                "psnr_noisy",
+                "psnr_denoised",
+                "ssim_noisy",
+                "ssim_denoised",
+                "psnr_gaussian_blur",
+            )
+        }
         for i in range(min(n, len(ds))):
             c = ds[i][None]
             nz = add_low_dose_noise(c, ph, sg)
@@ -440,8 +557,14 @@ def _evaluate_denoiser(model: torch.nn.Module, ds: Any, device: str, n: int = 20
             r["psnr_gaussian_blur"].append(psnr(c0, cv2.GaussianBlur(n0, (5, 5), 1.0)))
         out["levels"][lname] = {k: float(np.mean(v)) for k, v in r.items()}
     mid = out["levels"]["low_dose (100 photons)"]
-    out.update({"psnr_noisy": mid["psnr_noisy"], "psnr_denoised": mid["psnr_denoised"],
-                "ssim_noisy": mid["ssim_noisy"], "ssim_denoised": mid["ssim_denoised"]})
+    out.update(
+        {
+            "psnr_noisy": mid["psnr_noisy"],
+            "psnr_denoised": mid["psnr_denoised"],
+            "ssim_noisy": mid["ssim_noisy"],
+            "ssim_denoised": mid["ssim_denoised"],
+        }
+    )
     return out
 
 
@@ -461,17 +584,30 @@ def write_card(name: str, profile: str) -> None:
     cfg = json.loads(cfgp.read_text()) if cfgp.exists() else {}
     t = m.get("test", {})
     headline = {k: v for k, v in t.items() if isinstance(v, int | float)}
-    lines = [f"## {name} ({profile})", "",
-             f"- Task: {m.get('task')}  ·  dataset: {cfg.get('dataset', m.get('dataset', 'n/a'))}",
-             f"- Architecture: {cfg.get('model', {})}",
-             f"- Input size: {cfg.get('img_size', 'n/a')}  ·  epochs run: {len(m.get('history', []) or [])}",
-             f"- Test metrics: {json.dumps(headline, default=lambda x: round(x, 4))}",
-             f"- Generated: {m.get('generated_at', '')}", ""]
+    lines = [
+        f"## {name} ({profile})",
+        "",
+        f"- Task: {m.get('task')}  ·  dataset: {cfg.get('dataset', m.get('dataset', 'n/a'))}",
+        f"- Architecture: {cfg.get('model', {})}",
+        f"- Input size: {cfg.get('img_size', 'n/a')}  ·  epochs run: {len(m.get('history', []) or [])}",
+        f"- Test metrics: {json.dumps(headline, default=lambda x: round(x, 4))}",
+        f"- Generated: {m.get('generated_at', '')}",
+        "",
+    ]
     (d / "card.md").write_text("\n".join(lines))
 
 
-ALL = ["chest_ensemble", "lung_unet", "fracture_cls", "fracture_det", "brain_cls", "brain_seg",
-       "router", "denoiser", "report_gen"]
+ALL = [
+    "chest_ensemble",
+    "lung_unet",
+    "fracture_cls",
+    "fracture_det",
+    "brain_cls",
+    "brain_seg",
+    "router",
+    "denoiser",
+    "report_gen",
+]
 
 
 def main(argv: list[str] | None = None) -> int:

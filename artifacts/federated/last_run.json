@@ -1,0 +1,67 @@
+{
+  "federated": {
+    "accuracy": 0.625,
+    "auroc": 0.4810486522024984
+  },
+  "centralized": {
+    "accuracy": 0.5240384615384616,
+    "auroc": 0.5546898969975893
+  },
+  "local_only": {
+    "St. Aurora (urban referral)": {
+      "accuracy": 0.625,
+      "auroc": 0.5251808021038791
+    },
+    "Riverside General": {
+      "accuracy": 0.594551282051282,
+      "auroc": 0.6493534955073417
+    },
+    "Hillcrest Rural Clinic": {
+      "accuracy": 0.375,
+      "auroc": 0.6881875958799035
+    }
+  },
+  "local_only_mean_auroc": 0.6209072978303748,
+  "federated_curve": [
+    {
+      "accuracy": 0.625,
+      "auroc": 0.45118343195266275
+    },
+    {
+      "accuracy": 0.625,
+      "auroc": 0.4810486522024984
+    }
+  ],
+  "centralized_curve": [
+    {
+      "accuracy": 0.5512820512820513,
+      "auroc": 0.4902257286872672
+    },
+    {
+      "accuracy": 0.5240384615384616,
+      "auroc": 0.5546898969975893
+    }
+  ],
+  "hospitals": [
+    {
+      "name": "St. Aurora (urban referral)",
+      "n": 1850,
+      "pneumonia_rate": 0.865,
+      "scanner": "high contrast"
+    },
+    {
+      "name": "Riverside General",
+      "n": 1400,
+      "pneumonia_rate": 0.5,
+      "scanner": "standard"
+    },
+    {
+      "name": "Hillcrest Rural Clinic",
+      "n": 384,
+      "pneumonia_rate": 0.312,
+      "scanner": "low contrast, noisy"
+    }
+  ],
+  "rounds": 2,
+  "seconds": 94.5
+}

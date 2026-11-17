@@ -1,0 +1,8 @@
+{
+  "model": "fracture_cls",
+  "profile": "starter",
+  "img_size": 192,
+  "onnx": true,
+  "max_abs_diff": 0.0247802734375,
+  "cpu_ms_per_image": 4.5
+}

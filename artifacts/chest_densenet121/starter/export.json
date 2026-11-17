@@ -1,0 +1,8 @@
+{
+  "model": "chest_densenet121",
+  "profile": "starter",
+  "img_size": 128,
+  "onnx": true,
+  "max_abs_diff": 2.86102294921875e-06,
+  "cpu_ms_per_image": 8.7
+}

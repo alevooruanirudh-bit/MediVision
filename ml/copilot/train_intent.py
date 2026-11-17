@@ -46,8 +46,19 @@ def build_jsonl(seed: int = 7) -> list[dict[str, Any]]:
     return rows
 
 
-PREFIXES = ["", "", "", "copilot ", "please ", "can you tell me ", "quick question ", "ok ", "so ",
-            "doctor here, ", "hey, "]
+PREFIXES = [
+    "",
+    "",
+    "",
+    "copilot ",
+    "please ",
+    "can you tell me ",
+    "quick question ",
+    "ok ",
+    "so ",
+    "doctor here, ",
+    "hey, ",
+]
 SUFFIXES = ["", "", "", "?", " please", " for this patient", " in this study", " here", " now"]
 
 
@@ -72,10 +83,12 @@ def _fit(pipe: Pipeline, rows: list[dict[str, Any]], seed: int = 0) -> Pipeline:
 
 
 def make_pipeline() -> Pipeline:
-    feats = FeatureUnion([
-        ("word", TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True, min_df=1)),
-        ("char", TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 5), sublinear_tf=True)),
-    ])
+    feats = FeatureUnion(
+        [
+            ("word", TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True, min_df=1)),
+            ("char", TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 5), sublinear_tf=True)),
+        ]
+    )
     return Pipeline([("feats", feats), ("clf", LogisticRegression(C=4.0, max_iter=3000))])
 
 
@@ -101,24 +114,35 @@ def train(profile: str = "starter") -> dict[str, Any]:
     y = [r["intent"] for r in test]
     cv = template_cv(rows)
     metrics = {
-        "model": "copilot_intent", "profile": profile, "task": "intent",
-        "n_intents": len(INTENTS), "n_examples": len(rows),
-        "n_templates": len({r["template_id"] for r in rows}), "n_test": len(test),
-        "test": {"accuracy": float(accuracy_score(y, pred)),
-                 "macro_f1": float(f1_score(y, pred, average="macro")),
-                 "template_cv_accuracy_mean": float(np.mean(cv)),
-                 "template_cv_accuracy_folds": cv,
-                 "per_intent": classification_report(y, pred, output_dict=True, zero_division=0),
-                 "errors": [{"text": r["text"], "true": r["intent"], "pred": p}
-                            for r, p in zip(test, pred) if p != r["intent"]]},
+        "model": "copilot_intent",
+        "profile": profile,
+        "task": "intent",
+        "n_intents": len(INTENTS),
+        "n_examples": len(rows),
+        "n_templates": len({r["template_id"] for r in rows}),
+        "n_test": len(test),
+        "test": {
+            "accuracy": float(accuracy_score(y, pred)),
+            "macro_f1": float(f1_score(y, pred, average="macro")),
+            "template_cv_accuracy_mean": float(np.mean(cv)),
+            "template_cv_accuracy_folds": cv,
+            "per_intent": classification_report(y, pred, output_dict=True, zero_division=0),
+            "errors": [
+                {"text": r["text"], "true": r["intent"], "pred": p}
+                for r, p in zip(test, pred)
+                if p != r["intent"]
+            ],
+        },
         "eval_protocol": "held-out set of 110 hand-written natural questions (intents_test.jsonl, "
-                         "never used for training) + 5-fold held-out-template CV",
+        "never used for training) + 5-fold held-out-template CV",
     }
     out = artifact_dir("copilot_intent", profile)
     joblib.dump(final, out / "model.joblib")
     write_json(out / "metrics.json", metrics)
-    print(f"[train] copilot_intent: held-out test accuracy {metrics['test']['accuracy']:.3f} "
-          f"({len(test)} questions, {len(INTENTS)} intents); template-CV {np.mean(cv):.3f}")
+    print(
+        f"[train] copilot_intent: held-out test accuracy {metrics['test']['accuracy']:.3f} "
+        f"({len(test)} questions, {len(INTENTS)} intents); template-CV {np.mean(cv):.3f}"
+    )
     return metrics
 
 

@@ -58,44 +58,75 @@ def make_datasets(cfg: dict[str, Any], tokenizer: Any = None) -> tuple[Dataset, 
     aug_tr, aug_ev = make_augment(cfg, True), make_augment(cfg, False)
     lt, lv = t.get("limit_train"), t.get("limit_val")
     if name == "chestmnist":
-        return (D.ChestMNISTDataset("train", size, aug_tr, lt),
-                D.ChestMNISTDataset("val", size, aug_ev, lv),
-                D.ChestMNISTDataset("test", size, aug_ev))
+        return (
+            D.ChestMNISTDataset("train", size, aug_tr, lt),
+            D.ChestMNISTDataset("val", size, aug_ev, lv),
+            D.ChestMNISTDataset("test", size, aug_ev),
+        )
     if name == "nih":
-        return (D.NIHDataset("train", size, aug_tr, "full", limit=lt),
-                D.NIHDataset("val", size, aug_ev, "full", limit=lv),
-                D.NIHDataset("test", size, aug_ev, "full"))
+        return (
+            D.NIHDataset("train", size, aug_tr, "full", limit=lt),
+            D.NIHDataset("val", size, aug_ev, "full", limit=lv),
+            D.NIHDataset("test", size, aug_ev, "full"),
+        )
     if name in ("lung", "lgg"):
-        return (D.SegDataset(name, "train", size, aug_tr), D.SegDataset(name, "val", size, aug_ev),
-                D.SegDataset(name, "test", size, aug_ev))
+        return (
+            D.SegDataset(name, "train", size, aug_tr),
+            D.SegDataset(name, "val", size, aug_ev),
+            D.SegDataset(name, "test", size, aug_ev),
+        )
     if name == "fracatlas_cls":
-        return (D.FractureClsDataset("train", size, aug_tr), D.FractureClsDataset("val", size, aug_ev),
-                D.FractureClsDataset("test", size, aug_ev))
+        return (
+            D.FractureClsDataset("train", size, aug_tr),
+            D.FractureClsDataset("val", size, aug_ev),
+            D.FractureClsDataset("test", size, aug_ev),
+        )
     if name == "fracatlas_det":
         nr = t.get("neg_ratio", 0.3)
-        return (D.FractureDetDataset("train", size, True, nr), D.FractureDetDataset("val", size),
-                D.FractureDetDataset("test", size))
+        return (
+            D.FractureDetDataset("train", size, True, nr),
+            D.FractureDetDataset("val", size),
+            D.FractureDetDataset("test", size),
+        )
+    if name == "rsna":
+        return (
+            D.DetDataset("train", size, True, 1.0, key="rsna"),
+            D.DetDataset("val", size, key="rsna", limit=lv),
+            D.DetDataset("test", size, key="rsna"),
+        )
     if name == "brain_mri":
-        return (D.BrainMRIDataset("train", size, aug_tr), D.BrainMRIDataset("val", size, aug_ev),
-                D.BrainMRIDataset("test", size, aug_ev))
+        return (
+            D.BrainMRIDataset("train", size, aug_tr),
+            D.BrainMRIDataset("val", size, aug_ev),
+            D.BrainMRIDataset("test", size, aug_ev),
+        )
     if name == "router":
         pc = cfg.get("per_class", 1500)
-        return (D.RouterDataset("train", size, pc), D.RouterDataset("val", size, pc),
-                D.RouterDataset("test", size, pc))
+        return (
+            D.RouterDataset("train", size, pc),
+            D.RouterDataset("val", size, pc),
+            D.RouterDataset("test", size, pc),
+        )
     if name == "denoise":
-        return (D.DenoiseDataset("train", size, lt), D.DenoiseDataset("val", size, lv),
-                D.DenoiseDataset("test", size, lv))
+        return (
+            D.DenoiseDataset("train", size, lt),
+            D.DenoiseDataset("val", size, lv),
+            D.DenoiseDataset("test", size, lv),
+        )
     if name == "iu_xray":
         ml = cfg["model"]["max_len"] + 2
-        return (D.IUReportDataset("train", tokenizer, size, ml, aug_tr),
-                D.IUReportDataset("val", tokenizer, size, ml, aug_ev),
-                D.IUReportDataset("test", tokenizer, size, ml, aug_ev))
+        return (
+            D.IUReportDataset("train", tokenizer, size, ml, aug_tr),
+            D.IUReportDataset("val", tokenizer, size, ml, aug_ev),
+            D.IUReportDataset("test", tokenizer, size, ml, aug_ev),
+        )
     raise ValueError(f"unknown dataset {name}")
 
 
 # ----------------------------------------------------------------------------- helpers
-def cosine_with_warmup(opt: torch.optim.Optimizer, warmup: int, total: int
-                       ) -> torch.optim.lr_scheduler.LambdaLR:
+def cosine_with_warmup(
+    opt: torch.optim.Optimizer, warmup: int, total: int
+) -> torch.optim.lr_scheduler.LambdaLR:
     def f(step: int) -> float:
         if step < warmup:
             return (step + 1) / max(warmup, 1)
@@ -144,7 +175,9 @@ def validate(task: str, model: nn.Module, loader: DataLoader, device: str) -> di
     raise ValueError(task)
 
 
-def class_balance(cfg: dict[str, Any], ds: Dataset) -> tuple[torch.Tensor | None, torch.Tensor | None]:
+def class_balance(
+    cfg: dict[str, Any], ds: Dataset
+) -> tuple[torch.Tensor | None, torch.Tensor | None]:
     y = getattr(ds, "y", None)
     if y is None:
         return None, None
@@ -185,8 +218,12 @@ def _log(msg: str) -> None:
 
 
 # ----------------------------------------------------------------------------- main loop
-def train(name: str, profile: str = "starter", resume: bool = False,
-          overrides: dict[str, Any] | None = None) -> dict[str, Any]:
+def train(
+    name: str,
+    profile: str = "starter",
+    resume: bool = False,
+    overrides: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     cfg = load_config(name, profile)
     if overrides:
         cfg.update(overrides)
@@ -206,8 +243,9 @@ def train(name: str, profile: str = "starter", resume: bool = False,
     ckpt_dir.mkdir(exist_ok=True)
     train_ds, val_ds, _ = make_datasets(cfg)
     bs, nw = t["batch_size"], t.get("num_workers", 0)
-    tl = DataLoader(train_ds, bs, shuffle=True, num_workers=nw, drop_last=True,
-                    persistent_workers=nw > 0)
+    tl = DataLoader(
+        train_ds, bs, shuffle=True, num_workers=nw, drop_last=True, persistent_workers=nw > 0
+    )
     vl = DataLoader(val_ds, bs * 2, shuffle=False, num_workers=nw)
     model = build_model(cfg).to(device)
     pos_w, cls_w = class_balance(cfg, train_ds)
@@ -235,8 +273,10 @@ def train(name: str, profile: str = "starter", resume: bool = False,
         start_epoch, history = st["epoch"] + 1, st["history"]
         stopper.best = st["best"]
         _log(f"resumed {name} at epoch {start_epoch}")
-    _log(f"{name}/{profile} on {device}: {len(train_ds)} train / {len(val_ds)} val, "
-         f"pretrained_backbone={pretrained_backbone()}")
+    _log(
+        f"{name}/{profile} on {device}: {len(train_ds)} train / {len(val_ds)} val, "
+        f"pretrained_backbone={pretrained_backbone()}"
+    )
     for epoch in range(start_epoch, epochs):
         model.train()
         t0, running, n = time.time(), 0.0, 0
@@ -259,16 +299,34 @@ def train(name: str, profile: str = "starter", resume: bool = False,
             running += loss.item() * len(x)
             n += len(x)
         metrics = validate(task, model, vl, device)
-        rec = {"epoch": epoch + 1, "train_loss": running / max(n, 1), **metrics,
-               "lr": opt.param_groups[0]["lr"], "seconds": round(time.time() - t0, 1)}
+        rec = {
+            "epoch": epoch + 1,
+            "train_loss": running / max(n, 1),
+            **metrics,
+            "lr": opt.param_groups[0]["lr"],
+            "seconds": round(time.time() - t0, 1),
+        }
         history.append(rec)
         is_best = stopper.step(metrics[monitor])
-        _log(f"{name} epoch {epoch + 1}/{epochs} " + " ".join(
-            f"{k}={v:.4f}" if isinstance(v, float) else f"{k}={v}" for k, v in rec.items()))
+        _log(
+            f"{name} epoch {epoch + 1}/{epochs} "
+            + " ".join(
+                f"{k}={v:.4f}" if isinstance(v, float) else f"{k}={v}" for k, v in rec.items()
+            )
+        )
         if is_best:
             torch.save(model.state_dict(), ckpt_dir / "best.pt")
-        torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "sched": sched.state_dict(),
-                    "epoch": epoch, "history": history, "best": stopper.best}, ckpt_dir / "last.pt")
+        torch.save(
+            {
+                "model": model.state_dict(),
+                "opt": opt.state_dict(),
+                "sched": sched.state_dict(),
+                "epoch": epoch,
+                "history": history,
+                "best": stopper.best,
+            },
+            ckpt_dir / "last.pt",
+        )
         if stopper.stop:
             _log(f"early stopping at epoch {epoch + 1}")
             break
@@ -276,15 +334,27 @@ def train(name: str, profile: str = "starter", resume: bool = False,
     return finalize(cfg, model, history, {monitor: stopper.best})
 
 
-def finalize(cfg: dict[str, Any], model: nn.Module, history: list[dict[str, Any]],
-             best: dict[str, Any]) -> dict[str, Any]:
+def finalize(
+    cfg: dict[str, Any], model: nn.Module, history: list[dict[str, Any]], best: dict[str, Any]
+) -> dict[str, Any]:
     out = artifact_dir(cfg["name"], cfg["profile"])
-    torch.save({"state_dict": {k: v.cpu() for k, v in model.state_dict().items()}, "config": cfg,
-                "labels": labels_for(cfg)}, out / "model.pt")
+    torch.save(
+        {
+            "state_dict": {k: v.cpu() for k, v in model.state_dict().items()},
+            "config": cfg,
+            "labels": labels_for(cfg),
+        },
+        out / "model.pt",
+    )
     write_json(out / "history.json", history)
     write_json(out / "config.json", cfg)
-    summary = {"model": cfg["name"], "profile": cfg["profile"], "best": best,
-               "epochs_run": len(history), "pretrained_backbone": pretrained_backbone()}
+    summary = {
+        "model": cfg["name"],
+        "profile": cfg["profile"],
+        "best": best,
+        "epochs_run": len(history),
+        "pretrained_backbone": pretrained_backbone(),
+    }
     write_json(out / "train_summary.json", summary)
     _log(f"saved {out / 'model.pt'}")
     return summary
@@ -296,8 +366,9 @@ def det_collate(batch: list[Any]) -> tuple[list[torch.Tensor], list[dict[str, to
 
 
 @torch.no_grad()
-def predict_detection(model: nn.Module, loader: DataLoader, device: str
-                      ) -> tuple[list[dict[str, np.ndarray]], list[np.ndarray]]:
+def predict_detection(
+    model: nn.Module, loader: DataLoader, device: str
+) -> tuple[list[dict[str, np.ndarray]], list[np.ndarray]]:
     model.eval()
     preds, gts = [], []
     for xs, ts in loader:
@@ -313,15 +384,25 @@ def train_detection(cfg: dict[str, Any], resume: bool = False) -> dict[str, Any]
     device = get_device(t.get("device", "cpu"))
     torch.set_num_threads(max(torch.get_num_threads(), 8))
     train_ds, val_ds, _ = make_datasets(cfg)
-    tl = DataLoader(train_ds, t["batch_size"], shuffle=True, collate_fn=det_collate,
-                    num_workers=t.get("num_workers", 0))
-    vl = DataLoader(val_ds, t["batch_size"], collate_fn=det_collate,
-                    num_workers=t.get("num_workers", 0))
+    tl = DataLoader(
+        train_ds,
+        t["batch_size"],
+        shuffle=True,
+        collate_fn=det_collate,
+        num_workers=t.get("num_workers", 0),
+    )
+    vl = DataLoader(
+        val_ds, t["batch_size"], collate_fn=det_collate, num_workers=t.get("num_workers", 0)
+    )
     model = build_model(cfg).to(device)
     params = [p for p in model.parameters() if p.requires_grad]
     o = cfg["optim"]
-    opt = torch.optim.SGD(params, lr=o["lr"], momentum=o.get("momentum", 0.9),
-                          weight_decay=o.get("weight_decay", 1e-4))
+    opt = torch.optim.SGD(
+        params,
+        lr=o["lr"],
+        momentum=o.get("momentum", 0.9),
+        weight_decay=o.get("weight_decay", 1e-4),
+    )
     epochs = t["epochs"]
     sched = cosine_with_warmup(opt, t.get("warmup_epochs", 1) * len(tl), epochs * len(tl))
     stopper = EarlyStopper(t.get("patience", 3))
@@ -345,8 +426,13 @@ def train_detection(cfg: dict[str, Any], resume: bool = False) -> dict[str, Any]
             running += loss.item()  # type: ignore[union-attr]
         preds, gts = predict_detection(model, vl, device)
         m = map50(preds, gts)
-        rec = {"epoch": epoch + 1, "train_loss": running / len(tl), "val_map50": m["map50"],
-               "val_recall": m["recall"], "seconds": round(time.time() - t0, 1)}
+        rec = {
+            "epoch": epoch + 1,
+            "train_loss": running / len(tl),
+            "val_map50": m["map50"],
+            "val_recall": m["recall"],
+            "seconds": round(time.time() - t0, 1),
+        }
         history.append(rec)
         _log(f"{cfg['name']} epoch {epoch + 1}/{epochs} {rec}")
         if stopper.step(m["map50"]):

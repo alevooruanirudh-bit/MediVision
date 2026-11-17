@@ -13,9 +13,17 @@ import torch.nn as nn
 
 
 class ReportGenerator(nn.Module):
-    def __init__(self, vocab_size: int, d_model: int = 384, layers: int = 4, heads: int = 6,
-                 ffn: int = 1536, max_len: int = 128, dropout: float = 0.1,
-                 encoder: str = "densenet121") -> None:
+    def __init__(
+        self,
+        vocab_size: int,
+        d_model: int = 384,
+        layers: int = 4,
+        heads: int = 6,
+        ffn: int = 1536,
+        max_len: int = 128,
+        dropout: float = 0.1,
+        encoder: str = "densenet121",
+    ) -> None:
         super().__init__()
         import timm
 
@@ -24,8 +32,9 @@ class ReportGenerator(nn.Module):
         self.tok = nn.Embedding(vocab_size, d_model)
         self.pos = nn.Parameter(torch.zeros(1, max_len, d_model))
         self.img_pos = nn.Parameter(torch.zeros(1, 64, d_model))
-        layer = nn.TransformerDecoderLayer(d_model, heads, ffn, dropout, batch_first=True,
-                                           norm_first=True)
+        layer = nn.TransformerDecoderLayer(
+            d_model, heads, ffn, dropout, batch_first=True, norm_first=True
+        )
         self.decoder = nn.TransformerDecoder(layer, layers)
         self.norm = nn.LayerNorm(d_model)
         self.out = nn.Linear(d_model, vocab_size, bias=False)
@@ -51,8 +60,15 @@ class ReportGenerator(nn.Module):
         return self.decode(self.encode(images), tokens)
 
     @torch.no_grad()
-    def generate(self, images: torch.Tensor, bos: int, eos: int, max_new: int = 96,
-                 beam: int = 3, no_repeat_ngram: int = 3) -> list[list[int]]:
+    def generate(
+        self,
+        images: torch.Tensor,
+        bos: int,
+        eos: int,
+        max_new: int = 96,
+        beam: int = 3,
+        no_repeat_ngram: int = 3,
+    ) -> list[list[int]]:
         """Beam search with n-gram blocking (batch of 1 for beams > 1)."""
         mem = self.encode(images)
         results = []

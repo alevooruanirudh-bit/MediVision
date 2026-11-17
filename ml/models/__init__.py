@@ -24,7 +24,9 @@ def build_model(cfg: dict[str, Any], pretrained: bool | None = None) -> nn.Modul
         from ml.models.classifier import ClassifierNet
 
         n = len(labels_for(cfg)) or 1
-        return ClassifierNet(m["backbone"], n, m.get("dropout", 0.3), m.get("hidden", 512), pretrained)
+        return ClassifierNet(
+            m["backbone"], n, m.get("dropout", 0.3), m.get("hidden", 512), pretrained
+        )
     if arch == "smallcnn":
         from ml.models.classifier import SmallCNN
 
@@ -46,6 +48,7 @@ def build_model(cfg: dict[str, Any], pretrained: bool | None = None) -> nn.Modul
     if arch == "report_gen":
         from ml.models.report_gen import ReportGenerator
 
-        return ReportGenerator(m["vocab_size"], m["d_model"], m["layers"], m["heads"], m["ffn"],
-                               m["max_len"] + 2)
+        return ReportGenerator(
+            m["vocab_size"], m["d_model"], m["layers"], m["heads"], m["ffn"], m["max_len"] + 2
+        )
     raise ValueError(f"unknown arch {arch}")

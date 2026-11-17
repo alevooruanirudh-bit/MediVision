@@ -1,0 +1,8 @@
+{
+  "model": "lung_unet",
+  "profile": "starter",
+  "img_size": 128,
+  "onnx": true,
+  "max_abs_diff": 3.904104232788086e-06,
+  "cpu_ms_per_image": 19.2
+}

@@ -21,8 +21,18 @@ import torch.nn as nn
 from ml.common import ARTIFACTS, write_json
 from ml.evaluate import load_trained
 
-EXPORTABLE = ["chest_densenet121", "chest_efficientnet_b2", "chest_convnext_tiny", "lung_unet",
-              "fracture_cls", "fracture_det", "brain_cls", "brain_seg", "router", "denoiser"]
+EXPORTABLE = [
+    "chest_densenet121",
+    "chest_efficientnet_b2",
+    "chest_convnext_tiny",
+    "lung_unet",
+    "fracture_cls",
+    "fracture_det",
+    "brain_cls",
+    "brain_seg",
+    "router",
+    "denoiser",
+]
 
 
 class WithFeatures(nn.Module):
@@ -35,14 +45,35 @@ class WithFeatures(nn.Module):
         return self.m.head(f), f  # type: ignore[operator]
 
 
-def _export(module: nn.Module, x: torch.Tensor, path: str, inputs: list[str], outputs: list[str],
-            dynamic: dict[str, Any] | None) -> None:
+def _export(
+    module: nn.Module,
+    x: torch.Tensor,
+    path: str,
+    inputs: list[str],
+    outputs: list[str],
+    dynamic: dict[str, Any] | None,
+) -> None:
     try:
-        torch.onnx.export(module, (x,), path, input_names=inputs, output_names=outputs,
-                          dynamic_axes=dynamic, opset_version=18, dynamo=False)
+        torch.onnx.export(
+            module,
+            (x,),
+            path,
+            input_names=inputs,
+            output_names=outputs,
+            dynamic_axes=dynamic,
+            opset_version=18,
+            dynamo=False,
+        )
     except TypeError:
-        torch.onnx.export(module, (x,), path, input_names=inputs, output_names=outputs,
-                          dynamic_axes=dynamic, opset_version=18)
+        torch.onnx.export(
+            module,
+            (x,),
+            path,
+            input_names=inputs,
+            output_names=outputs,
+            dynamic_axes=dynamic,
+            opset_version=18,
+        )
 
 
 def export(name: str, profile: str) -> dict[str, Any]:
@@ -57,9 +88,15 @@ def export(name: str, profile: str) -> dict[str, Any]:
     if task == "detection":
         x = torch.rand(3, size, size)
         try:
-            torch.onnx.export(model, ([x],), path, input_names=["image"],
-                              output_names=["boxes", "labels", "scores"], opset_version=18,
-                              dynamo=False)
+            torch.onnx.export(
+                model,
+                ([x],),
+                path,
+                input_names=["image"],
+                output_names=["boxes", "labels", "scores"],
+                opset_version=18,
+                dynamo=False,
+            )
             sess = ort.InferenceSession(path, providers=["CPUExecutionProvider"])
             sess.run(None, {"image": x.numpy()})
             info["onnx"] = True
@@ -71,14 +108,27 @@ def export(name: str, profile: str) -> dict[str, Any]:
     chans = 3 if cfg["model"]["arch"] in ("classifier", "smallcnn") else 1
     x = torch.randn(1, chans, size, size)
     if cfg["model"]["arch"] == "classifier":
-        _export(WithFeatures(model), x, path, ["input"], ["logits", "features"],
-                {"input": {0: "batch"}, "logits": {0: "batch"}, "features": {0: "batch"}})
+        _export(
+            WithFeatures(model),
+            x,
+            path,
+            ["input"],
+            ["logits", "features"],
+            {"input": {0: "batch"}, "logits": {0: "batch"}, "features": {0: "batch"}},
+        )
         lin = [m for m in model.head if isinstance(m, nn.Linear)]  # type: ignore[attr-defined]
-        np.savez(d / "head.npz", w1=lin[0].weight.detach().numpy(), b1=lin[0].bias.detach().numpy(),
-                 w2=lin[1].weight.detach().numpy(), b2=lin[1].bias.detach().numpy(),
-                 dropout=float(cfg["model"].get("dropout", 0.3)))
+        np.savez(
+            d / "head.npz",
+            w1=lin[0].weight.detach().numpy(),
+            b1=lin[0].bias.detach().numpy(),
+            w2=lin[1].weight.detach().numpy(),
+            b2=lin[1].bias.detach().numpy(),
+            dropout=float(cfg["model"].get("dropout", 0.3)),
+        )
     else:
-        _export(model, x, path, ["input"], ["output"], {"input": {0: "batch"}, "output": {0: "batch"}})
+        _export(
+            model, x, path, ["input"], ["output"], {"input": {0: "batch"}, "output": {0: "batch"}}
+        )
     model.eval()
     with torch.no_grad():
         ref = model(x).numpy()
@@ -87,11 +137,18 @@ def export(name: str, profile: str) -> dict[str, Any]:
     t0 = time.perf_counter()
     for _ in range(5):
         sess.run(None, {"input": x.numpy()})
-    info.update({"onnx": True, "max_abs_diff": float(np.abs(got - ref).max()),
-                 "cpu_ms_per_image": round((time.perf_counter() - t0) / 5 * 1000, 1)})
+    info.update(
+        {
+            "onnx": True,
+            "max_abs_diff": float(np.abs(got - ref).max()),
+            "cpu_ms_per_image": round((time.perf_counter() - t0) / 5 * 1000, 1),
+        }
+    )
     write_json(d / "export.json", info)
-    print(f"[export] {name}/{profile}: diff {info['max_abs_diff']:.2e}, "
-          f"{info['cpu_ms_per_image']} ms/img")
+    print(
+        f"[export] {name}/{profile}: diff {info['max_abs_diff']:.2e}, "
+        f"{info['cpu_ms_per_image']} ms/img"
+    )
     return info
 
 

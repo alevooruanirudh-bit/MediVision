@@ -14,8 +14,8 @@ starter:
   train: {epochs: 3, batch_size: 64, limit_train: 24000, limit_val: 4000}
 full:
   dataset: nih
-  img_size: 448
-  train: {epochs: 12, batch_size: 64, num_workers: 4}
+  img_size: 384   # 512 also supported (≈1.8x GPU time)
+  train: {epochs: 6, batch_size: 64, num_workers: 4}
   kaggle:
     dataset_sources: [nih-chest-xrays/data]
     gpu_hours: 2.5

@@ -1,0 +1,10 @@
+.venv
+data
+logs
+frontend
+.git
+**/__pycache__
+backend/storage
+backend/*.db
+artifacts/**/checkpoints
+ml/kaggle/*/output

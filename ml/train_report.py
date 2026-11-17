@@ -25,7 +25,12 @@ SPECIAL = ["<pad>", "<bos>", "<eos>", "<unk>"]
 # Keyword gazetteer used for the "clinical consistency" check (report text vs labels).
 FINDING_KEYWORDS: dict[str, list[str]] = {
     "Atelectasis": ["atelectasis", "atelectatic"],
-    "Cardiomegaly": ["cardiomegaly", "enlarged heart", "heart is enlarged", "heart size is enlarged"],
+    "Cardiomegaly": [
+        "cardiomegaly",
+        "enlarged heart",
+        "heart is enlarged",
+        "heart size is enlarged",
+    ],
     "Effusion": ["effusion"],
     "Infiltration": ["infiltrate", "infiltration"],
     "Mass": ["mass"],
@@ -119,8 +124,12 @@ def consistency(refs: list[str], hyps: list[str]) -> dict[str, float]:
         normal_agree.append(float((not a) == (not b)))
     p = tp / max(tp + fp, 1)
     rc = tp / max(tp + fn, 1)
-    return {"precision": p, "recall": rc, "f1": 2 * p * rc / max(p + rc, 1e-9),
-            "normal_vs_abnormal_agreement": float(np.mean(normal_agree))}
+    return {
+        "precision": p,
+        "recall": rc,
+        "f1": 2 * p * rc / max(p + rc, 1e-9),
+        "normal_vs_abnormal_agreement": float(np.mean(normal_agree)),
+    }
 
 
 # ----------------------------------------------------------------------------- training
@@ -147,21 +156,26 @@ def train_report(cfg: dict[str, Any], resume: bool = False) -> dict[str, Any]:
             p = ARTIFACTS / init / prof / "model.pt"
             if p.exists():
                 sd = torch.load(p, map_location="cpu", weights_only=False)["state_dict"]
-                enc = {k[len("backbone."):]: v for k, v in sd.items() if k.startswith("backbone.")}
+                enc = {k[len("backbone.") :]: v for k, v in sd.items() if k.startswith("backbone.")}
                 missing = model.encoder.load_state_dict(enc, strict=False)
                 print(f"[train] report_gen encoder <- {p} (missing {len(missing.missing_keys)})")
                 break
     pad = tok.token_to_id("<pad>")
     loss_fn = nn.CrossEntropyLoss(ignore_index=pad, label_smoothing=0.1)
-    opt = torch.optim.AdamW(model.parameters(), lr=cfg["optim"]["lr"],
-                            weight_decay=cfg["optim"].get("weight_decay", 0.01))
+    opt = torch.optim.AdamW(
+        model.parameters(),
+        lr=cfg["optim"]["lr"],
+        weight_decay=cfg["optim"].get("weight_decay", 0.01),
+    )
     epochs = t["epochs"]
     sched = cosine_with_warmup(opt, t.get("warmup_epochs", 1) * len(tl), epochs * len(tl))
     stopper = EarlyStopper(t.get("patience", 4), "min")
     history: list[dict[str, Any]] = []
     freeze = t.get("freeze_encoder_epochs", 0)
-    print(f"[train] report_gen on {device}: {len(train_ds)} train / {len(val_ds)} val, "
-          f"vocab {tok.get_vocab_size()}, params {sum(p.numel() for p in model.parameters()) / 1e6:.1f}M")
+    print(
+        f"[train] report_gen on {device}: {len(train_ds)} train / {len(val_ds)} val, "
+        f"vocab {tok.get_vocab_size()}, params {sum(p.numel() for p in model.parameters()) / 1e6:.1f}M"
+    )
     (out / "checkpoints").mkdir(exist_ok=True)
     for epoch in range(epochs):
         for p in model.encoder.parameters():
@@ -185,10 +199,16 @@ def train_report(cfg: dict[str, Any], resume: bool = False) -> dict[str, Any]:
             for x, seq in vl:
                 x, seq = x.to(device), seq.to(device)
                 logits = model(x, seq[:, :-1])
-                vloss += loss_fn(logits.reshape(-1, logits.shape[-1]), seq[:, 1:].reshape(-1)).item()
+                vloss += loss_fn(
+                    logits.reshape(-1, logits.shape[-1]), seq[:, 1:].reshape(-1)
+                ).item()
                 vn += 1
-        rec = {"epoch": epoch + 1, "train_loss": run / n, "val_loss": vloss / max(vn, 1),
-               "seconds": round(time.time() - t0, 1)}
+        rec = {
+            "epoch": epoch + 1,
+            "train_loss": run / n,
+            "val_loss": vloss / max(vn, 1),
+            "seconds": round(time.time() - t0, 1),
+        }
         history.append(rec)
         print(f"[train] report_gen epoch {epoch + 1}/{epochs} {rec}", flush=True)
         if stopper.step(rec["val_loss"]):
@@ -201,8 +221,9 @@ def train_report(cfg: dict[str, Any], resume: bool = False) -> dict[str, Any]:
     return summary
 
 
-def evaluate_report(cfg: dict[str, Any], model: nn.Module, tok: Any, test_ds: Any,
-                    limit: int = 150) -> dict[str, Any]:
+def evaluate_report(
+    cfg: dict[str, Any], model: nn.Module, tok: Any, test_ds: Any, limit: int = 150
+) -> dict[str, Any]:
     model.eval()
     bos, eos = tok.token_to_id("<bos>"), tok.token_to_id("<eos>")
     refs, hyps, examples = [], [], []
@@ -223,13 +244,17 @@ def evaluate_report(cfg: dict[str, Any], model: nn.Module, tok: Any, test_ds: An
         "bleu4": corpus_bleu4(refs, hyps),
         "rouge_l": rouge_l(refs, hyps),
         "clinical_consistency": consistency(refs, hyps),
-        "baseline_most_common_report": {"bleu4": corpus_bleu4(refs, [common] * n),
-                                        "rouge_l": rouge_l(refs, [common] * n)},
+        "baseline_most_common_report": {
+            "bleu4": corpus_bleu4(refs, [common] * n),
+            "rouge_l": rouge_l(refs, [common] * n),
+        },
         "examples": examples,
         "labels_checked": NIH_LABELS,
     }
     out = artifact_dir(cfg["name"], cfg["profile"])
-    write_json(out / "metrics.json", {"model": cfg["name"], "profile": cfg["profile"],
-                                      "task": "report", "test": metrics})
+    write_json(
+        out / "metrics.json",
+        {"model": cfg["name"], "profile": cfg["profile"], "task": "report", "test": metrics},
+    )
     print(f"[eval] report_gen BLEU-4 {metrics['bleu4']:.3f} ROUGE-L {metrics['rouge_l']:.3f}")
     return metrics

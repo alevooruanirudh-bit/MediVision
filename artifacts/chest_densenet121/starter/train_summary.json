@@ -1,0 +1,9 @@
+{
+  "model": "chest_densenet121",
+  "profile": "starter",
+  "best": {
+    "val_macro_auroc": 0.7708845128248836
+  },
+  "epochs_run": 3,
+  "pretrained_backbone": true
+}

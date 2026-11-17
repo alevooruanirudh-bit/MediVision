@@ -41,8 +41,9 @@ class BCEDice(nn.Module):
         return bce + dice.mean()
 
 
-def build_loss(cfg: dict, pos_weight: torch.Tensor | None = None,
-               class_weight: torch.Tensor | None = None) -> nn.Module:
+def build_loss(
+    cfg: dict, pos_weight: torch.Tensor | None = None, class_weight: torch.Tensor | None = None
+) -> nn.Module:
     lc = cfg.get("loss", {})
     t = lc.get("type", "ce")
     if t == "asl":

@@ -1,0 +1,25 @@
+{
+  "task": "detection",
+  "dataset": "fracatlas_det",
+  "model": {
+    "arch": "fasterrcnn_mobilenet"
+  },
+  "optim": {
+    "lr": 0.005,
+    "weight_decay": 0.0001,
+    "momentum": 0.9
+  },
+  "train": {
+    "patience": 4,
+    "warmup_epochs": 1,
+    "num_workers": 0,
+    "monitor": "val_map50",
+    "device": "cpu",
+    "neg_ratio": 0.3,
+    "epochs": 6,
+    "batch_size": 8
+  },
+  "img_size": 384,
+  "name": "fracture_det",
+  "profile": "starter"
+}

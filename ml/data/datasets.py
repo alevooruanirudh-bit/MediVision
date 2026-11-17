@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import random
@@ -50,8 +51,14 @@ class ChestMNISTDataset(Dataset):
 
     labels = NIH_LABELS
 
-    def __init__(self, split: str, size: int = 128, augment: Augment | None = None,
-                 limit: int | None = None, src_size: int = 128) -> None:
+    def __init__(
+        self,
+        split: str,
+        size: int = 128,
+        augment: Augment | None = None,
+        limit: int | None = None,
+        src_size: int = 128,
+    ) -> None:
         x, y = load_medmnist("chestmnist", src_size, split)
         idx = _subset(len(x), limit)
         self.x, self.y = x[idx], y[idx].astype(np.float32)
@@ -71,9 +78,15 @@ class NIHDataset(Dataset):
 
     labels = NIH_LABELS
 
-    def __init__(self, split: str, size: int = 224, augment: Augment | None = None,
-                 source: str = "sample", image_root: str | None = None,
-                 limit: int | None = None) -> None:
+    def __init__(
+        self,
+        split: str,
+        size: int = 224,
+        augment: Augment | None = None,
+        source: str = "sample",
+        image_root: str | None = None,
+        limit: int | None = None,
+    ) -> None:
         self.aug = augment or Augment(size, train=False)
         self.source = source
         if source == "sample":
@@ -109,8 +122,15 @@ class NIHDataset(Dataset):
 class SegDataset(Dataset):
     """Generic image/mask dataset from a processed npz (lung or LGG)."""
 
-    def __init__(self, key: str, split: str, size: int, augment: Augment | None = None,
-                 channels: int = 1, limit: int | None = None) -> None:
+    def __init__(
+        self,
+        key: str,
+        split: str,
+        size: int,
+        augment: Augment | None = None,
+        channels: int = 1,
+        limit: int | None = None,
+    ) -> None:
         d = PROCESSED / key
         npz = next(d.glob("*.npz"))
         z = np.load(npz)
@@ -134,14 +154,15 @@ class SegDataset(Dataset):
 
 
 # --------------------------------------------------------------------------- fracture
-def _frac_records(split: str) -> list[dict[str, Any]]:
-    recs = json.loads((PROCESSED / "fracatlas" / "annotations.json").read_text())
+def _frac_records(split: str, key: str = "fracatlas") -> list[dict[str, Any]]:
+    recs = json.loads((PROCESSED / key / "annotations.json").read_text())
     return [r for r in recs if r["split"] == split]
 
 
 class FractureClsDataset(Dataset):
-    def __init__(self, split: str, size: int = 224, augment: Augment | None = None,
-                 limit: int | None = None) -> None:
+    def __init__(
+        self, split: str, size: int = 224, augment: Augment | None = None, limit: int | None = None
+    ) -> None:
         recs = _frac_records(split)
         self.recs = [recs[i] for i in _subset(len(recs), limit)]
         self.aug = augment or Augment(size, train=False)
@@ -159,12 +180,20 @@ class FractureClsDataset(Dataset):
         return torch.from_numpy(normalize_gray(img)), torch.tensor([self.y[i]])
 
 
-class FractureDetDataset(Dataset):
-    """Detection targets in torchvision format. Images letterboxed to `size` (square)."""
+class DetDataset(Dataset):
+    """Detection targets in torchvision format (FracAtlas or RSNA). Letterboxed to `size`."""
 
-    def __init__(self, split: str, size: int = 512, train: bool = False,
-                 neg_ratio: float = 0.3, limit: int | None = None) -> None:
-        recs = _frac_records(split)
+    def __init__(
+        self,
+        split: str,
+        size: int = 512,
+        train: bool = False,
+        neg_ratio: float = 0.3,
+        limit: int | None = None,
+        key: str = "fracatlas",
+    ) -> None:
+        self.key = key
+        recs = _frac_records(split, key)
         pos = [r for r in recs if r["boxes"]]
         neg = [r for r in recs if not r["boxes"]]
         random.Random(0).shuffle(neg)
@@ -179,8 +208,10 @@ class FractureDetDataset(Dataset):
 
     def __getitem__(self, i: int) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
         r = self.recs[i]
-        img = cv2.imread(str(PROCESSED / "fracatlas" / "images" / r["image"]), cv2.IMREAD_GRAYSCALE)
-        img, boxes = letterbox(img, np.array(r["boxes"], dtype=np.float32).reshape(-1, 4), self.size)
+        img = cv2.imread(str(PROCESSED / self.key / "images" / r["image"]), cv2.IMREAD_GRAYSCALE)
+        img, boxes = letterbox(
+            img, np.array(r["boxes"], dtype=np.float32).reshape(-1, 4), self.size
+        )
         if self.train and random.random() < 0.5:
             img = img[:, ::-1].copy()
             if len(boxes):
@@ -195,6 +226,9 @@ class FractureDetDataset(Dataset):
         return x, target
 
 
+FractureDetDataset = DetDataset
+
+
 def letterbox(img: np.ndarray, boxes: np.ndarray, size: int) -> tuple[np.ndarray, np.ndarray]:
     h, w = img.shape[:2]
     s = size / max(h, w)
@@ -206,8 +240,9 @@ def letterbox(img: np.ndarray, boxes: np.ndarray, size: int) -> tuple[np.ndarray
 
 # --------------------------------------------------------------------------- brain MRI
 class BrainMRIDataset(Dataset):
-    def __init__(self, split: str, size: int = 128, augment: Augment | None = None,
-                 limit: int | None = None) -> None:
+    def __init__(
+        self, split: str, size: int = 128, augment: Augment | None = None, limit: int | None = None
+    ) -> None:
         d = PROCESSED / "brain_mri"
         meta = pd.read_csv(d / "metadata.csv")
         cache = np.load(next(d.glob("images_*.npy")), mmap_mode="r")
@@ -245,18 +280,17 @@ class RouterDataset(Dataset):
         n = per_class if split == "train" else per_class // 5
         x, _ = load_medmnist("chestmnist", 128, split)
         pools["chest_xray"] += take(x, n // 2)
-        try:
-            pools["chest_xray"] += take(SegDataset("lung", split if split != "train" else "train",
-                                                   128).x, n // 2)
-        except Exception:
-            pass
+        with contextlib.suppress(Exception):
+            pools["chest_xray"] += take(
+                SegDataset("lung", split if split != "train" else "train", 128).x, n // 2
+            )
         bone = FractureClsDataset(split)
-        pools["bone_xray"] += [bone.image(i) for i in rng.choice(len(bone), min(n, len(bone)), False)]
+        pools["bone_xray"] += [
+            bone.image(i) for i in rng.choice(len(bone), min(n, len(bone)), False)
+        ]
         pools["brain_mri"] += take(BrainMRIDataset(split, 128).x, n // 2)
-        try:
+        with contextlib.suppress(Exception):
             pools["brain_mri"] += take(SegDataset("lgg", split, 128).x, n // 2)
-        except Exception:
-            pass
         for flag in ("organamnist", "breastmnist", "pneumoniamnist"):
             try:
                 xo, _ = load_medmnist(flag, 128 if flag != "pneumoniamnist" else 64, split)
@@ -265,8 +299,9 @@ class RouterDataset(Dataset):
                 pass
         import torchvision
 
-        cifar = torchvision.datasets.CIFAR10(str(RAW / "cifar10"), train=split == "train",
-                                             download=False)
+        cifar = torchvision.datasets.CIFAR10(
+            str(RAW / "cifar10"), train=split == "train", download=False
+        )
         pools["not_medical"] += take(cifar.data, n)
         self.items: list[tuple[np.ndarray, int]] = []
         for ci, c in enumerate(ROUTER_CLASSES):
@@ -304,7 +339,11 @@ class DenoiseDataset(Dataset):
     """Clean chest X-ray crops; noise is synthesised on the fly in the trainer."""
 
     def __init__(self, split: str, size: int = 128, limit: int | None = 4000) -> None:
-        x, _ = load_medmnist("chestmnist", 128, split)
+        src = 224 if size > 128 else 128
+        try:
+            x, _ = load_medmnist("chestmnist", src, split)
+        except FileNotFoundError:
+            x, _ = load_medmnist("chestmnist", 128, split)
         self.x = x[_subset(len(x), limit, seed=3)]
         self.size = size
         self.train = split == "train"
@@ -323,8 +362,14 @@ class DenoiseDataset(Dataset):
 
 # --------------------------------------------------------------------------- IU reports
 class IUReportDataset(Dataset):
-    def __init__(self, split: str, tokenizer: Any, size: int = 128, max_len: int = 96,
-                 augment: Augment | None = None) -> None:
+    def __init__(
+        self,
+        split: str,
+        tokenizer: Any,
+        size: int = 128,
+        max_len: int = 96,
+        augment: Augment | None = None,
+    ) -> None:
         d = PROCESSED / "iu_xray"
         meta = pd.read_csv(d / "reports.csv").fillna("")
         cache = np.load(next(d.glob("images_*.npy")), mmap_mode="r")
@@ -349,5 +394,8 @@ class IUReportDataset(Dataset):
 def report_text(row: Any) -> str:
     f = str(row.get("findings", "")).strip()
     imp = str(row.get("impression", "")).strip()
-    text = f"findings: {f} impression: {imp}" if f else f"impression: {imp}"
+    if f and imp:
+        text = f"findings: {f} impression: {imp}"
+    else:
+        text = f or imp
     return " ".join(text.lower().replace("xxxx", "").split())

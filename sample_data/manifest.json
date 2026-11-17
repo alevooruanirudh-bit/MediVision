@@ -1,0 +1,130 @@
+[
+  {
+    "file": "chest_followup_prior.png",
+    "source": "NIH ChestX-ray14 (official test-list patient)",
+    "original": "00000246_016.png",
+    "license": "CC0 1.0",
+    "modality": "chest",
+    "ground_truth": "Consolidation|Mass",
+    "age": 51,
+    "sex": "M",
+    "view": "PA",
+    "patient_ref": "NIH-246"
+  },
+  {
+    "file": "chest_followup_current.png",
+    "source": "NIH ChestX-ray14 (official test-list patient)",
+    "original": "00000246_018.png",
+    "license": "CC0 1.0",
+    "modality": "chest",
+    "ground_truth": "No Finding",
+    "age": 44,
+    "sex": "M",
+    "view": "PA",
+    "patient_ref": "NIH-246"
+  },
+  {
+    "file": "chest_pneumothorax.png",
+    "source": "NIH ChestX-ray14 (official test-list patient)",
+    "original": "00000468_005.png",
+    "license": "CC0 1.0",
+    "modality": "chest",
+    "ground_truth": "Emphysema|Pneumothorax",
+    "age": 31,
+    "sex": "M",
+    "view": "PA",
+    "patient_ref": "NIH-468"
+  },
+  {
+    "file": "chest_cardiomegaly_effusion.png",
+    "source": "NIH ChestX-ray14 (official test-list patient)",
+    "original": "00001075_046.png",
+    "license": "CC0 1.0",
+    "modality": "chest",
+    "ground_truth": "Cardiomegaly|Effusion",
+    "age": 58,
+    "sex": "F",
+    "view": "PA",
+    "patient_ref": "NIH-1075"
+  },
+  {
+    "file": "chest_effusion.png",
+    "source": "NIH ChestX-ray14 (official test-list patient)",
+    "original": "00001248_017.png",
+    "license": "CC0 1.0",
+    "modality": "chest",
+    "ground_truth": "Effusion",
+    "age": 38,
+    "sex": "F",
+    "view": "PA",
+    "patient_ref": "NIH-1248"
+  },
+  {
+    "file": "chest_cardiomegaly_edema.png",
+    "source": "NIH ChestX-ray14 (official test-list patient)",
+    "original": "00004344_037.png",
+    "license": "CC0 1.0",
+    "modality": "chest",
+    "ground_truth": "Cardiomegaly|Edema",
+    "age": 48,
+    "sex": "F",
+    "view": "AP",
+    "patient_ref": "NIH-4344"
+  },
+  {
+    "file": "bone_fracture.jpg",
+    "source": "FracAtlas (test split)",
+    "original": "IMG0003297.jpg",
+    "license": "CC BY 4.0",
+    "modality": "bone",
+    "ground_truth": "fracture",
+    "region": "leg",
+    "patient_ref": "FRAC-IMG0003297.jpg"
+  },
+  {
+    "file": "bone_no_fracture.jpg",
+    "source": "FracAtlas (test split)",
+    "original": "IMG0000045.jpg",
+    "license": "CC BY 4.0",
+    "modality": "bone",
+    "ground_truth": "no fracture",
+    "region": "hand",
+    "patient_ref": "FRAC-IMG0000045.jpg"
+  },
+  {
+    "file": "brain_glioma.png",
+    "source": "Brain Tumor MRI Dataset (Nickparvar), Testing",
+    "original": "glioma_Te-gl_101",
+    "license": "CC BY 4.0",
+    "modality": "brain",
+    "ground_truth": "glioma",
+    "patient_ref": "BRAIN-glioma_Te-gl_101"
+  },
+  {
+    "file": "brain_meningioma.png",
+    "source": "Brain Tumor MRI Dataset (Nickparvar), Testing",
+    "original": "meningioma_Te-aug-me_101",
+    "license": "CC BY 4.0",
+    "modality": "brain",
+    "ground_truth": "meningioma",
+    "patient_ref": "BRAIN-meningioma_Te-aug-me_101"
+  },
+  {
+    "file": "brain_notumor.png",
+    "source": "Brain Tumor MRI Dataset (Nickparvar), Testing",
+    "original": "notumor_Te-no_101",
+    "license": "CC BY 4.0",
+    "modality": "brain",
+    "ground_truth": "notumor",
+    "patient_ref": "BRAIN-notumor_Te-no_101"
+  },
+  {
+    "file": "not_medical_photo.png",
+    "source": "CIFAR-10 test set (upscaled)",
+    "original": "test[13] (horse)",
+    "license": "CIFAR-10 terms (Krizhevsky 2009)",
+    "modality": "none",
+    "ground_truth": "not a medical image",
+    "patient_ref": "PHOTO-1"
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "task": "segmentation",
+  "dataset": "lung",
+  "model": {
+    "arch": "unet",
+    "base": 16,
+    "depth": 4
+  },
+  "loss": {
+    "type": "bce_dice"
+  },
+  "optim": {
+    "lr": 0.001,
+    "weight_decay": 1e-05
+  },
+  "augment": {
+    "scale": [
+      0.85,
+      1.0
+    ],
+    "rotate": 8,
+    "brightness": 0.1,
+    "contrast": 0.1,
+    "clahe_p": 0.2
+  },
+  "train": {
+    "patience": 4,
+    "warmup_epochs": 0,
+    "num_workers": 0,
+    "monitor": "val_dice",
+    "epochs": 8,
+    "batch_size": 32
+  },
+  "img_size": 128,
+  "name": "lung_unet",
+  "profile": "starter"
+}

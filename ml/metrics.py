@@ -98,8 +98,14 @@ def reliability(y: np.ndarray, p: np.ndarray, bins: int = 10) -> dict[str, Any]:
             continue
         conf, acc = float(p[m].mean()), float(y[m].mean())
         ece += m.mean() * abs(conf - acc)
-        out.append({"bin": [float(lo), float(hi)], "confidence": conf, "accuracy": acc,
-                    "count": int(m.sum())})
+        out.append(
+            {
+                "bin": [float(lo), float(hi)],
+                "confidence": conf,
+                "accuracy": acc,
+                "count": int(m.sum()),
+            }
+        )
     return {"bins": out, "ece": float(ece)}
 
 
@@ -154,8 +160,9 @@ def box_iou(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     return inter / (area_a[:, None] + area_b[None] - inter + 1e-9)
 
 
-def map50(preds: list[dict[str, np.ndarray]], gts: list[np.ndarray], iou_t: float = 0.5
-          ) -> dict[str, float]:
+def map50(
+    preds: list[dict[str, np.ndarray]], gts: list[np.ndarray], iou_t: float = 0.5
+) -> dict[str, float]:
     """Single-class VOC-style AP@IoU (all-point interpolation) + recall at score>=0.05."""
     scores, tps = [], []
     n_gt = sum(len(g) for g in gts)

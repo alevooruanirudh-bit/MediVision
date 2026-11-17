@@ -43,115 +43,204 @@ class Source:
 
 SOURCES: list[Source] = [
     Source(
-        "nih_meta", "NIH ChestX-ray14 metadata (Data_Entry_2017.csv, official split lists)",
-        "kaggle_dataset", "nih-chest-xrays/data", "CC0 1.0",
+        "nih_meta",
+        "NIH ChestX-ray14 metadata (Data_Entry_2017.csv, official split lists)",
+        "kaggle_dataset",
+        "nih-chest-xrays/data",
+        "CC0 1.0",
         "Wang X. et al. ChestX-ray8: Hospital-scale Chest X-ray Database and Benchmarks. CVPR 2017.",
         "https://www.kaggle.com/datasets/nih-chest-xrays/data",
         files=("Data_Entry_2017.csv", "test_list.txt", "train_val_list.txt", "BBox_List_2017.csv"),
     ),
     Source(
-        "nih_sample", "NIH ChestX-ray14 random sample (5,606 images + metadata)",
-        "kaggle_dataset", "nih-chest-xrays/sample", "CC0 1.0",
+        "nih_sample",
+        "NIH ChestX-ray14 random sample (5,606 images + metadata)",
+        "kaggle_dataset",
+        "nih-chest-xrays/sample",
+        "CC0 1.0",
         "Wang X. et al. CVPR 2017 (NIH Clinical Center).",
-        "https://www.kaggle.com/datasets/nih-chest-xrays/sample", profiles=("starter",),
+        "https://www.kaggle.com/datasets/nih-chest-xrays/sample",
+        profiles=("starter",),
         note="Starter: external fairness evaluation (age/sex) on official-test-list patients + demo images.",
     ),
     Source(
-        "nih_full", "NIH ChestX-ray14 full (112,120 images, 45 GB)", "kaggle_dataset",
-        "nih-chest-xrays/data", "CC0 1.0", "Wang X. et al. CVPR 2017.",
-        "https://www.kaggle.com/datasets/nih-chest-xrays/data", profiles=("full",),
+        "nih_full",
+        "NIH ChestX-ray14 full (112,120 images, 45 GB)",
+        "kaggle_dataset",
+        "nih-chest-xrays/data",
+        "CC0 1.0",
+        "Wang X. et al. CVPR 2017.",
+        "https://www.kaggle.com/datasets/nih-chest-xrays/data",
+        profiles=("full",),
         note="Used only inside Kaggle notebooks via dataset_sources (never downloaded locally).",
     ),
     Source(
-        "chestmnist", "ChestMNIST+ 128 px (MedMNIST+)", "medmnist", "chestmnist:128", "CC BY 4.0",
-        "Yang J. et al. MedMNIST v2. Scientific Data 2023.", "https://medmnist.com/",
+        "chestmnist",
+        "ChestMNIST+ 128 px (MedMNIST+)",
+        "medmnist",
+        "chestmnist:128",
+        "CC BY 4.0",
+        "Yang J. et al. MedMNIST v2. Scientific Data 2023.",
+        "https://medmnist.com/",
     ),
     Source(
-        "chestmnist64", "ChestMNIST 64 px (federated demo)", "medmnist", "chestmnist:64", "CC BY 4.0",
-        "Yang J. et al. MedMNIST v2. Scientific Data 2023.", "https://medmnist.com/",
+        "chestmnist64",
+        "ChestMNIST 64 px (federated demo)",
+        "medmnist",
+        "chestmnist:64",
+        "CC BY 4.0",
+        "Yang J. et al. MedMNIST v2. Scientific Data 2023.",
+        "https://medmnist.com/",
     ),
     Source(
-        "pneumoniamnist", "PneumoniaMNIST 64/128 px", "medmnist", "pneumoniamnist:64,128", "CC BY 4.0",
-        "Kermany D. et al. Cell 2018; Yang J. et al. MedMNIST v2 2023.", "https://medmnist.com/",
+        "pneumoniamnist",
+        "PneumoniaMNIST 64/128 px",
+        "medmnist",
+        "pneumoniamnist:64,128",
+        "CC BY 4.0",
+        "Kermany D. et al. Cell 2018; Yang J. et al. MedMNIST v2 2023.",
+        "https://medmnist.com/",
     ),
     Source(
-        "organamnist", "OrganAMNIST 128 px (abdominal CT)", "medmnist", "organamnist:128", "CC BY 4.0",
-        "Bilic P. et al. LiTS 2019; Yang J. et al. MedMNIST v2 2023.", "https://medmnist.com/",
+        "organamnist",
+        "OrganAMNIST 128 px (abdominal CT)",
+        "medmnist",
+        "organamnist:128",
+        "CC BY 4.0",
+        "Bilic P. et al. LiTS 2019; Yang J. et al. MedMNIST v2 2023.",
+        "https://medmnist.com/",
     ),
     Source(
-        "breastmnist", "BreastMNIST 128 px (ultrasound)", "medmnist", "breastmnist:128", "CC BY 4.0",
+        "breastmnist",
+        "BreastMNIST 128 px (ultrasound)",
+        "medmnist",
+        "breastmnist:128",
+        "CC BY 4.0",
         "Al-Dhabyani W. et al. Data in Brief 2020; Yang J. et al. MedMNIST v2 2023.",
         "https://medmnist.com/",
     ),
     Source(
-        "rsna", "RSNA Pneumonia Detection Challenge", "kaggle_competition",
-        "rsna-pneumonia-detection-challenge", "Competition rules (non-commercial research)",
+        "rsna",
+        "RSNA Pneumonia Detection Challenge",
+        "kaggle_competition",
+        "rsna-pneumonia-detection-challenge",
+        "Competition rules (non-commercial research)",
         "Shih G. et al. Radiology: AI 2019.",
         "https://www.kaggle.com/competitions/rsna-pneumonia-detection-challenge",
-        profiles=("full",), note="Requires accepting the competition rules on kaggle.com.",
+        profiles=("full",),
+        note="Requires accepting the competition rules on kaggle.com.",
     ),
     Source(
-        "lung_covidqu", "COVID-19 Radiography Database (lung masks, QU/Dhaka team)",
-        "kaggle_dataset", "tawsifurrahman/covid19-radiography-database",
+        "lung_covidqu",
+        "COVID-19 Radiography Database (lung masks, QU/Dhaka team)",
+        "kaggle_dataset",
+        "tawsifurrahman/covid19-radiography-database",
         "Data files © original authors (research use, cite)",
         "Chowdhury M.E.H. et al. IEEE Access 2020; Rahman T. et al. Comput Biol Med 2021.",
         "https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database",
         note="Same group as COVID-QU-Ex; compact 299 px images with 256 px lung masks.",
     ),
     Source(
-        "lung_montgomery_shenzhen", "Montgomery + Shenzhen CXR with lung masks (NLM)",
-        "kaggle_dataset", "nikhilpandey360/chest-xray-masks-and-labels", "Public (NLM), cite",
+        "lung_montgomery_shenzhen",
+        "Montgomery + Shenzhen CXR with lung masks (NLM)",
+        "kaggle_dataset",
+        "nikhilpandey360/chest-xray-masks-and-labels",
+        "Public (NLM), cite",
         "Jaeger S. et al. Quant Imaging Med Surg 2014.",
         "https://www.kaggle.com/datasets/nikhilpandey360/chest-xray-masks-and-labels",
         profiles=("full",),
     ),
     Source(
-        "lung_covidqu_ex", "COVID-QU-Ex lung masks", "kaggle_dataset", "anasmohammedtahir/covidqu",
-        "CC BY-SA 4.0 (per authors)", "Tahir A.M. et al. Comput Biol Med 2021.",
-        "https://www.kaggle.com/datasets/anasmohammedtahir/covidqu", profiles=("full",),
+        "lung_covidqu_ex",
+        "COVID-QU-Ex lung masks",
+        "kaggle_dataset",
+        "anasmohammedtahir/covidqu",
+        "CC BY-SA 4.0 (per authors)",
+        "Tahir A.M. et al. Comput Biol Med 2021.",
+        "https://www.kaggle.com/datasets/anasmohammedtahir/covidqu",
+        profiles=("full",),
     ),
     Source(
-        "fracatlas", "FracAtlas musculoskeletal X-rays", "kaggle_dataset", "orvile/fracatlas",
-        "CC BY 4.0", "Abedeen I. et al. FracAtlas. Scientific Data 2023.",
+        "fracatlas",
+        "FracAtlas musculoskeletal X-rays",
+        "kaggle_dataset",
+        "orvile/fracatlas",
+        "CC BY 4.0",
+        "Abedeen I. et al. FracAtlas. Scientific Data 2023.",
         "https://figshare.com/articles/dataset/22363012",
     ),
     Source(
-        "brain_mri", "Brain Tumor MRI Dataset (Nickparvar)", "kaggle_dataset",
-        "masoudnickparvar/brain-tumor-mri-dataset", "CC BY 4.0",
+        "brain_mri",
+        "Brain Tumor MRI Dataset (Nickparvar)",
+        "kaggle_dataset",
+        "masoudnickparvar/brain-tumor-mri-dataset",
+        "CC BY 4.0",
         "Nickparvar M. Brain Tumor MRI Dataset. Kaggle 2021.",
         "https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset",
     ),
     Source(
-        "lgg", "LGG MRI Segmentation (Buda)", "kaggle_dataset", "mateuszbuda/lgg-mri-segmentation",
-        "CC BY-NC-SA 4.0", "Buda M. et al. Comput Biol Med 2019.",
+        "lgg",
+        "LGG MRI Segmentation (Buda)",
+        "kaggle_dataset",
+        "mateuszbuda/lgg-mri-segmentation",
+        "CC BY-NC-SA 4.0",
+        "Buda M. et al. Comput Biol Med 2019.",
         "https://www.kaggle.com/datasets/mateuszbuda/lgg-mri-segmentation",
     ),
     Source(
-        "iu_xray", "Indiana University Chest X-rays + reports (OpenI), 256 px cleaned copy",
-        "kaggle_dataset", "masrursabab/iu-chest-x-rays-cleaned", "CC BY-NC-SA 4.0 (derived from OpenI)",
+        "iu_xray",
+        "Indiana University Chest X-rays + reports (OpenI), 256 px cleaned copy",
+        "kaggle_dataset",
+        "masrursabab/iu-chest-x-rays-cleaned",
+        "CC BY-NC-SA 4.0 (derived from OpenI)",
         "Demner-Fushman D. et al. JAMIA 2016.",
         "https://www.kaggle.com/datasets/masrursabab/iu-chest-x-rays-cleaned",
         note="Full-size originals: raddar/chest-xrays-indiana-university (14 GB) used on Kaggle.",
     ),
     Source(
-        "cifar10", "CIFAR-10 (not-medical negatives for the modality router)", "torchvision",
-        "CIFAR10", "MIT-style (Krizhevsky)", "Krizhevsky A. Learning Multiple Layers of Features 2009.",
+        "cifar10",
+        "CIFAR-10 (not-medical negatives for the modality router)",
+        "torchvision",
+        "CIFAR10",
+        "MIT-style (Krizhevsky)",
+        "Krizhevsky A. Learning Multiple Layers of Features 2009.",
         "https://www.cs.toronto.edu/~kriz/cifar.html",
     ),
     Source(
-        "chexpert", "CheXpert (Stanford)", "url", "", "Stanford research use agreement",
-        "Irvin J. et al. AAAI 2019.", "https://stanfordmlgroup.github.io/competitions/chexpert/",
-        profiles=(), optional=True, note="Free registration; manual download; off by default.",
+        "chexpert",
+        "CheXpert (Stanford)",
+        "url",
+        "",
+        "Stanford research use agreement",
+        "Irvin J. et al. AAAI 2019.",
+        "https://stanfordmlgroup.github.io/competitions/chexpert/",
+        profiles=(),
+        optional=True,
+        note="Free registration; manual download; off by default.",
     ),
     Source(
-        "mura", "MURA (Stanford)", "url", "", "Stanford research use agreement",
-        "Rajpurkar P. et al. MURA. 2017.", "https://stanfordmlgroup.github.io/competitions/mura/",
-        profiles=(), optional=True, note="Free registration; manual download; off by default.",
+        "mura",
+        "MURA (Stanford)",
+        "url",
+        "",
+        "Stanford research use agreement",
+        "Rajpurkar P. et al. MURA. 2017.",
+        "https://stanfordmlgroup.github.io/competitions/mura/",
+        profiles=(),
+        optional=True,
+        note="Free registration; manual download; off by default.",
     ),
     Source(
-        "vindr_cxr", "VinDr-CXR (PhysioNet)", "url", "", "PhysioNet Credentialed Health Data 1.0",
-        "Nguyen H.Q. et al. Scientific Data 2022.", "https://physionet.org/content/vindr-cxr/",
-        profiles=(), optional=True, note="Credentialed PhysioNet access; off by default.",
+        "vindr_cxr",
+        "VinDr-CXR (PhysioNet)",
+        "url",
+        "",
+        "PhysioNet Credentialed Health Data 1.0",
+        "Nguyen H.Q. et al. Scientific Data 2022.",
+        "https://physionet.org/content/vindr-cxr/",
+        profiles=(),
+        optional=True,
+        note="Credentialed PhysioNet access; off by default.",
     ),
 ]
 
@@ -227,10 +316,7 @@ def fetch(src: Source) -> str:
             for split in ("train", "val", "test"):
                 cls(split=split, download=True, root=str(out), size=int(size))
     elif src.kind == "torchvision":
-        import torchvision
-
-        getattr(torchvision.datasets, src.ref)(root=str(out), train=True, download=True)
-        getattr(torchvision.datasets, src.ref)(root=str(out), train=False, download=True)
+        _fetch_cifar(out)
     elif src.kind in ("kaggle_dataset", "kaggle_competition"):
         if not has_kaggle_token():
             raise RuntimeError("no Kaggle token (~/.kaggle/kaggle.json)")
@@ -255,6 +341,37 @@ def fetch(src: Source) -> str:
     return "downloaded"
 
 
+def _fetch_cifar(out: Path) -> None:
+    """CIFAR-10 python batches into torchvision's layout. Kaggle mirror first (the original
+    Toronto host is often very slow), torchvision's own downloader as the fallback."""
+    import zipfile
+
+    if (out / "cifar-10-batches-py").exists():
+        return
+    if has_kaggle_token():
+        try:
+            _kaggle_api().dataset_download_files(
+                "jaisonwork/cifar10-python-dataset", path=str(out), quiet=True, unzip=False
+            )
+            for z in out.glob("*.zip"):
+                with zipfile.ZipFile(z) as zf:
+                    zf.extractall(out / "_x")
+                z.unlink()
+            hit = next((out / "_x").rglob("data_batch_1"), None)
+            if hit is not None:
+                hit.parent.rename(out / "cifar-10-batches-py")
+                import shutil
+
+                shutil.rmtree(out / "_x", ignore_errors=True)
+                return
+        except Exception as exc:  # fall through to torchvision
+            print(f"[download] cifar10 kaggle mirror failed ({exc}); trying torchvision")
+    import torchvision
+
+    torchvision.datasets.CIFAR10(root=str(out), train=True, download=True)
+    torchvision.datasets.CIFAR10(root=str(out), train=False, download=True)
+
+
 def write_sources_md() -> Path:
     lines = [
         "# Data sources",
@@ -266,9 +383,7 @@ def write_sources_md() -> Path:
     ]
     for s in SOURCES:
         prof = ", ".join(s.profiles) or "optional (off)"
-        lines.append(
-            f"| `{s.key}` | {s.title} | {s.license} | {s.citation} | {prof} | {s.url} |"
-        )
+        lines.append(f"| `{s.key}` | {s.title} | {s.license} | {s.citation} | {prof} | {s.url} |")
     path = ROOT / "ml" / "data" / "SOURCES.md"
     path.write_text("\n".join(lines) + "\n")
     return path

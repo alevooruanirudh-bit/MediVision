@@ -1,0 +1,554 @@
+{
+  "_meta": {
+    "source": "Indiana University Chest X-ray Collection (OpenI) \u2014 Demner-Fushman D. et al., JAMIA 2016; Kaggle copy masrursabab/iu-chest-x-rays-cleaned",
+    "method": "frequency-ranked sentence patterns from the training split; de-identification tokens removed",
+    "n_reports": 2642,
+    "n_sentences": 13946
+  },
+  "normal": {
+    "lungs": [
+      {
+        "text": "lungs are clear",
+        "count": 180
+      },
+      {
+        "text": "the lungs are clear",
+        "count": 175
+      },
+      {
+        "text": "the lungs are clear bilaterally",
+        "count": 77
+      },
+      {
+        "text": "no acute pulmonary disease",
+        "count": 57
+      },
+      {
+        "text": "no focal areas of pulmonary consolidation",
+        "count": 54
+      },
+      {
+        "text": "no typical findings of pulmonary edema",
+        "count": 45
+      },
+      {
+        "text": "no focal airspace consolidation",
+        "count": 39
+      },
+      {
+        "text": "pulmonary vascularity is within normal limits",
+        "count": 33
+      }
+    ],
+    "pleura": [
+      {
+        "text": "no pneumothorax or pleural effusion",
+        "count": 115
+      },
+      {
+        "text": "no pleural effusion",
+        "count": 104
+      },
+      {
+        "text": "no pleural effusion or pneumothorax",
+        "count": 84
+      },
+      {
+        "text": "there is no pleural effusion or pneumothorax",
+        "count": 84
+      },
+      {
+        "text": "no pleural effusions or pneumothoraces",
+        "count": 81
+      },
+      {
+        "text": "no pleural effusion or pneumothorax is seen",
+        "count": 77
+      },
+      {
+        "text": "specifically, no evidence of focal consolidation, pneumothorax, or pleural effusion",
+        "count": 62
+      },
+      {
+        "text": "no focal consolidation, pneumothorax or large pleural effusion",
+        "count": 52
+      }
+    ],
+    "heart": [
+      {
+        "text": "heart size is normal",
+        "count": 129
+      },
+      {
+        "text": "heart size normal",
+        "count": 108
+      },
+      {
+        "text": "heart size within normal limits",
+        "count": 79
+      },
+      {
+        "text": "the heart is normal in size",
+        "count": 63
+      },
+      {
+        "text": "the cardiomediastinal silhouette is normal in size and contour",
+        "count": 60
+      },
+      {
+        "text": "normal heart size",
+        "count": 60
+      },
+      {
+        "text": "the heart size is normal",
+        "count": 53
+      },
+      {
+        "text": "the heart size and pulmonary vascularity appear within normal limits",
+        "count": 53
+      }
+    ],
+    "bones": [
+      {
+        "text": "visualized osseous structures of the thorax are without acute abnormality",
+        "count": 60
+      },
+      {
+        "text": "no acute bony abnormality",
+        "count": 52
+      },
+      {
+        "text": "there are no acute bony findings",
+        "count": 40
+      },
+      {
+        "text": "no acute bony abnormalities",
+        "count": 34
+      },
+      {
+        "text": "the thoracic spine appears intact",
+        "count": 32
+      },
+      {
+        "text": "bony structures are intact",
+        "count": 31
+      },
+      {
+        "text": "negative for acute bone abnormality",
+        "count": 27
+      },
+      {
+        "text": "visualized osseous structures appear intact",
+        "count": 25
+      }
+    ],
+    "mediastinum": [
+      {
+        "text": "the mediastinum is unremarkable",
+        "count": 50
+      },
+      {
+        "text": "mediastinal contour within normal limits",
+        "count": 41
+      },
+      {
+        "text": "mediastinal contours are normal",
+        "count": 35
+      },
+      {
+        "text": "the mediastinal contour is within normal limits",
+        "count": 26
+      },
+      {
+        "text": "the mediastinum is stable",
+        "count": 19
+      },
+      {
+        "text": "there is no mediastinal widening",
+        "count": 19
+      },
+      {
+        "text": "mediastinal contour is unremarkable",
+        "count": 13
+      },
+      {
+        "text": "aortic appear unremarkable",
+        "count": 13
+      }
+    ]
+  },
+  "negative": {
+    "Effusion": [
+      {
+        "text": "no pneumothorax or pleural effusion",
+        "count": 115
+      },
+      {
+        "text": "no pleural effusion",
+        "count": 104
+      },
+      {
+        "text": "no pleural effusion or pneumothorax",
+        "count": 84
+      },
+      {
+        "text": "there is no pleural effusion or pneumothorax",
+        "count": 84
+      },
+      {
+        "text": "no pleural effusions or pneumothoraces",
+        "count": 81
+      }
+    ],
+    "Pneumothorax": [
+      {
+        "text": "no pneumothorax or pleural effusion",
+        "count": 115
+      },
+      {
+        "text": "no pleural effusion or pneumothorax",
+        "count": 84
+      },
+      {
+        "text": "there is no pleural effusion or pneumothorax",
+        "count": 84
+      },
+      {
+        "text": "no pleural effusion or pneumothorax is seen",
+        "count": 77
+      },
+      {
+        "text": "no focal consolidation, pneumothorax or large pleural effusion",
+        "count": 52
+      }
+    ],
+    "Consolidation": [
+      {
+        "text": "no focal areas of pulmonary consolidation",
+        "count": 54
+      },
+      {
+        "text": "no focal consolidation, pneumothorax or large pleural effusion",
+        "count": 52
+      },
+      {
+        "text": "no focal alveolar consolidation, no definite pleural effusion seen",
+        "count": 51
+      },
+      {
+        "text": "no focal airspace consolidation",
+        "count": 39
+      },
+      {
+        "text": "no focal consolidation, pleural effusion, or pneumothorax identified",
+        "count": 36
+      }
+    ],
+    "Infiltration": [
+      {
+        "text": "no focal infiltrate",
+        "count": 11
+      },
+      {
+        "text": "no focal infiltrates",
+        "count": 7
+      },
+      {
+        "text": "there is no acute air space infiltrate, pleural effusion or pneumothorax",
+        "count": 6
+      },
+      {
+        "text": "no focal infiltrate or effusion",
+        "count": 4
+      },
+      {
+        "text": "no acute infiltrate",
+        "count": 3
+      }
+    ],
+    "Mass": [
+      {
+        "text": "no pneumonia, effusions, edema, pneumothorax, adenopathy, nodules or masses",
+        "count": 35
+      },
+      {
+        "text": "no nodules or masses",
+        "count": 11
+      },
+      {
+        "text": "no nodules, masses, or adenopathy",
+        "count": 3
+      },
+      {
+        "text": "no suspicious pulmonary nodules or masses are noted",
+        "count": 3
+      }
+    ],
+    "Nodule": [
+      {
+        "text": "no pneumonia, effusions, edema, pneumothorax, adenopathy, nodules or masses",
+        "count": 35
+      },
+      {
+        "text": "no nodules or masses",
+        "count": 11
+      },
+      {
+        "text": "no airspace disease, effusion or noncalcified nodule",
+        "count": 5
+      },
+      {
+        "text": "no nodules, masses, or adenopathy",
+        "count": 3
+      },
+      {
+        "text": "no suspicious appearing lung nodules identified",
+        "count": 3
+      }
+    ],
+    "Pneumonia": [
+      {
+        "text": "no pneumonia, effusions, edema, pneumothorax, adenopathy, nodules or masses",
+        "count": 35
+      },
+      {
+        "text": "there is no focal air space opacity to suggest a pneumonia",
+        "count": 31
+      }
+    ],
+    "Edema": [
+      {
+        "text": "no typical findings of pulmonary edema",
+        "count": 45
+      },
+      {
+        "text": "no pneumonia, effusions, edema, pneumothorax, adenopathy, nodules or masses",
+        "count": 35
+      },
+      {
+        "text": "no pulmonary edema",
+        "count": 17
+      },
+      {
+        "text": "there is no pulmonary edema",
+        "count": 10
+      },
+      {
+        "text": "no alveolar consolidation, no findings of pleural effusion or pulmonary edema",
+        "count": 9
+      }
+    ],
+    "Cardiomegaly": [],
+    "Atelectasis": [],
+    "Fibrosis": [],
+    "Emphysema": [],
+    "Hernia": []
+  },
+  "positive_examples": {
+    "Effusion": [
+      {
+        "text": "specifically, no evidence of focal consolidation, pneumothorax, or pleural effusion",
+        "count": 62
+      },
+      {
+        "text": "the lungs are normally inflated without evidence of focal airspace disease, pleural effusion, or pneumothorax",
+        "count": 31
+      },
+      {
+        "text": "the lungs are clear of focal airspace disease, pneumothorax, or pleural effusion",
+        "count": 24
+      },
+      {
+        "text": "lungs are clear without focal consolidation, pneumothorax, or pleural effusion",
+        "count": 11
+      },
+      {
+        "text": "lungs are clear bilaterally with no focal infiltrate, pleural effusion, or pneumothoraces",
+        "count": 11
+      }
+    ],
+    "Pneumothorax": [
+      {
+        "text": "specifically, no evidence of focal consolidation, pneumothorax, or pleural effusion",
+        "count": 62
+      },
+      {
+        "text": "the lungs are normally inflated without evidence of focal airspace disease, pleural effusion, or pneumothorax",
+        "count": 31
+      },
+      {
+        "text": "the lungs are clear of focal airspace disease, pneumothorax, or pleural effusion",
+        "count": 24
+      },
+      {
+        "text": "lungs are clear without focal consolidation, pneumothorax, or pleural effusion",
+        "count": 11
+      },
+      {
+        "text": "hyperexpanded lungs without focal consolidation, pneumothorax or large pleural effusion",
+        "count": 6
+      }
+    ],
+    "Consolidation": [
+      {
+        "text": "specifically, no evidence of focal consolidation, pneumothorax, or pleural effusion",
+        "count": 62
+      },
+      {
+        "text": "the lungs are free of focal airspace disease",
+        "count": 57
+      },
+      {
+        "text": "there are no focal areas of consolidation",
+        "count": 32
+      },
+      {
+        "text": "the lungs are normally inflated without evidence of focal airspace disease, pleural effusion, or pneumothorax",
+        "count": 31
+      },
+      {
+        "text": "the lungs are clear of focal airspace disease, pneumothorax, or pleural effusion",
+        "count": 24
+      }
+    ],
+    "Atelectasis": [
+      {
+        "text": "pulmonary hypoinflation with bronchovascular crowding and minimal bibasilar subsegmental atelectasis",
+        "count": 3
+      },
+      {
+        "text": "lung volumes are low with central bronchovascular crowding and patchy basilar atelectasis",
+        "count": 3
+      }
+    ],
+    "Nodule": [
+      {
+        "text": "there are no nodules or masses",
+        "count": 27
+      },
+      {
+        "text": "bony overlap in the lung apices could obscure a small pulmonary nodule",
+        "count": 3
+      }
+    ],
+    "Pneumonia": [
+      {
+        "text": "right upper lobe pneumonia",
+        "count": 5
+      }
+    ],
+    "Fibrosis": [
+      {
+        "text": "there is biapical scarring",
+        "count": 3
+      }
+    ],
+    "Infiltration": [
+      {
+        "text": "the lungs are free of any focal infiltrates",
+        "count": 23
+      },
+      {
+        "text": "the lungs are clear, without evidence of infiltrate",
+        "count": 18
+      },
+      {
+        "text": "the lungs are clear without infiltrate",
+        "count": 17
+      },
+      {
+        "text": "lungs are clear bilaterally with no focal infiltrate, pleural effusion, or pneumothoraces",
+        "count": 11
+      },
+      {
+        "text": "lungs are clear without focal infiltrates",
+        "count": 3
+      }
+    ],
+    "Cardiomegaly": [
+      {
+        "text": "stable mild cardiomegaly",
+        "count": 8
+      },
+      {
+        "text": "borderline enlarged heart",
+        "count": 5
+      },
+      {
+        "text": "there is mild cardiomegaly",
+        "count": 5
+      },
+      {
+        "text": "stable cardiomegaly without acute cardiopulmonary abnormality",
+        "count": 4
+      },
+      {
+        "text": "the heart is enlarged",
+        "count": 4
+      }
+    ],
+    "Emphysema": [
+      {
+        "text": "hyperinflated lungs, air trapping versus inspiratory",
+        "count": 4
+      },
+      {
+        "text": "emphysema without acute disease",
+        "count": 3
+      }
+    ],
+    "Hernia": [
+      {
+        "text": "large hiatal hernia",
+        "count": 6
+      }
+    ],
+    "Mass": [
+      {
+        "text": "there are no nodules or masses",
+        "count": 27
+      }
+    ],
+    "Edema": [
+      {
+        "text": "bronchovascular crowding without typical findings of pulmonary edema",
+        "count": 8
+      },
+      {
+        "text": "mild bronchovascular crowding without typical findings of pulmonary edema",
+        "count": 3
+      },
+      {
+        "text": "heart size within normal limits, no typical findings of pulmonary edema",
+        "count": 3
+      }
+    ],
+    "Pleural_Thickening": []
+  },
+  "impression_normal": [
+    {
+      "text": "no acute cardiopulmonary abnormality",
+      "count": 361
+    },
+    {
+      "text": "no acute cardiopulmonary findings",
+      "count": 148
+    },
+    {
+      "text": "no acute cardiopulmonary disease",
+      "count": 127
+    },
+    {
+      "text": "no acute cardiopulmonary abnormalities",
+      "count": 103
+    },
+    {
+      "text": "no acute cardiopulmonary process",
+      "count": 84
+    },
+    {
+      "text": "no acute cardiopulmonary abnormality identified",
+      "count": 61
+    }
+  ]
+}

@@ -10,8 +10,9 @@ import torch.nn as nn
 from ml.common import pretrained_backbone
 
 
-def build_detector(num_classes: int = 2, min_size: int = 512, max_size: int = 512,
-                   pretrained: bool | None = None) -> nn.Module:
+def build_detector(
+    num_classes: int = 2, min_size: int = 512, max_size: int = 512, pretrained: bool | None = None
+) -> nn.Module:
     from torchvision.models.detection import (
         FasterRCNN_MobileNet_V3_Large_FPN_Weights,
         fasterrcnn_mobilenet_v3_large_fpn,

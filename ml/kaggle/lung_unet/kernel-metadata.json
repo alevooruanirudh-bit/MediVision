@@ -1,0 +1,17 @@
+{
+  "id": "USERNAME/medivision-lung-unet",
+  "title": "medivision-lung-unet",
+  "code_file": "notebook.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [
+    "anasmohammedtahir/covidqu",
+    "nikhilpandey360/chest-xray-masks-and-labels",
+    "tawsifurrahman/covid19-radiography-database"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

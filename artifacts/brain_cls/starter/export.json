@@ -3,6 +3,6 @@
   "profile": "starter",
   "img_size": 128,
   "onnx": true,
-  "max_abs_diff": 0.007171630859375,
-  "cpu_ms_per_image": 12.3
+  "max_abs_diff": 0.0011768341064453125,
+  "cpu_ms_per_image": 2.7
 }

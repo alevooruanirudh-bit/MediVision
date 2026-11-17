@@ -1,0 +1,6 @@
+{
+  "model": "fracture_det",
+  "profile": "starter",
+  "img_size": 384,
+  "onnx": true
+}

@@ -1,0 +1,28 @@
+# One-command local run:  docker compose up --build   ->  http://localhost:3000
+services:
+  backend:
+    build: .
+    environment:
+      PORT: "8000"
+      CORS_ORIGINS: http://localhost:3000
+      COPILOT_LOCAL_LLM: "false"
+    ports: ["8000:8000"]
+    volumes: ["medivision-data:/tmp/medivision"]
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports: ["3000:3000"]
+    depends_on: [backend]
+
+  # Optional local open-weight LLM for Copilot wording only (OFF by default).
+  # Enable with:  docker compose --profile llm up  and set COPILOT_LOCAL_LLM=true, OLLAMA_URL=http://ollama:11434
+  ollama:
+    image: ollama/ollama:0.5.7
+    profiles: ["llm"]
+    ports: ["11434:11434"]
+
+volumes:
+  medivision-data:

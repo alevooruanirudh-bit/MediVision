@@ -11,8 +11,11 @@ class DnCNN(nn.Module):
         super().__init__()
         layers: list[nn.Module] = [nn.Conv2d(1, width, 3, padding=1), nn.ReLU(inplace=True)]
         for _ in range(depth - 2):
-            layers += [nn.Conv2d(width, width, 3, padding=1, bias=False), nn.BatchNorm2d(width),
-                       nn.ReLU(inplace=True)]
+            layers += [
+                nn.Conv2d(width, width, 3, padding=1, bias=False),
+                nn.BatchNorm2d(width),
+                nn.ReLU(inplace=True),
+            ]
         layers.append(nn.Conv2d(width, 1, 3, padding=1))
         self.net = nn.Sequential(*layers)
 
