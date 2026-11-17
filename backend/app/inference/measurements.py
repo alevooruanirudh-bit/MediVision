@@ -63,14 +63,22 @@ def lung_measurements(img: np.ndarray, spacing_mm: float | None = None) -> dict[
                 int(xs.min()),
                 int(xs.max()),
             )
-    # Heart width estimate: widest gap between the medial lung borders in the lower half.
-    heart_w, heart_row, h_x0, h_x1 = 0, bot, 0, 0
+    # Heart width estimate: medial gap between the lungs in the lower half, using only rows where BOTH
+    # lungs are substantially present (>= 35% of their own max width), robust 90th percentile instead of
+    # the max so a lung partly hidden by effusion/consolidation does not blow the gap up.
+    rw, lw = right.sum(1), left.sum(1)
+    rows = []
     for y in range(top + (bot - top) // 2, bot + 1):
-        rx, lx = np.where(right[y])[0], np.where(left[y])[0]
-        if len(rx) and len(lx):
+        if rw[y] >= 0.35 * rw.max() and lw[y] >= 0.35 * lw.max():
+            rx, lx = np.where(right[y])[0], np.where(left[y])[0]
             gap = int(lx.min() - rx.max())
-            if 0 < gap > heart_w:
-                heart_w, heart_row, h_x0, h_x1 = gap, y, int(rx.max()), int(lx.min())
+            if gap > 0:
+                rows.append((gap, y, int(rx.max()), int(lx.min())))
+    heart_w, heart_row, h_x0, h_x1 = 0, bot, 0, 0
+    if rows:
+        gaps = np.array([r[0] for r in rows])
+        target = np.percentile(gaps, 90)
+        heart_w, heart_row, h_x0, h_x1 = min(rows, key=lambda r: abs(r[0] - target))
     ctr = heart_w / thorax_w if thorax_w else None
     ra, la = int(right.sum()), int(left.sum())
     px_area = (spacing_mm**2) if spacing_mm else None

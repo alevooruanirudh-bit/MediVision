@@ -110,9 +110,20 @@ def notebook(model: str, smoke: bool = False) -> dict[str, Any]:
         ),
         _cell("""
 import base64, io, os, subprocess, sys, tarfile, pathlib, shutil
-subprocess.run([sys.executable, "-m", "pip", "install", "-q", "timm", "segmentation-models-pytorch",
-                "medmnist", "tokenizers", "onnx", "onnxruntime", "onnxscript", "pydicom", "rapidfuzz"],
-               check=False)
+pip = subprocess.run([sys.executable, "-m", "pip", "install", "-q", "timm",
+                      "segmentation-models-pytorch", "medmnist", "tokenizers", "onnx", "onnxruntime",
+                      "onnxscript", "pydicom", "rapidfuzz"], check=False)
+import socket, torch
+try:
+    socket.gethostbyname("pypi.org"); INTERNET = True
+except OSError:
+    INTERNET = False
+print("internet:", INTERNET, "| GPU:", torch.cuda.is_available())
+if not INTERNET:
+    print("WARNING: no internet in this kernel. Verify your phone number on kaggle.com "
+          "(Settings -> Phone verification) to enable internet + GPU; preinstalled packages are used.")
+    os.environ["PRETRAINED_BACKBONE"] = "false"  # ImageNet weights need internet -> train from scratch
+    print("PRETRAINED_BACKBONE=false (no internet to fetch generic ImageNet weights)")
 WORK = pathlib.Path("/kaggle/working/medivision"); WORK.mkdir(parents=True, exist_ok=True)
 os.chdir(WORK); sys.path.insert(0, str(WORK))
 BUNDLE = "%s"
@@ -125,13 +136,15 @@ print("bundle extracted:", sorted(os.listdir(WORK)))
 LINKS = %s
 for key, slug in LINKS.items():
     src = pathlib.Path("/kaggle/input") / slug
-    if not src.exists():
-        hits = [p for p in pathlib.Path("/kaggle/input").glob("*") if slug.split("-")[0] in p.name]
+    if not src.exists():  # newer Kaggle layouts nest mounts, e.g. /kaggle/input/datasets/<owner>/<slug>
+        hits = [p for depth in ("*", "*/*", "*/*/*") for p in pathlib.Path("/kaggle/input").glob(depth)
+                if p.is_dir() and p.name == slug]
         src = hits[0] if hits else src
     d = WORK / "data" / "raw" / key; d.mkdir(parents=True, exist_ok=True)
     if not (d / "src").exists() and src.exists():
         os.symlink(src, d / "src")
     print(key, "->", src, src.exists())
+print("inputs:", [str(p) for p in pathlib.Path("/kaggle/input").glob("*/*")][:20])
 for k, v in %s.items():
     os.environ[k] = v
 """ % (json.dumps(plan["links"]), json.dumps(plan.get("env", {})))),
@@ -140,8 +153,8 @@ for k, v in %s.items():
 from ml.data import download, prepare
 for key in %s:
     print(key, download.fetch(download.BY_KEY[key]))
-import medmnist
 for spec in %s:
+    import medmnist
     flag, size = spec.split(":")
     cls = getattr(medmnist, medmnist.INFO[flag]["python_class"])
     for split in ("train", "val", "test"):

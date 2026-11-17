@@ -12,6 +12,9 @@ from ml.common import NIH_LABELS
 from ml.data.transforms import preprocess
 
 DISPLAY = {"Pleural_Thickening": "Pleural Thickening"}
+# Minimum calibrated probability to flag a finding. Youden thresholds for rare labels can be ~0 on
+# validation; the floor stops those labels being flagged on every image (D-18).
+PROB_FLOOR = 0.20
 
 
 def display_name(label: str) -> str:
@@ -42,10 +45,11 @@ def mc_dropout_head(
     return np.stack(out)
 
 
-def certainty(p: float, thr: float) -> str:
-    if p >= thr and (p >= 0.5 or p >= 2 * thr):
+def certainty(p: float, thr: float, floor: float = 0.0) -> str:
+    t = max(thr, floor)
+    if p >= t and (p >= 0.5 or p >= 2 * t):
         return "Likely"
-    if p >= thr:
+    if p >= t:
         return "Possible"
     return "Unlikely"
 
@@ -98,14 +102,14 @@ def analyze_chest(img: np.ndarray, samples: int = 8, seed: int = 0) -> dict[str,
                 "ensemble_std": round(float(std[k]), 4),
                 "mc_dropout_var": round(float(mcv[k]), 5),
                 "threshold": round(t_k, 4),
-                "positive": pk >= t_k,
-                "certainty": certainty(pk, t_k),
+                "positive": pk >= max(t_k, PROB_FLOOR),
+                "certainty": certainty(pk, t_k, PROB_FLOOR),
                 "ratio_to_threshold": round(pk / max(t_k, 1e-6), 3),
                 "member_probs": {m: round(float(v[k]), 4) for m, v in member_probs.items()},
                 "kind": "classification",
             }
         )
-    findings.sort(key=lambda f: (-f["positive"], -f["ratio_to_threshold"]))
+    findings.sort(key=lambda f: (-f["positive"], -f["probability"]))
     e = float(np.mean(energies))
     e_thr = cal.get("energy_threshold")
     ood = bool(e_thr is not None and e < e_thr)

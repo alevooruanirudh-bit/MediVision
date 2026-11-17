@@ -132,7 +132,11 @@ def realise(f: dict[str, Any], mode: str, seed: str, table: dict[str, list[str]]
 def certainty_mode(f: dict[str, Any]) -> str | None:
     if f.get("positive"):
         return "likely" if f.get("certainty") == "Likely" else "possible"
-    if f["label"] in HIGH_SEVERITY and f.get("ratio_to_threshold", 0) >= 0.7:
+    if (
+        f["label"] in HIGH_SEVERITY
+        and f.get("ratio_to_threshold", 0) >= 0.7
+        and f["probability"] >= 0.12
+    ):
         return "exclude"
     return None
 

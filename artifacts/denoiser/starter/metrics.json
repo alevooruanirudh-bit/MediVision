@@ -1,0 +1,80 @@
+{
+  "model": "denoiser",
+  "profile": "starter",
+  "task": "denoise",
+  "generated_at": "2026-11-17T07:38:09+00:00",
+  "n_train": 4000,
+  "n_val": 500,
+  "n_test": 500,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.039909171909093856,
+      "val_psnr": 27.013781886249994,
+      "val_psnr_noisy": 21.95904107423582,
+      "lr": 0.0009064183272437243,
+      "seconds": 84.0
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.021437562003731727,
+      "val_psnr": 31.206423278584392,
+      "val_psnr_noisy": 21.95904107423582,
+      "lr": 0.0006614183272437243,
+      "seconds": 87.7
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.0183610797226429,
+      "val_psnr": 31.659307478913973,
+      "val_psnr_noisy": 21.95904107423582,
+      "lr": 0.00035858167275627583,
+      "seconds": 86.0
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.01747015880048275,
+      "val_psnr": 32.125055031035714,
+      "val_psnr_noisy": 21.95904107423582,
+      "lr": 0.0001135816727562758,
+      "seconds": 87.2
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.017096612118184567,
+      "val_psnr": 32.14012291040119,
+      "val_psnr_noisy": 21.95904107423582,
+      "lr": 2e-05,
+      "seconds": 86.6
+    }
+  ],
+  "test": {
+    "levels": {
+      "very_low_dose (40 photons)": {
+        "psnr_noisy": 19.12718685887921,
+        "psnr_denoised": 29.206826544788864,
+        "ssim_noisy": 0.3102512043994381,
+        "ssim_denoised": 0.7883818201775915,
+        "psnr_gaussian_blur": 28.504936702236417
+      },
+      "low_dose (100 photons)": {
+        "psnr_noisy": 22.8790193187941,
+        "psnr_denoised": 32.77133638891515,
+        "ssim_noisy": 0.4615242960316657,
+        "ssim_denoised": 0.8943726964540093,
+        "psnr_gaussian_blur": 31.113897730951372
+      },
+      "moderate (300 photons)": {
+        "psnr_noisy": 27.635021316076045,
+        "psnr_denoised": 34.96267652886764,
+        "ssim_noisy": 0.6607860550886704,
+        "ssim_denoised": 0.928610079231905,
+        "psnr_gaussian_blur": 33.356869993881034
+      }
+    },
+    "psnr_noisy": 22.8790193187941,
+    "psnr_denoised": 32.77133638891515,
+    "ssim_noisy": 0.4615242960316657,
+    "ssim_denoised": 0.8943726964540093
+  }
+}

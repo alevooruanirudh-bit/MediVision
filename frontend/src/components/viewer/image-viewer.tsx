@@ -17,6 +17,7 @@ export interface Box {
   label: string;
   color?: string;
   dashed?: boolean;
+  labelBottom?: boolean;
 }
 export interface Line {
   points: [number, number][];
@@ -238,8 +239,14 @@ export function ImageViewer({
         {boxes.map((b, i) => (
           <span
             key={i}
-            className="num pointer-events-none absolute -translate-y-full whitespace-nowrap rounded-md bg-black/70 px-1.5 py-0.5 text-[10px] text-cyan"
-            style={{ left: `${b.box[0] * 100}%`, top: `${b.box[1] * 100}%`, transform: `translateY(-110%) scale(${1 / view.zoom})`, transformOrigin: "bottom left" }}
+            className="num pointer-events-none absolute whitespace-nowrap rounded-md bg-black/70 px-1.5 py-0.5 text-[10px]"
+            style={{
+              left: `${b.box[0] * 100}%`,
+              top: `${(b.labelBottom ? b.box[3] : b.box[1]) * 100}%`,
+              color: b.color ?? "#22D3EE",
+              transform: b.labelBottom ? `translateY(10%) scale(${1 / view.zoom})` : `translateY(-110%) scale(${1 / view.zoom})`,
+              transformOrigin: b.labelBottom ? "top left" : "bottom left",
+            }}
           >
             {b.label}
           </span>
@@ -280,7 +287,7 @@ export function ImageViewer({
           <Tip content="Fullscreen (f)">
             <Button variant="ghost" size="icon" className="text-slate-300 hover:text-white" onClick={fullscreen} aria-label="Fullscreen"><Expand /></Button>
           </Tip>
-          <span className="num hidden px-2 text-[10px] text-slate-400 sm:inline">W {Math.round(wl.w)} · L {Math.round(wl.l)}</span>
+          <span className="num hidden whitespace-nowrap px-2 text-[10px] text-slate-400 sm:inline">W {Math.round(wl.w)} · L {Math.round(wl.l)}</span>
         </div>
       )}
     </div>

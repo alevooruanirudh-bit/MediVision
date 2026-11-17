@@ -93,7 +93,8 @@ def run(model: str, smoke: bool = False, poll: int = 60, timeout_h: float = 12.0
         return 1
     profile = "starter" if smoke else "full"
     pulled = 0
-    for src in out_dir.rglob(f"*/{profile}"):
+    pulled_root = out_dir / "output" if (out_dir / "output").exists() else out_dir
+    for src in pulled_root.glob(f"*/{profile}"):
         if src.is_dir() and src.parent.name in (
             *PLANS,
             *[m for v in PLANS.values() for m in v.get("members", [])],
@@ -106,7 +107,9 @@ def run(model: str, smoke: bool = False, poll: int = 60, timeout_h: float = 12.0
         subprocess.run(
             [sys.executable, "-m", "ml.export_onnx", "--all", "--profile", "full"], check=False
         )
-    print(f"[kaggle] done: {pulled} model folder(s). The backend now prefers 'full' weights.")
+    shutil.rmtree(out_dir / "medivision", ignore_errors=True)  # kernel working copy, not needed
+    note = "The backend now prefers these 'full' weights." if not smoke else "Smoke run verified."
+    print(f"[kaggle] done: {pulled} model folder(s). {note}")
     return 0 if pulled else 1
 
 

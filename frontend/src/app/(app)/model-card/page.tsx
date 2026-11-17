@@ -63,7 +63,7 @@ export default function ModelCardPage() {
       </div>
 
       <Card className="mt-4">
-        <CardHeader icon={<BookOpenText />} title="Triage weights" subtitle="score = 100 · (1 − Π(1 − wᵢ · evidenceᵢ · confidenceᵢ)) over positive findings" />
+        <CardHeader icon={<BookOpenText />} title="Triage weights" subtitle="cᵢ = wᵢ · evidenceᵢ · confidenceᵢ; score = 100 · min(1, c₁ + 0.25·c₂ + 0.10·c₃) over the strongest positive findings" />
         {card.isLoading ? (
           <Skeleton className="m-5 h-32" />
         ) : (

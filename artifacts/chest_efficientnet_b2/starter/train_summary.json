@@ -1,0 +1,9 @@
+{
+  "model": "chest_efficientnet_b2",
+  "profile": "starter",
+  "best": {
+    "val_macro_auroc": 0.76741779771259
+  },
+  "epochs_run": 3,
+  "pretrained_backbone": true
+}

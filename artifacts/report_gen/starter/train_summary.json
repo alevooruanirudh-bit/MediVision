@@ -1,0 +1,9 @@
+{
+  "model": "report_gen",
+  "profile": "starter",
+  "best": {
+    "val_loss": 4.3092662637883965
+  },
+  "epochs_run": 12,
+  "pretrained_backbone": true
+}

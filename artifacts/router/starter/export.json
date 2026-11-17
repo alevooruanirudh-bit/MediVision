@@ -1,0 +1,8 @@
+{
+  "model": "router",
+  "profile": "starter",
+  "img_size": 96,
+  "onnx": true,
+  "max_abs_diff": 1.6689300537109375e-06,
+  "cpu_ms_per_image": 1.8
+}

@@ -42,3 +42,4 @@ artifacts/**/*.npz
 !artifacts/lung_unet/starter/model.onnx
 !artifacts/brain_seg/starter/model.onnx
 !artifacts/denoiser/starter/model.onnx
+ml/kaggle/*_smoke/

@@ -118,7 +118,7 @@ export function FindingsPanel({
               </div>
             )}
             {f.id && (
-              <div className="mt-2 flex items-center gap-1.5 opacity-100 transition md:opacity-0 md:group-hover:opacity-100" onClick={(e) => e.stopPropagation()}>
+              <div className={cn("mt-2 items-center gap-1.5", selected === f.key || editing === f.key ? "flex" : "hidden md:group-hover:flex")} onClick={(e) => e.stopPropagation()}>
                 {editing === f.key ? (
                   <form
                     className="flex w-full gap-1.5"

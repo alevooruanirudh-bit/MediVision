@@ -35,6 +35,7 @@ class TinyCNN(nn.Module):
         self.fc = nn.Linear(64, 1)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = F.avg_pool2d(x, 2)  # 64 -> 32 px: 4x cheaper, same signal for this demo
         x = F.max_pool2d(F.relu(self.c1(x)), 2)
         x = F.max_pool2d(F.relu(self.c2(x)), 2)
         x = F.relu(self.c3(x))
@@ -150,7 +151,7 @@ def fedavg(global_model: nn.Module, locals_: list[nn.Module], weights: list[floa
 
 
 def run(
-    rounds: int = 12, local_epochs: int = 1, lr: float = 2e-3, seed: int = 0
+    rounds: int = 10, local_epochs: int = 1, lr: float = 3e-3, seed: int = 0
 ) -> Iterator[dict[str, Any]]:
     torch.manual_seed(seed)
     torch.set_num_threads(max(1, min(8, torch.get_num_threads())))

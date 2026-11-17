@@ -1,0 +1,9 @@
+{
+  "model": "router",
+  "profile": "starter",
+  "best": {
+    "val_macro_f1": 0.9993333314814763
+  },
+  "epochs_run": 6,
+  "pretrained_backbone": true
+}

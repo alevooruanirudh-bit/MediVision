@@ -1,0 +1,30 @@
+{
+  "task": "multiclass",
+  "dataset": "router",
+  "labels": "router5",
+  "model": {
+    "arch": "smallcnn",
+    "width": 32,
+    "dropout": 0.3
+  },
+  "loss": {
+    "type": "ce",
+    "label_smoothing": 0.05
+  },
+  "optim": {
+    "lr": 0.002,
+    "weight_decay": 0.0001
+  },
+  "train": {
+    "patience": 3,
+    "warmup_epochs": 0,
+    "num_workers": 0,
+    "monitor": "val_macro_f1",
+    "epochs": 6,
+    "batch_size": 64
+  },
+  "img_size": 96,
+  "per_class": 1500,
+  "name": "router",
+  "profile": "starter"
+}

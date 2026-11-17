@@ -127,7 +127,16 @@ def export(name: str, profile: str) -> dict[str, Any]:
         )
     else:
         _export(
-            model, x, path, ["input"], ["output"], {"input": {0: "batch"}, "output": {0: "batch"}}
+            model,
+            x,
+            path,
+            ["input"],
+            ["output"],
+            (
+                {"input": {0: "batch", 2: "h", 3: "w"}, "output": {0: "batch", 2: "h", 3: "w"}}
+                if task in ("denoise", "segmentation")
+                else {"input": {0: "batch"}, "output": {0: "batch"}}
+            ),
         )
     model.eval()
     with torch.no_grad():

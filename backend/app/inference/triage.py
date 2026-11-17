@@ -20,7 +20,6 @@ def score(findings: list[dict[str, Any]], ood: bool = False) -> dict[str, Any]:
     cfg = config()
     w = {k.lower(): v for k, v in cfg["weights"].items()}
     lv = cfg["levels"]
-    survive = 1.0
     drivers = []
     for f in findings:
         if not f.get("positive"):
@@ -30,7 +29,6 @@ def score(findings: list[dict[str, Any]], ood: bool = False) -> dict[str, Any]:
         conf = 1 - min(2 * float(f.get("uncertainty", 0.0)), 0.5)
         wi = float(w.get(f["label"].lower(), 0.5))
         contrib = wi * ev * conf
-        survive *= 1 - contrib
         drivers.append(
             {
                 "label": f["label"],
@@ -40,7 +38,10 @@ def score(findings: list[dict[str, Any]], ood: bool = False) -> dict[str, Any]:
                 "contribution": round(100 * contrib, 1),
             }
         )
-    s = round(100 * (1 - survive), 1)
+    # strongest finding counts fully, the 2nd and 3rd with diminishing weight (no saturation
+    # when a noisy model flags several labels at once)
+    cs = sorted((d["contribution"] / 100 for d in drivers), reverse=True)
+    s = round(100 * min(1.0, sum(c * w for c, w in zip(cs, (1.0, 0.25, 0.10)))), 1)
     if s >= lv["CRITICAL"]:
         level = "CRITICAL"
     elif s >= lv["URGENT"]:

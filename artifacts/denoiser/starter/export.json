@@ -1,0 +1,8 @@
+{
+  "model": "denoiser",
+  "profile": "starter",
+  "img_size": 128,
+  "onnx": true,
+  "max_abs_diff": 3.147125244140625e-05,
+  "cpu_ms_per_image": 7.9
+}

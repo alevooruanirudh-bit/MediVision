@@ -1,0 +1,170 @@
+{
+  "model": "router",
+  "profile": "starter",
+  "task": "multiclass",
+  "generated_at": "2026-11-17T07:30:43+00:00",
+  "n_train": 7500,
+  "n_val": 1478,
+  "n_test": 1500,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.685920451186661,
+      "val_macro_f1": 0.8397641379187067,
+      "val_accuracy": 0.847767253044655,
+      "lr": 0.0018687048957087501,
+      "seconds": 35.6
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.4144204740340893,
+      "val_macro_f1": 0.9672597597151947,
+      "val_accuracy": 0.9675236806495264,
+      "lr": 0.00151,
+      "seconds": 27.8
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.33875108376527446,
+      "val_macro_f1": 0.9061212191339176,
+      "val_accuracy": 0.9066305818673883,
+      "lr": 0.00102,
+      "seconds": 25.7
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.3090893407153268,
+      "val_macro_f1": 0.9951988367348272,
+      "val_accuracy": 0.9952638700947226,
+      "lr": 0.0005300000000000003,
+      "seconds": 24.9
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.2838269152447709,
+      "val_macro_f1": 0.9993333314814763,
+      "val_accuracy": 0.9993234100135318,
+      "lr": 0.00017129510429125008,
+      "seconds": 26.2
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.27763413707924706,
+      "val_macro_f1": 0.9979724072120802,
+      "val_accuracy": 0.9979702300405954,
+      "lr": 4e-05,
+      "seconds": 25.2
+    }
+  ],
+  "test": {
+    "accuracy": 0.9966666666666667,
+    "macro_f1": 0.9966655426079271,
+    "per_class_f1": {
+      "chest_xray": 0.9966666666666667,
+      "bone_xray": 0.994991652754591,
+      "brain_mri": 0.9966777408637874,
+      "other_medical": 0.994991652754591,
+      "not_medical": 1.0
+    },
+    "per_class_auroc": {
+      "chest_xray": 0.9999944444444445,
+      "bone_xray": 0.9999888888888888,
+      "brain_mri": 0.9998958333333333,
+      "other_medical": 0.9987555555555555,
+      "not_medical": 1.0
+    },
+    "confusion_matrix": [
+      [
+        299,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        1,
+        298,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        300,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        298,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        300
+      ]
+    ],
+    "classes": [
+      "chest_xray",
+      "bone_xray",
+      "brain_mri",
+      "other_medical",
+      "not_medical"
+    ],
+    "temperature": 0.25,
+    "reliability": {
+      "bins": [
+        {
+          "bin": [
+            0.5,
+            0.6000000000000001
+          ],
+          "confidence": 0.5415366291999817,
+          "accuracy": 0.3333333333333333,
+          "count": 3
+        },
+        {
+          "bin": [
+            0.7000000000000001,
+            0.8
+          ],
+          "confidence": 0.7575035095214844,
+          "accuracy": 0.8,
+          "count": 5
+        },
+        {
+          "bin": [
+            0.8,
+            0.9
+          ],
+          "confidence": 0.8423102498054504,
+          "accuracy": 0.6666666666666666,
+          "count": 3
+        },
+        {
+          "bin": [
+            0.9,
+            1.0
+          ],
+          "confidence": 0.9996451735496521,
+          "accuracy": 0.9993284083277367,
+          "count": 1489
+        }
+      ],
+      "ece": 0.0012237910032272422
+    }
+  },
+  "class_counts_test": {
+    "chest_xray": 300,
+    "bone_xray": 300,
+    "brain_mri": 300,
+    "other_medical": 300,
+    "not_medical": 300
+  }
+}

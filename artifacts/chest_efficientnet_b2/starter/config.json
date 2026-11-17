@@ -1,0 +1,46 @@
+{
+  "task": "multilabel",
+  "ensemble": "chest_ensemble",
+  "labels": "nih14",
+  "model": {
+    "arch": "classifier",
+    "backbone": "efficientnet_b2",
+    "dropout": 0.3,
+    "hidden": 512
+  },
+  "loss": {
+    "type": "asl",
+    "gamma_neg": 4,
+    "gamma_pos": 0,
+    "clip": 0.05
+  },
+  "optim": {
+    "lr": 0.0003,
+    "weight_decay": 0.0001
+  },
+  "augment": {
+    "scale": [
+      0.75,
+      1.0
+    ],
+    "rotate": 7,
+    "brightness": 0.15,
+    "contrast": 0.15,
+    "clahe_p": 0.3,
+    "hflip": false
+  },
+  "train": {
+    "patience": 3,
+    "warmup_epochs": 1,
+    "num_workers": 0,
+    "monitor": "val_macro_auroc",
+    "epochs": 3,
+    "batch_size": 64,
+    "limit_train": 24000,
+    "limit_val": 4000
+  },
+  "dataset": "chestmnist",
+  "img_size": 128,
+  "name": "chest_efficientnet_b2",
+  "profile": "starter"
+}

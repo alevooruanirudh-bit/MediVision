@@ -91,6 +91,9 @@ SOURCES: list[Source] = [
         "CC BY 4.0",
         "Yang J. et al. MedMNIST v2. Scientific Data 2023.",
         "https://medmnist.com/",
+        profiles=(),
+        optional=True,
+        note="Unused by default (federated demo uses PneumoniaMNIST).",
     ),
     Source(
         "pneumoniamnist",

@@ -1,0 +1,8 @@
+{
+  "model": "chest_convnext_tiny",
+  "profile": "starter",
+  "img_size": 128,
+  "onnx": true,
+  "max_abs_diff": 1.2516975402832031e-06,
+  "cpu_ms_per_image": 9.6
+}

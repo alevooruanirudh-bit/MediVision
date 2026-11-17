@@ -1,0 +1,26 @@
+{
+  "task": "denoise",
+  "dataset": "denoise",
+  "model": {
+    "arch": "dncnn",
+    "depth": 10,
+    "width": 48
+  },
+  "optim": {
+    "lr": 0.001,
+    "weight_decay": 0
+  },
+  "train": {
+    "patience": 3,
+    "warmup_epochs": 0,
+    "num_workers": 0,
+    "monitor": "val_psnr",
+    "epochs": 5,
+    "batch_size": 32,
+    "limit_train": 4000,
+    "limit_val": 500
+  },
+  "img_size": 128,
+  "name": "denoiser",
+  "profile": "starter"
+}

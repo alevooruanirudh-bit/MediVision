@@ -1,0 +1,14 @@
+{
+  "brain_cls": "ok (8s)",
+  "brain_seg": "ok (3s)",
+  "fracture_cls": "ok (5s)",
+  "fracture_det": "ok (16s)",
+  "lung_unet": "ok (184s)",
+  "chest_densenet121": "ok (1231s)",
+  "chest_efficientnet_b2": "ok (1044s)",
+  "chest_convnext_tiny": "ok (2507s)",
+  "router": "ok (207s)",
+  "denoiser": "ok (448s)",
+  "report_gen": "ok (494s)",
+  "copilot_intent": "ok (9s)"
+}

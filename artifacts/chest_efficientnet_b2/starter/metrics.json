@@ -1,0 +1,49 @@
+{
+  "model": "chest_efficientnet_b2",
+  "profile": "starter",
+  "task": "multilabel",
+  "generated_at": "2026-11-17T07:27:17+00:00",
+  "test": {
+    "macro_auroc": 0.7669966985095445,
+    "per_label_auroc": {
+      "Atelectasis": 0.7743313643652288,
+      "Cardiomegaly": 0.8480128458266475,
+      "Effusion": 0.8554981933526196,
+      "Infiltration": 0.683867669888956,
+      "Mass": 0.7359283384922657,
+      "Nodule": 0.6935818330224958,
+      "Pneumonia": 0.7011131010971241,
+      "Pneumothorax": 0.8073221911771387,
+      "Consolidation": 0.7809387913858983,
+      "Edema": 0.8686751313465857,
+      "Emphysema": 0.8187935532966357,
+      "Fibrosis": 0.751840932240026,
+      "Pleural_Thickening": 0.7350341236735001,
+      "Hernia": 0.6830157099685036
+    }
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.6917845721244812,
+      "val_macro_auroc": 0.710531826988046,
+      "lr": 0.0003,
+      "seconds": 344.3
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.6409015119075775,
+      "val_macro_auroc": 0.7518755918369084,
+      "lr": 0.00015299999999999998,
+      "seconds": 341.1
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.6135301616191864,
+      "val_macro_auroc": 0.76741779771259,
+      "lr": 5.999999999999999e-06,
+      "seconds": 335.7
+    }
+  ],
+  "mc_dropout_variance": 0.00044967898429604247
+}

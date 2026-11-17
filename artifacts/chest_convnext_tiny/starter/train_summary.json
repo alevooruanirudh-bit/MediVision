@@ -1,0 +1,9 @@
+{
+  "model": "chest_convnext_tiny",
+  "profile": "starter",
+  "best": {
+    "val_macro_auroc": 0.7863949568849937
+  },
+  "epochs_run": 3,
+  "pretrained_backbone": true
+}

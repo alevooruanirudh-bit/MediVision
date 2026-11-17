@@ -11,6 +11,8 @@ from ml.common import ROUTER_CLASSES
 from ml.data.transforms import preprocess_rgb
 
 PIPELINE_FOR = {"chest_xray": "chest", "bone_xray": "fracture", "brain_mri": "brain"}
+# Radiographs and MRI are grayscale (colourfulness ~0, JPEG noise < 3). Real chroma => not a scan.
+COLOR_LIMIT = 6.0
 HINTS = {"chest": "chest_xray", "fracture": "bone_xray", "bone": "bone_xray", "brain": "brain_mri"}
 
 
@@ -52,7 +54,14 @@ def route(img: np.ndarray, hint: str | None = None) -> dict[str, Any]:
     conf = float(p[k])
     warning = None
     ood = False
-    if label == "not_medical":
+    if color > COLOR_LIMIT and label != "not_medical":
+        ood = True
+        warning = (
+            "Colour photograph detected — this does not look like a medical image "
+            f"(router: {label.replace('_', ' ')} {conf:.0%}). Analysis was skipped."
+        )
+        label = "not_medical"
+    elif label == "not_medical":
         ood = True
         warning = (
             "This does not look like a medical image (router: not medical, "
@@ -64,9 +73,6 @@ def route(img: np.ndarray, hint: str | None = None) -> dict[str, Any]:
             "Medical image of an unsupported type (e.g. CT, ultrasound). "
             "Supported: chest X-ray, bone X-ray, brain MRI."
         )
-    elif color > 25:
-        ood = True
-        warning = "Colour photograph detected — medical radiographs/MRI are grayscale."
     elif conf < 0.6:
         warning = f"Modality uncertain ({label.replace('_', ' ')} {conf:.0%}). Please verify."
     if hint and HINTS.get(hint) and HINTS[hint] != label and not ood:

@@ -23,7 +23,7 @@ setup: ## Create .venv (Python 3.11) and install backend + frontend deps
 
 data-starter: ## Download the small starter datasets (MedMNIST+, Kaggle subsets) and build caches
 	$(PY) -m ml.data.download --profile starter
-	$(PY) -m ml.data.prepare --all
+	$(PY) -m ml.data.prepare --all --delete-raw
 
 prepare: ## Rebuild processed caches + patient-level splits from data/raw
 	$(PY) -m ml.data.prepare --all

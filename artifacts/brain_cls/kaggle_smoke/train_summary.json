@@ -1,0 +1,9 @@
+{
+  "model": "brain_cls",
+  "profile": "starter",
+  "best": {
+    "val_macro_f1": 0.8300828163380227
+  },
+  "epochs_run": 6,
+  "pretrained_backbone": false
+}

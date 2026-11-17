@@ -68,6 +68,8 @@ class ReportGenerator(nn.Module):
         max_new: int = 96,
         beam: int = 3,
         no_repeat_ngram: int = 3,
+        min_len: int = 24,
+        alpha: float = 1.0,
     ) -> list[list[int]]:
         """Beam search with n-gram blocking (batch of 1 for beams > 1)."""
         mem = self.encode(images)
@@ -85,10 +87,12 @@ class ReportGenerator(nn.Module):
                     logp = torch.log_softmax(logits, -1)
                     for ban in _banned(seq, no_repeat_ngram):
                         logp[ban] = -1e9
+                    if len(seq) <= min_len:
+                        logp[eos] = -1e9
                     top = torch.topk(logp, beam)
                     for lp, idx in zip(top.values.tolist(), top.indices.tolist()):
                         cand.append((seq + [idx], score + lp))
-                beams = sorted(cand, key=lambda s: s[1] / len(s[0]) ** 0.7, reverse=True)[:beam]
+                beams = sorted(cand, key=lambda s: s[1] / len(s[0]) ** alpha, reverse=True)[:beam]
                 if all(s[-1] == eos for s, _ in beams):
                     break
             best = beams[0][0]

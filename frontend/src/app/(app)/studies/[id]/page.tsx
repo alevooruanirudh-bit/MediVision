@@ -117,9 +117,9 @@ export default function StudyPage() {
   const sel = res.findings.find((f) => f.key === v.selected);
   const boxes: Box[] = [];
   if (v.boxes) {
-    res.detections?.forEach((d) => boxes.push({ box: d.box, label: `${d.label} ${d.score.toFixed(2)}`, color: "#f59e0b" }));
+    res.detections?.forEach((d) => boxes.push({ box: d.box, label: `${d.label} ${d.score.toFixed(2)}`, color: "#f59e0b", labelBottom: true }));
     if (sel?.heat_box && v.heatmap) boxes.push({ box: sel.heat_box, label: `${sel.label}${sel.zone ? ` · ${sel.zone}` : ""}`, dashed: true });
-    if (res.pipeline === "brain" && res.measurements?.box) boxes.push({ box: res.measurements.box, label: "segmented lesion", color: "#a78bfa" });
+    if (res.pipeline === "brain" && res.measurements?.box) boxes.push({ box: res.measurements.box, label: "segmented lesion", color: "#a78bfa", labelBottom: true });
   }
   const lines: Line[] =
     v.lines && res.measurements?.lines

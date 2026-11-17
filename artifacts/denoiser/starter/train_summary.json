@@ -1,0 +1,9 @@
+{
+  "model": "denoiser",
+  "profile": "starter",
+  "best": {
+    "val_psnr": 32.14012291040119
+  },
+  "epochs_run": 5,
+  "pretrained_backbone": true
+}

@@ -1,45 +1,45 @@
 {
   "federated": {
     "accuracy": 0.625,
-    "auroc": 0.4810486522024984
+    "auroc": 0.4849660311198772
   },
   "centralized": {
-    "accuracy": 0.5240384615384616,
-    "auroc": 0.5546898969975893
+    "accuracy": 0.6153846153846154,
+    "auroc": 0.6745233399079553
   },
   "local_only": {
     "St. Aurora (urban referral)": {
       "accuracy": 0.625,
-      "auroc": 0.5251808021038791
+      "auroc": 0.5958579881656805
     },
     "Riverside General": {
-      "accuracy": 0.594551282051282,
-      "auroc": 0.6493534955073417
+      "accuracy": 0.49038461538461536,
+      "auroc": 0.7479180363795748
     },
     "Hillcrest Rural Clinic": {
       "accuracy": 0.375,
-      "auroc": 0.6881875958799035
+      "auroc": 0.7272079772079773
     }
   },
-  "local_only_mean_auroc": 0.6209072978303748,
+  "local_only_mean_auroc": 0.6903280005844108,
   "federated_curve": [
     {
       "accuracy": 0.625,
-      "auroc": 0.45118343195266275
+      "auroc": 0.4523887793118562
     },
     {
       "accuracy": 0.625,
-      "auroc": 0.4810486522024984
+      "auroc": 0.4849660311198772
     }
   ],
   "centralized_curve": [
     {
-      "accuracy": 0.5512820512820513,
-      "auroc": 0.4902257286872672
+      "accuracy": 0.5849358974358975,
+      "auroc": 0.5464497041420119
     },
     {
-      "accuracy": 0.5240384615384616,
-      "auroc": 0.5546898969975893
+      "accuracy": 0.6153846153846154,
+      "auroc": 0.6745233399079553
     }
   ],
   "hospitals": [
@@ -63,5 +63,5 @@
     }
   ],
   "rounds": 2,
-  "seconds": 94.5
+  "seconds": 4.8
 }

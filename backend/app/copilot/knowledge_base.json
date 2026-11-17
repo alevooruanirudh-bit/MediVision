@@ -310,7 +310,7 @@
     {
       "id": "Triage", "name": "Triage / urgency score", "system": "ai",
       "synonyms": ["triage", "urgency", "urgency score", "priority", "worklist"],
-      "definition": "A 0–100 score combining each positive finding's severity weight, how far its calibrated probability exceeds the operating threshold, and model confidence. Levels: CRITICAL ≥ 70, URGENT ≥ 45, ROUTINE (any positive or doubtful input), NORMAL.",
+      "definition": "A 0–100 score combining each positive finding's severity weight, how far its calibrated probability exceeds the operating threshold, and model confidence. Levels: CRITICAL ≥ 75, URGENT ≥ 45, ROUTINE (any positive or doubtful input), NORMAL.",
       "appearance": "Shown as a coloured pill on the worklist; the weights are listed in the model card.",
       "causes": [], "differential": [], "next_steps": [], "related": [], "urgency": "",
       "lay": "A priority score that helps decide which scans a doctor should look at first.",

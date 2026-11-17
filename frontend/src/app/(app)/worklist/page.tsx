@@ -309,7 +309,7 @@ export default function WorklistPage() {
           <Card className="p-4 text-xs leading-relaxed text-muted">
             <div className="mb-1.5 font-medium text-fg">Triage levels</div>
             <div className="space-y-1.5">
-              <div className="flex items-center gap-2"><UrgencyPill level="CRITICAL" /> score ≥ 70</div>
+              <div className="flex items-center gap-2"><UrgencyPill level="CRITICAL" /> score ≥ 75</div>
               <div className="flex items-center gap-2"><UrgencyPill level="URGENT" /> score ≥ 45</div>
               <div className="flex items-center gap-2"><UrgencyPill level="ROUTINE" /> any positive finding or doubtful input</div>
               <div className="flex items-center gap-2"><UrgencyPill level="NORMAL" /> nothing above threshold</div>

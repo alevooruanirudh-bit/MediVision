@@ -1,5 +1,6 @@
 # Triage severity weights (0-1). Documented in docs/MODEL_CARD.md. High = time-critical if present.
-# score = 100 * (1 - prod_i (1 - w_i * evidence_i * confidence_i)) over positive findings, where
+# c_i = w_i * evidence_i * confidence_i per positive finding; sorted descending,
+# score = 100 * min(1, c_1 + 0.25 c_2 + 0.10 c_3), where
 #   evidence_i   = 0.5 + 0.5 * clip((p_i - t_i) / (1 - t_i), 0, 1)  (how far above its threshold)
 #   confidence_i = 1 - min(2 * uncertainty_i, 0.5)                   (down-weight uncertain calls)
 weights:
@@ -22,7 +23,7 @@ weights:
   Meningioma: 0.80
   Pituitary tumour: 0.75
 levels:          # lower bounds
-  CRITICAL: 70
+  CRITICAL: 75
   URGENT: 45
   ROUTINE: 1     # any positive finding, or a doubtful / out-of-distribution input
   NORMAL: 0

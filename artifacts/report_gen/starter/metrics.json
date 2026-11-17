@@ -1,0 +1,58 @@
+{
+  "model": "report_gen",
+  "profile": "starter",
+  "task": "report",
+  "test": {
+    "n_test": 150,
+    "bleu4": 0.09482296926059576,
+    "rouge_l": 0.24817550478447045,
+    "clinical_consistency": {
+      "precision": 0.025,
+      "recall": 0.014084507042253521,
+      "f1": 0.018018018018018018,
+      "normal_vs_abnormal_agreement": 0.6466666666666666
+    },
+    "baseline_most_common_report": {
+      "bleu4": 0.0945939267985193,
+      "rouge_l": 0.2547822986345304
+    },
+    "examples": [
+      {
+        "reference": "heart size within normal limits, stable mediastinal and hilar contours. no alveolar consolidation, no findings of pleural effusion or pulmonary edema. no pneumothorax. small rounded bilateral axillary densities not seen on the previous exam most suggestive of artifacts, healed right lateral 10th rib fracture noted. no acute cardiopulmonary findings",
+        "generated": "the lungs are clear. no acute cardiopulmonary abnormality. no focal airspace disease. no pneumothorax. no pleural effusion or pneumothorax or pleural effusion. no evidence of focal consolidation, or pneumothorax. there is within normal limits. there are within normal. no active disease"
+      },
+      {
+        "reference": "the lungs are clear. there is no pleural effusion or pneumothorax. the heart and mediastinum are normal. the skeletal structures are normal. no acute pulmonary disease",
+        "generated": "the lungs are clear. no acute cardiopulmonary abnormality. no focal airspace disease. no pneumothorax. no pleural effusion or pneumothorax or pleural effusion. no evidence of focal consolidation, or pneumothorax. there is within normal limits. there are within normal in the right lung consolidation. no visible pneumothorax or pneumothorax, or pleural effusions or pneumothorax"
+      },
+      {
+        "reference": "the lungs are clear bilaterally. specifically, no evidence of focal consolidation, pneumothorax, or pleural effusion.. cardio mediastinal silhouette is unremarkable. visualized osseous structures of the thorax are without acute abnormality. no acute cardiopulmonary abnormality",
+        "generated": "the heart size is normal limits. the lungs are clear. no focal airspace disease. no acute cardiopulmonary abnormality. no pneumothorax. no pleural effusion. no evidence of focal airspace airspace disease"
+      },
+      {
+        "reference": "the cardiomediastinal silhouette and pulmonary vasculature are within normal limits. there is no pneumothorax or pleural effusion. there are no focal areas of consolidation. no acute cardiopulmonary abnormality",
+        "generated": "the lungs are clear. no acute cardiopulmonary abnormality. no focal airspace disease. no pneumothorax. no pleural effusion or pneumothorax. there is no acute bony abnormality"
+      },
+      {
+        "reference": "the lungs appear clear. the heart and pulmonary appear normal. the pleural spaces are clear. mediastinal contours are normal. no acute cardiopulmonary disease",
+        "generated": "the lungs are clear. no acute cardiopulmonary abnormality. no focal airspace disease. no pneumothorax. no pleural effusion or pneumothorax or pleural effusion. no evidence of focal consolidation, or pneumothorax. there is within normal limits. there are within normal. no visible pneumothorax or pneumothorax, or pleural effusions or pneumothorax"
+      }
+    ],
+    "labels_checked": [
+      "Atelectasis",
+      "Cardiomegaly",
+      "Effusion",
+      "Infiltration",
+      "Mass",
+      "Nodule",
+      "Pneumonia",
+      "Pneumothorax",
+      "Consolidation",
+      "Edema",
+      "Emphysema",
+      "Fibrosis",
+      "Pleural_Thickening",
+      "Hernia"
+    ]
+  }
+}

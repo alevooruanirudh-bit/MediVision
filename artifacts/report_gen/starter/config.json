@@ -1,0 +1,40 @@
+{
+  "task": "report",
+  "dataset": "iu_xray",
+  "model": {
+    "arch": "report_gen",
+    "d_model": 384,
+    "layers": 4,
+    "heads": 6,
+    "ffn": 1536,
+    "vocab_size": 3000,
+    "max_len": 96
+  },
+  "optim": {
+    "lr": 0.0003,
+    "weight_decay": 0.01
+  },
+  "augment": {
+    "scale": [
+      0.85,
+      1.0
+    ],
+    "rotate": 5,
+    "brightness": 0.1,
+    "contrast": 0.1,
+    "clahe_p": 0.0
+  },
+  "train": {
+    "patience": 4,
+    "warmup_epochs": 1,
+    "num_workers": 0,
+    "monitor": "val_loss",
+    "encoder_init": "chest_densenet121",
+    "epochs": 12,
+    "batch_size": 32,
+    "freeze_encoder_epochs": 4
+  },
+  "img_size": 128,
+  "name": "report_gen",
+  "profile": "starter"
+}
