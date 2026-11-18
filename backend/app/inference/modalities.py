@@ -10,13 +10,16 @@ import numpy as np
 from app.inference.chest import certainty, mc_dropout_head, sigmoid
 from app.inference.registry import ModelHandle, registry
 from ml.common import RETINA_GRADES
-from ml.data.transforms import preprocess, preprocess_rgb
+from ml.data.transforms import LETTERBOX_DATASETS, letterbox_square, preprocess, preprocess_rgb
 
 PIPELINE_MODEL = {
     "head_ct": "head_ct_cls",
     "breast_us": "breast_us",
     "fundus": "retina_dr",
+    "mammo": "mammo_cls",
     "ct_volume": "nodule3d",
+    "ct_chest_scan": "lung_nodule_det",
+    "petct": "petct_seg",
 }
 
 
@@ -25,6 +28,8 @@ def prep(h: ModelHandle, img: np.ndarray) -> np.ndarray:
     if h.cfg.get("dataset") == "retina":
         rgb = img if img.ndim == 3 else np.stack([img] * 3, -1)
         return preprocess_rgb(rgb, h.img_size)
+    if h.cfg.get("dataset") in LETTERBOX_DATASETS:
+        return preprocess(letterbox_square(img, h.img_size)[0], h.img_size)
     return preprocess(img, h.img_size)
 
 
@@ -75,6 +80,22 @@ def analyze_breast_us(img: np.ndarray, samples: int = 8) -> dict[str, Any]:
             )
         )
     return {"findings": [f] if f else [], "error": None if f else "breast-US model not trained"}
+
+
+def analyze_mammo(img: np.ndarray, samples: int = 8) -> dict[str, Any]:
+    """Single screening view. Mini-DDSM labels are per exam, so this is a view-level suspicion score
+    (the model card reports exam-level metrics where the 4 views are averaged)."""
+    f = _binary(
+        "mammo_cls", img, "Suspicious for breast cancer (mammography)", "breast_cancer", samples
+    )
+    if f:
+        f["risk_category"] = (
+            "high suspicion - recall for diagnostic work-up"
+            if f["probability"] >= 0.8
+            else ("suspicious - recall suggested" if f["positive"] else "no AI-flagged suspicion")
+        )
+        f["view_level"] = True
+    return {"findings": [f] if f else [], "error": None if f else "mammography model not trained"}
 
 
 def analyze_fundus(img: np.ndarray) -> dict[str, Any]:

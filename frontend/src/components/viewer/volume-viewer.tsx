@@ -8,8 +8,21 @@ import { assetUrl } from "@/lib/api";
 
 /** 3-D view for CT volumes (C4): rotating maximum-intensity projection with the segmented
  * nodule tinted, plus axial / coronal / sagittal multiplanar slices through the centre. */
-export function VolumeViewer({ mpr, frames }: { mpr: Record<string, string>; frames: string[] }) {
+export function VolumeViewer({
+  mpr,
+  frames,
+  caption = "3-D MIP · violet = segmented nodule",
+  startOnSlice = false,
+}: {
+  mpr: Record<string, string>;
+  frames: string[];
+  caption?: string;
+  startOnSlice?: boolean;
+}) {
   const [i, setI] = React.useState(0);
+  const planes = Object.keys(mpr);
+  const [sel, setSel] = React.useState<string | null>(startOnSlice ? (Object.keys(mpr)[0] ?? null) : null);
+  const still = sel ?? (frames.length ? null : planes[0] ?? null);
   const [playing, setPlaying] = React.useState(true);
   React.useEffect(() => {
     if (!playing || !frames.length) return;
@@ -20,7 +33,10 @@ export function VolumeViewer({ mpr, frames }: { mpr: Record<string, string>; fra
     <div className="grid h-full gap-2 md:grid-cols-[minmax(0,1fr)_200px]" data-testid="volume-viewer">
       <div className="relative flex min-h-[300px] flex-col items-center justify-center overflow-hidden rounded-xl bg-black">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        {frames[i] && <img src={assetUrl(frames[i])} alt={`3-D maximum-intensity projection, ${Math.round((360 * i) / frames.length)}°`} className="h-full max-h-[60vh] w-auto [image-rendering:pixelated]" />}
+        {still && <img src={assetUrl(mpr[still])} alt={`${still} view`} className="h-full max-h-[60vh] w-auto object-contain [image-rendering:pixelated]" />}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {!still && frames[i] && <img src={assetUrl(frames[i])} alt={`3-D maximum-intensity projection, ${Math.round((360 * i) / frames.length)}°`} className="h-full max-h-[60vh] w-auto [image-rendering:pixelated]" />}
+        {!still && frames.length > 0 && (
         <div className="absolute inset-x-3 bottom-3 flex items-center gap-3 rounded-xl bg-black/60 px-3 py-2 text-[11px] text-white/80 backdrop-blur">
           <Button size="icon" variant="ghost" className="size-7 text-white" onClick={() => setPlaying((p) => !p)} aria-label={playing ? "Pause rotation" : "Play rotation"}>
             {playing ? <Pause /> : <Play />}
@@ -29,13 +45,21 @@ export function VolumeViewer({ mpr, frames }: { mpr: Record<string, string>; fra
           <Slider value={[i]} max={Math.max(frames.length - 1, 0)} step={1} onValueChange={([x]) => { setPlaying(false); setI(x); }} aria-label="Rotation angle" />
           <span className="num w-10 text-right">{Math.round((360 * i) / Math.max(frames.length, 1))}°</span>
         </div>
-        <span className="absolute left-3 top-3 rounded bg-black/60 px-2 py-0.5 text-[10px] text-white/70">3-D MIP · violet = segmented nodule</span>
+        )}
+        <span className="absolute left-3 top-3 rounded bg-black/60 px-2 py-0.5 text-[10px] text-white/70">{still ? still : caption}</span>
+        {sel && frames.length > 0 && (
+          <button type="button" onClick={() => setSel(null)} className="absolute right-3 top-3 rounded bg-black/60 px-2 py-0.5 text-[10px] text-white/80 hover:text-white">
+            Back to 3-D
+          </button>
+        )}
       </div>
       <div className="grid grid-cols-3 gap-2 md:grid-cols-1">
         {Object.entries(mpr).map(([plane, url]) => (
-          <figure key={plane} className="overflow-hidden rounded-xl border border-border bg-black">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={assetUrl(url)} alt={`${plane} slice`} className="aspect-square w-full [image-rendering:pixelated]" />
+          <figure key={plane} className={`overflow-hidden rounded-xl border bg-black ${still === plane ? "border-cyan" : "border-border"}`}>
+            <button type="button" onClick={() => setSel(plane)} className="block w-full" aria-label={`Show ${plane} large`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={assetUrl(url)} alt={`${plane} slice`} className="aspect-square w-full object-contain [image-rendering:pixelated]" />
+            </button>
             <figcaption className="px-2 py-1 text-[10px] capitalize text-muted">{plane}</figcaption>
           </figure>
         ))}

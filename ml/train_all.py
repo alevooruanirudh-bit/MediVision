@@ -26,12 +26,16 @@ ORDER = [
     "chest_convnext_tiny",
     "head_ct_cls",
     "breast_us",
+    "mammo_cls",
     "retina_dr",
     "nodule3d",
     "router",
     "denoiser",
     "sr_gan",
     "radiogenomics",
+    "petct_seg",
+    "lung_nodule_det",
+    "fmri_glm",
     "report_gen",
     "copilot_intent",
 ]
@@ -54,10 +58,16 @@ def main(argv: list[str] | None = None) -> int:
         t0 = time.time()
         try:
             done = (ARTIFACTS / name / args.profile / "model.pt").exists()
-            if name == "radiogenomics":
-                from ml.radiogenomics import main as radiogenomics
+            standalone = {
+                "radiogenomics": "ml.radiogenomics",
+                "petct_seg": "ml.petct_fusion",
+                "lung_nodule_det": "ml.lung_detect",
+                "fmri_glm": "ml.fmri_glm",
+            }
+            if name in standalone:
+                import importlib
 
-                radiogenomics(["--profile", args.profile])
+                importlib.import_module(standalone[name]).main(["--profile", args.profile])
                 status[name] = f"ok ({time.time() - t0:.0f}s)"
                 print(f"[train_all] {name}: {status[name]}", flush=True)
                 continue
@@ -82,7 +92,10 @@ def main(argv: list[str] | None = None) -> int:
             traceback.print_exc()
             status[name] = f"FAILED: {exc.__class__.__name__}: {exc}"
         print(f"[train_all] {name}: {status[name]}", flush=True)
-    write_json(ARTIFACTS / f"train_all_{args.profile}.json", status)
+    status_file = ARTIFACTS / f"train_all_{args.profile}.json"
+    merged = json.loads(status_file.read_text()) if status_file.exists() else {}
+    merged.update(status)
+    write_json(status_file, merged)
     print(json.dumps(status, indent=2))
     return 0
 

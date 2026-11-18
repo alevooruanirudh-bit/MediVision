@@ -78,7 +78,7 @@ function Uploader({ onDone }: { onDone: () => void }) {
       >
         {drag && <div className="scan-line" />}
         <UploadCloud className={cn("size-8 transition", drag ? "text-cyan" : "text-subtle")} />
-        <div className="text-sm font-medium text-fg">Drop X-rays, brain MRI, head CT, breast ultrasound, fundus photos or CT volumes here</div>
+        <div className="text-sm font-medium text-fg">Drop X-rays, brain MRI, head CT, mammograms, breast ultrasound, fundus photos, CT volumes or PET-CT (.npz) here</div>
         <div className="text-xs text-muted">PNG · JPG · DICOM · .npy CT volume ≤ 20 MB · multiple files · DICOM is de-identified on arrival</div>
         <input
           ref={input}
@@ -99,6 +99,7 @@ function Uploader({ onDone }: { onDone: () => void }) {
           <option value="brain">Brain MRI</option>
           <option value="head_ct">Head CT</option>
           <option value="breast">Breast ultrasound</option>
+          <option value="mammo">Mammogram</option>
           <option value="fundus">Fundus photo</option>
         </NativeSelect>
       </div>
@@ -247,7 +248,9 @@ function WorklistInner() {
                 <option value="head_ct">Head CT</option>
                 <option value="breast_us">Breast ultrasound</option>
                 <option value="fundus">Fundus</option>
-                <option value="chest_ct">CT volume</option>
+                <option value="mammography">Mammogram</option>
+                <option value="chest_ct">Chest CT (volume / scan)</option>
+                <option value="pet_ct">PET-CT</option>
                 <option value="not">Not medical</option>
               </NativeSelect>
               <NativeSelect value={queue} onChange={(e) => setQueue(e.target.value)} className="h-9 text-xs" aria-label="Queue">

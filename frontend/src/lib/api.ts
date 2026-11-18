@@ -1,5 +1,5 @@
 import { useSettings } from "./store";
-import type { ChatAnswer, Explain, Health, Me, Report, Study, StudySummary, Timeline } from "./types";
+import type { ChatAnswer, Explain, FmriSummary, Health, Me, Report, Study, StudySummary, Timeline } from "./types";
 
 export const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
 
@@ -115,6 +115,7 @@ export const api = {
     request<{ valid: boolean; checked: number; legacy_unchained: number; message: string; broken_at?: number }>(
       "/api/audit/verify",
     ),
+  fmri: () => request<FmriSummary>("/api/fmri"),
   fusion: (base_id: string, overlay_id: string, alpha = 0.5, register = true) =>
     request<FusionResult>("/api/fusion", json({ base_id, overlay_id, alpha, register })),
   me: () => request<Me>("/api/auth/me"),

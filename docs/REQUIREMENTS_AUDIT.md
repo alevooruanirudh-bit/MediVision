@@ -1,7 +1,12 @@
 # Requirements audit — "AI-Powered Radiology: Innovations and Challenges in Medical Imaging" (JECIR 2023)
 
-**Before** = commit `4780ae7` (first complete build). **After** = this commit. Status: ✅ implemented ·
-🟡 partial · ❌ missing / not started. Metrics are starter-profile, held-out test sets (see METRICS.md).
+**Before** = commit `4780ae7` (first complete build). **After** = round 1 (`66bd164`) plus round 2 (this
+commit: mammography, PET-CT fusion, fMRI, whole-scan nodule detection). Status: ✅ implemented · 🟡 partial ·
+❌ missing. Metrics are starter-profile, held-out test sets (see METRICS.md).
+
+**Scope change (D-37).** C3 (stroke LVO / PE on CT angiography) and C8 (wearables) are removed. There is no
+small, free, suitable dataset for C3 (RSNA PE is ~900 GB), and C8 is outside imaging. The COULD list is now 8
+items.
 
 ## Coverage
 
@@ -9,7 +14,7 @@
 |---|---|---|
 | MUST (34) | 19 / 12 / 3 | **34 / 0 / 0** |
 | SHOULD (7) | 4 / 3 / 0 | **7 / 0 / 0** |
-| COULD (10) | 0 / 2 / 8 | **6 / 2 / 2** (2 skipped with reasons) |
+| COULD (8, after removing C3 and C8) | 0 / 2 / 6 | **8 / 0 / 0** |
 
 ## MUST
 
@@ -19,10 +24,10 @@
 | M2 | Tumour detection | ✅ | ✅ | brain_cls (acc 0.953), brain_seg (Dice 0.75), CXR Mass/Nodule | — |
 | M3 | Fracture detection | ✅ | ✅ | fracture_cls AUROC 0.901; Faster R-CNN detector | detector weak (mAP 0.048) |
 | M4 | Hemorrhage detection (head CT) | ❌ | ✅ | `head_ct_cls` AUROC 0.995, sens/spec 0.95/0.95 (n=40) | small test set; RSNA ICH = full profile |
-| M5 | Lung nodule (CT) | 🟡 | ✅ | `nodule3d` 3-D CNN AUROC 0.900 + volumetrics; CXR Nodule | patch-level, not whole-scan detection |
+| M5 | Lung nodule (CT) | 🟡 | ✅ | whole-scan detector on LUNA16 (lung mask → LoG candidates → 3-D CNN): candidate recall 0.94, FROC CPM 0.223, sens 0.12 @ 1 FP / 0.50 @ 8 FP per scan; then `nodule3d` malignancy (AUROC 0.900) + size | detector is weak (trained on 25 scans) |
 | M6 | Chest disease on X-ray | ✅ | ✅ | 14-label ensemble, macro AUROC 0.791 | — |
 | M7 | Second reader, FP/FN rates | 🟡 | ✅ | sens/spec/FPR/FNR/PPV/NPV per model: Lab "Second-reader summary", METRICS.md | — |
-| M8 | Multiple modalities (X-ray, US, MRI, CT) | 🟡 | ✅ | router v2 (8 classes, acc 0.989): X-ray, MRI, CT, US, fundus | — |
+| M8 | Multiple modalities (X-ray, US, MRI, CT) | 🟡 | ✅ | router v3 (9 classes, acc 0.993): X-ray, MRI, CT, US, mammography, fundus; CT and PET-CT volumes | — |
 | M9 | Automate repetitive tasks | ✅ | ✅ | upload → full pipeline → report draft | — |
 | M10 | Segmentation | ✅ | ✅ | lung U-Net (Dice 0.974), Attention U-Net, 3-D nodule segmentation | — |
 | M11 | Measurements / volumetrics | 🟡 | ✅ | CTR, lung areas, tumour area, nodule volume / diameter / sphericity | 1 mm spacing assumed if absent |
@@ -66,16 +71,28 @@
 
 | ID | Requirement | Before | After | Evidence / reason |
 |---|---|---|---|---|
-| C1 | Breast cancer screening | ❌ | 🟡 | breast-US malignancy AUROC 0.907 (sens 0.64); **no mammography** |
+| C1 | Breast cancer screening | ❌ | ✅ | mammography (Mini-DDSM): exam AUROC 0.892 (sens 0.64 / spec 0.91), cancer vs normal 0.961, cancer vs benign 0.836; plus breast US AUROC 0.907 |
 | C2 | Diabetic retinopathy | ❌ | ✅ | `retina_dr` referable-DR AUROC 0.882, κ 0.688 |
-| C3 | Stroke LVO / PE | ❌ | ❌ | skipped: no small free CTA dataset (RSNA PE ~900 GB) |
 | C4 | 3-D view | ❌ | ✅ | rotating MIP + MPR (not AR/VR) |
 | C5 | Tamper-evident traceability | 🟡 | ✅ | hash-chained audit + `/api/audit/verify` |
 | C6 | Radiogenomics | ❌ | ✅ | LGG / TCGA: 5 / 6 molecular targets above chance |
-| C7 | Multimodal fusion / fMRI | ❌ | 🟡 | registered image-fusion tool; no PET-CT / fMRI data |
-| C8 | Wearables | ❌ | ❌ | skipped: outside imaging scope |
+| C7 | Multimodal fusion / fMRI | ❌ | ✅ | PET-CT (TCIA sarcoma, 7 patients, leave-one-out Dice): CT 0.00 / PET 0.30 / PET+CT 0.34, with SUVmax, MTV and TLG; fMRI GLM activation maps (ds000114) |
 | C9 | Generative enhancement | ❌ | ✅ | SR-GAN ×2 (experimental) |
 | C10 | Autonomous mode with review | 🟡 | ✅ | pre-clear only clear normals; critical auto-alert |
+
+## Round 2 — what the data showed (honest)
+
+- **PET-CT fusion.** Fusion beats PET alone on 4 of 7 patients (+0.04 mean Dice); CT alone finds nothing.
+  The demo patient is held out of the deployed model: Dice 0.69, MTV 686 ml vs 506 ml expert. With 7
+  patients this is indicative only.
+- **fMRI.** sub-01 reproduces the motor-homunculus order, but only the lips peak survives Bonferroni; sub-02
+  does not reproduce it. The task signal in this release is weak (task > rest t ≈ 4–8).
+- **Mammography.** Labels are per exam (no lesion side), so view-level scores are noisy. Cancer vs benign
+  is clearly harder than cancer vs normal.
+- **Whole-scan detection.** The candidate generator finds 94 % of test nodules, but the 3-D CNN ranks them
+  poorly. The demo scan's 6.4 mm nodule is a candidate (score 0.88, rank 10) but falls below the 0.91
+  operating threshold. The top detections there are chest-wall false positives, and their sizes are
+  reported as "indeterminate" rather than guessed.
 
 ## Found during verification
 

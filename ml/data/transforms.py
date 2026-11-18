@@ -42,6 +42,34 @@ def preprocess(img: np.ndarray, size: int, channels: int = 3) -> np.ndarray:
     return normalize_gray(g.astype(np.float32) / 255.0, channels)[None]
 
 
+def letterbox_square(img: np.ndarray, size: int) -> tuple[np.ndarray, tuple[int, int, int, int]]:
+    """Grayscale image -> size x size, aspect kept, zero padded (mammograms, D-33).
+
+    Returns the square and the content box (y0, x0, h, w) so maps can be mapped back.
+    """
+    g = to_gray_uint8(img)
+    s = size / max(g.shape)
+    h, w = max(1, round(g.shape[0] * s)), max(1, round(g.shape[1] * s))
+    out = np.zeros((size, size), np.uint8)
+    y0, x0 = (size - h) // 2, (size - w) // 2
+    out[y0 : y0 + h, x0 : x0 + w] = cv2.resize(g, (w, h), interpolation=cv2.INTER_AREA)
+    return out, (y0, x0, h, w)
+
+
+def unletterbox(
+    m: np.ndarray, box: tuple[int, int, int, int], size: int, out_hw: tuple[int, int]
+) -> np.ndarray:
+    """Inverse of letterbox_square for a 2-D map at any resolution."""
+    sq = cv2.resize(m.astype(np.float32), (size, size), interpolation=cv2.INTER_CUBIC)
+    y0, x0, h, w = box
+    return cv2.resize(
+        sq[y0 : y0 + h, x0 : x0 + w], (out_hw[1], out_hw[0]), interpolation=cv2.INTER_CUBIC
+    )
+
+
+LETTERBOX_DATASETS = {"mini_ddsm"}
+
+
 def preprocess_rgb(img: np.ndarray, size: int) -> np.ndarray:
     """Colour-preserving pre-processing (modality router needs colour cues)."""
     if img.ndim == 2:

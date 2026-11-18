@@ -1,0 +1,11 @@
+{
+  "task": "segmentation",
+  "img_size": 112,
+  "dataset": "sarcoma_petct",
+  "model": {
+    "arch": "unet",
+    "in_ch": 6,
+    "base": 16,
+    "depth": 4
+  }
+}

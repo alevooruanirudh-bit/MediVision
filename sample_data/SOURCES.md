@@ -21,5 +21,9 @@ Test-split images only (never used for training). Used by `app/seed.py` and the 
 | breast_us_malignant.png | BreastMNIST+ (BUSI, Al-Dhabyani 2020), test split | test[0] | CC BY 4.0 | malignant |
 | fundus_dr.png | RetinaMNIST+ (DeepDRiD), test split | test[0] | CC BY 4.0 | ICDR grade 2 |
 | ct_nodule_volume.npy | NoduleMNIST3D (LIDC-IDRI), test split — 64³ chest-CT patch | test[7] | CC BY 4.0 | malignant nodule |
+| mammo_cancer.png | Mini-DDSM (DDSM screening mammography), test split | 624_A_1000_1.LEFT_CC.LJPEG.1_highpass.png | DDSM - free for research, cite (see Kaggle page) | cancer exam (exam-level label) |
+| mammo_normal.png | Mini-DDSM (DDSM screening mammography), test split | 7_A_0003_1.LEFT_CC.LJPEG.1_highpass.png | DDSM - free for research, cite (see Kaggle page) | normal exam |
+| petct_sarcoma.npz | TCIA Soft-tissue-Sarcoma FDG-PET/CT (4quant 5 mm release); held out of the deployed model | STS_031, slices 0-55 | CC BY 3.0 | soft-tissue sarcoma (expert contour) |
+| chest_ct_scan.npz | LUNA16 (LIDC-IDRI) test-split scan, 90 mm slab around the first annotated nodule | 767743874565 (52 slices) | CC BY 4.0 | nodule, diameter 6.4 mm |
 
 Citations: Wang X. et al. CVPR 2017 (NIH ChestX-ray14); Abedeen I. et al. Sci Data 2023 (FracAtlas); Nickparvar M. Kaggle 2021 (Brain Tumor MRI); Krizhevsky A. 2009 (CIFAR-10).

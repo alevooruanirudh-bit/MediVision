@@ -34,6 +34,10 @@ INDICATIONS = {
     "breast_us_malignant": "Palpable breast lump.",
     "fundus_dr": "Type 2 diabetes; annual retinal screening.",
     "ct_nodule_volume": "Incidental lung nodule on staging CT; characterise.",
+    "mammo_cancer": "Screening mammogram, age 50-74 programme.",
+    "mammo_normal": "Screening mammogram, age 50-74 programme.",
+    "petct_sarcoma": "Biopsy-proven soft-tissue sarcoma of the extremity; staging FDG-PET/CT.",
+    "chest_ct_scan": "Former smoker; low-dose CT lung-cancer screening.",
 }
 HINT = {
     "chest": "chest",
@@ -43,6 +47,9 @@ HINT = {
     "breast_us": "breast",
     "fundus": "fundus",
     "ct_volume": None,
+    "mammography": "mammo",
+    "petct": None,
+    "ct_chest_scan": None,
     "none": None,
 }
 

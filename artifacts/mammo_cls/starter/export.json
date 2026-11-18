@@ -1,0 +1,8 @@
+{
+  "model": "mammo_cls",
+  "profile": "starter",
+  "img_size": 256,
+  "onnx": true,
+  "max_abs_diff": 0.000743865966796875,
+  "cpu_ms_per_image": 6.7
+}

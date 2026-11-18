@@ -1,5 +1,9 @@
 {
   "nodule3d": "ok (1561s)",
-  "router": "ok (481s)",
-  "sr_gan": "ok (2057s)"
+  "router": "ok (255s)",
+  "sr_gan": "ok (2057s)",
+  "mammo_cls": "ok (15s)",
+  "petct_seg": "ok (1351s)",
+  "lung_nodule_det": "ok (611s)",
+  "fmri_glm": "ok (1s)"
 }

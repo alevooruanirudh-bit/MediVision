@@ -50,7 +50,12 @@ def reasons(
             }
         )
     if f.get("zone"):
-        r.append({"kind": "location", "text": f"The heatmap's hottest region is the {f['zone']}."})
+        where = (
+            f"Detected at {f['zone']}."
+            if f.get("kind") in ("detection", "segmentation")
+            else f"The heatmap's hottest region is the {f['zone']}."
+        )
+        r.append({"kind": "location", "text": where})
     lab = f["label"].lower()
     support = None
     if pipeline == "chest" and meas.get("ctr") is not None and "cardiomegaly" in lab:
@@ -84,6 +89,19 @@ def reasons(
             f"Segmented nodule volume {meas['volume_mm3']:.0f} mm³ "
             f"(equivalent diameter {meas.get('equivalent_diameter_mm', 0):.1f} mm)."
         )
+    elif pipeline == "ct_chest_scan" and (meas.get("top_nodule") or {}).get("diameter_mm"):
+        tn = meas["top_nodule"]
+        support = (
+            f"Detected at z {tn['centre_mm_zyx'][0]} mm with an estimated diameter "
+            f"{tn['diameter_mm']:.1f} mm ({meas.get('candidates_scored', 0)} candidates scored)."
+        )
+    elif pipeline == "petct" and meas.get("suv_max") is not None:
+        support = (
+            f"The fused PET+CT segmenter outlines a lesion with SUVmax {meas['suv_max']} and "
+            f"metabolic volume {meas.get('mtv_ml')} ml."
+        )
+    elif pipeline == "mammo" and f.get("risk_category"):
+        support = f"Single-view suspicion category: {f['risk_category']}."
     elif pipeline == "fundus" and f.get("grade"):
         support = f"Most probable ICDR grade: {f['grade']} (expected grade {f['expected_grade']})."
     if support:

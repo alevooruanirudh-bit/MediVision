@@ -1,0 +1,81 @@
+{
+  "name": "petct_seg",
+  "profile": "starter",
+  "task": "segmentation_fusion",
+  "dataset": "TCIA Soft-tissue-Sarcoma FDG-PET/CT (4quant 5 mm co-registered release)",
+  "n_patients": 7,
+  "protocol": "leave-one-patient-out, 3-D Dice on the held-out patient",
+  "modes": {
+    "ct": {
+      "mean_dice": 0.0,
+      "sd": 0.0,
+      "median_dice": 0.0
+    },
+    "pet": {
+      "mean_dice": 0.296,
+      "sd": 0.265,
+      "median_dice": 0.255
+    },
+    "petct": {
+      "mean_dice": 0.337,
+      "sd": 0.256,
+      "median_dice": 0.331
+    }
+  },
+  "per_patient": {
+    "STS_002": {
+      "ct": 0.0,
+      "pet": 0.493,
+      "petct": 0.125
+    },
+    "STS_003": {
+      "ct": 0.0,
+      "pet": 0.0,
+      "petct": 0.331
+    },
+    "STS_005": {
+      "ct": 0.0,
+      "pet": 0.255,
+      "petct": 0.075
+    },
+    "STS_012": {
+      "ct": 0.0,
+      "pet": 0.071,
+      "petct": 0.486
+    },
+    "STS_021": {
+      "ct": 0.0,
+      "pet": 0.054,
+      "petct": 0.067
+    },
+    "STS_023": {
+      "ct": 0.0,
+      "pet": 0.615,
+      "petct": 0.582
+    },
+    "STS_031": {
+      "ct": 0.0,
+      "pet": 0.582,
+      "petct": 0.691
+    }
+  },
+  "petct_wins": {
+    "petct_vs_ct": 7,
+    "petct_vs_pet": 4
+  },
+  "deployed_model_patients": [
+    "STS_002",
+    "STS_003",
+    "STS_005",
+    "STS_012",
+    "STS_021",
+    "STS_023"
+  ],
+  "demo_holdout": "STS_031",
+  "demo_holdout_dice": 0.691,
+  "fusion_gain_vs_ct": 0.337,
+  "fusion_gain_vs_pet": 0.041,
+  "caveat": "7 patients only - indicative, not a powered comparison.",
+  "generated_at": "2026-11-18T17:31:57",
+  "seconds": 1350.5
+}

@@ -278,6 +278,16 @@ def fusion(body: FusionRequest, session: Session = Depends(get_session)) -> dict
     return out
 
 
+@router.get("/api/fmri", summary="Task-fMRI activation maps (GLM, OpenNeuro ds000114)")
+def fmri() -> dict[str, Any]:
+    from app.inference.fmri import get_summary
+
+    out = get_summary()
+    if out is None:
+        raise APIError(404, "not_available", "fMRI maps not computed (python -m ml.fmri_glm)")
+    return out
+
+
 # ----------------------------------------------------------------------------- enhance
 class EnhanceRequest(BaseModel):
     study_id: str

@@ -160,6 +160,53 @@ SOURCES: list[Source] = [
         files=("kaggle_3m/data.csv",),
     ),
     Source(
+        "mini_ddsm",
+        "Mini-DDSM screening mammograms (Normal / Benign / Cancer, ~9.7k downsampled views)",
+        "kaggle_dataset",
+        "cheddad/miniddsm",
+        "Derived from DDSM (free for research, cite); see Kaggle page",
+        "Lekamlage C.D., Afzal F., Westerberg E., Cheddad A. Mini-DDSM. ICVIP 2020; "
+        "Heath M. et al. The Digital Database for Screening Mammography. IWDM 2000.",
+        "https://www.kaggle.com/datasets/cheddad/miniddsm",
+    ),
+    Source(
+        "sarcoma_petct",
+        "Soft-tissue sarcoma FDG-PET/CT, co-registered at 5 mm + tumour masks (51 patients, TCIA)",
+        "kaggle_dataset",
+        "4quant/soft-tissue-sarcoma",
+        "CC BY 3.0 (TCIA Soft-tissue-Sarcoma collection)",
+        "Vallières M. et al. Phys Med Biol 2015; Clark K. et al. J Digit Imaging 2013 (TCIA).",
+        "https://www.kaggle.com/datasets/4quant/soft-tissue-sarcoma",
+        files=("lab_petct_vox_5.00mm.h5", "study_list.csv"),
+    ),
+    Source(
+        "fmri_motor",
+        "Task fMRI, finger/foot/lips motor task, fMRIPrep output in MNI space (OpenNeuro ds000114)",
+        "kaggle_dataset",
+        "chrisfilo/example-brain-mapping-dataset",
+        "CC0 / PDDL (OpenNeuro ds000114)",
+        "Gorgolewski K.J. et al. A test-retest fMRI dataset for motor, language and spatial "
+        "attention functions. GigaScience 2013.",
+        "https://www.kaggle.com/datasets/chrisfilo/example-brain-mapping-dataset",
+        files=(
+            "sub-01_ses-retest_task-fingerfootlips_bold_space-MNI152NLin2009cAsym_preproc.nii.gz",
+            "sub-01_ses-retest_task-fingerfootlips_bold_space-MNI152NLin2009cAsym_brainmask.nii.gz",
+            "task-fingerfootlips_events.tsv",
+            "task-fingerfootlips_bold.json",
+        ),
+    ),
+    Source(
+        "luna16",
+        "LUNA16 whole-chest CT (subset of subset0 scans + annotations + candidates_V2)",
+        "luna_subset",
+        "avc0706/luna16",
+        "CC BY 4.0 (LUNA16; LIDC-IDRI is CC BY 3.0)",
+        "Setio A.A.A. et al. Med Image Anal 2017; Armato S.G. et al. Med Phys 2011 (LIDC-IDRI).",
+        "https://luna16.grand-challenge.org/",
+        note="Only LUNA16_SCANS (default 44) scans are fetched, one file at a time (~135 MB each); "
+        "the full 888-scan set is ~120 GB.",
+    ),
+    Source(
         "rsna_ich",
         "RSNA Intracranial Hemorrhage Detection (head CT, 5 subtypes)",
         "kaggle_competition",
@@ -382,14 +429,103 @@ def fetch(src: Source) -> str:
                 api.dataset_download_file(src.ref, f, path=str(out), quiet=True)
         else:
             api.dataset_download_files(src.ref, path=str(out), quiet=True, unzip=False)
+    elif src.kind == "luna_subset":
+        if not has_kaggle_token():
+            raise RuntimeError("no Kaggle token (~/.kaggle/kaggle.json)")
+        _fetch_luna(src, out)
     elif src.kind == "url":
         if not src.ref:
             raise RuntimeError(f"manual download required: {src.url}")
         dest = out / Path(src.ref).name
         urllib.request.urlretrieve(src.ref, dest)
+    _unzip_all(out)
     _record([p for p in out.rglob("*") if p.is_file()])
     done_marker(src.key).write_text("ok")
     return "downloaded"
+
+
+def _unzip_all(out: Path) -> None:
+    """Kaggle serves compressible single files as <name>.zip; unpack them in place."""
+    import zipfile
+
+    for z in list(out.glob("*.zip")):
+        try:
+            with zipfile.ZipFile(z) as zf:
+                zf.extractall(out)
+            z.unlink()
+        except zipfile.BadZipFile:
+            pass
+
+
+def luna_scan_choice(annotations: Path, listing: list[str], n: int) -> list[str]:
+    """Deterministic pick of `n` subset0 series: ~80 % with >=1 annotated nodule, the rest without,
+    smallest volumes first (download size / laptop RAM)."""
+    import csv
+
+    with annotations.open() as fh:
+        positive = {r["seriesuid"] for r in csv.DictReader(fh)}
+    raws = sorted(
+        (int(b), Path(name).stem)
+        for name, b in (row.split("\t") for row in listing)
+        if name.endswith(".raw")
+    )
+    pos = [s for _, s in raws if s in positive]
+    neg = [s for _, s in raws if s not in positive]
+    n_pos = min(len(pos), round(n * 0.8))
+    return pos[:n_pos] + neg[: n - n_pos]
+
+
+def _fetch_luna(src: Source, out: Path) -> None:
+    import os
+
+    api = _kaggle_api()
+    wanted = {
+        "annotations.csv": out / "annotations.csv",
+        "candidates_V2/candidates_V2.csv": out / "candidates_V2" / "candidates_V2.csv",
+    }
+    for f, dest in wanted.items():
+        if not dest.exists() and not (out / Path(f).name).exists():
+            api.dataset_download_file(src.ref, f, path=str(out), quiet=True)
+    _unzip_all(out)
+    listing_file = out / "subset0_files.txt"
+    if not listing_file.exists():
+        rows, tok = [], None
+        while True:
+            r = api.dataset_list_files(src.ref, page_token=tok, page_size=1000)
+            rows += [f"{f.name}\t{f.total_bytes}" for f in r.files if f.name.startswith("subset0/")]
+            tok = r.next_page_token
+            if not tok:
+                break
+        listing_file.write_text("\n".join(rows))
+    n = int(os.environ.get("LUNA16_SCANS", "44"))
+    series = luna_scan_choice(out / "annotations.csv", listing_file.read_text().splitlines(), n)
+    scans = out / "scans"
+    scans.mkdir(exist_ok=True)
+    for uid in series:
+        for ext in (".mhd", ".raw"):
+            if (scans / f"{uid}{ext}").exists():
+                continue
+            api.dataset_download_file(
+                src.ref, f"subset0/subset0/{uid}{ext}", path=str(scans), quiet=True
+            )
+        _flatten_luna(scans)
+    (out / "series.txt").write_text("\n".join(series))
+
+
+def _flatten_luna(scans: Path) -> None:
+    """Kaggle keeps the subset0/subset0/ prefix and zips .raw files: move + unzip into scans/."""
+    import zipfile
+
+    for f in list(scans.rglob("*")):
+        if not f.is_file() or f.parent == scans:
+            continue
+        if f.suffix == ".zip":
+            with zipfile.ZipFile(f) as zf:
+                for m in zf.namelist():
+                    (scans / Path(m).name).write_bytes(zf.read(m))
+            f.unlink()
+        else:
+            f.rename(scans / f.name)
 
 
 def _fetch_cifar(out: Path) -> None:

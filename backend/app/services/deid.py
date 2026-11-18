@@ -73,6 +73,7 @@ class Ingested:
     deid_dataset: Any = None
     volume: np.ndarray | None = None  # (D,H,W) for CT volumes (.npy/.npz or multi-frame DICOM)
     voxel_spacing_mm: list[float] | None = None
+    pet: np.ndarray | None = None  # co-registered PET (SUV) for PET-CT uploads (.npz ct + pet)
 
 
 def pseudonymize(identifier: str, salt: str) -> str:
@@ -123,25 +124,61 @@ def dicom_to_uint8(ds: Any) -> np.ndarray:
     return arr.astype(np.uint8)
 
 
-def load_volume_array(data: bytes, name: str) -> np.ndarray:
-    """.npy / .npz (first array) -> 3-D array. Pickles are refused (allow_pickle=False)."""
-    obj = np.load(io.BytesIO(data), allow_pickle=False)
-    arr = obj[obj.files[0]] if name.endswith(".npz") else obj
+def _check3d(arr: np.ndarray) -> np.ndarray:
     arr = np.squeeze(np.asarray(arr))
     if arr.ndim != 3 or min(arr.shape) < 8 or max(arr.shape) > 512:
         raise ValueError(f"expected a 3-D volume (8..512 per axis), got shape {arr.shape}")
     return arr
 
 
+def load_volume_bundle(data: bytes, name: str) -> dict[str, Any]:
+    """.npy / .npz -> {"volume", "pet"?, "spacing"?}. Pickles are refused (allow_pickle=False).
+
+    .npz keys understood: `ct` + `pet` (PET-CT, same grid), `volume` / first array (CT), optional
+    `spacing` (z, y, x in mm).
+    """
+    obj = np.load(io.BytesIO(data), allow_pickle=False)
+    if not name.endswith(".npz"):
+        return {"volume": _check3d(obj)}
+    files = set(obj.files)
+    out: dict[str, Any] = {}
+    if {"ct", "pet"} <= files:
+        out["volume"], out["pet"] = _check3d(obj["ct"]), _check3d(obj["pet"])
+        if out["volume"].shape != out["pet"].shape:
+            raise ValueError("ct and pet arrays must have the same shape (co-registered)")
+    else:
+        key = "volume" if "volume" in files else next(f for f in obj.files if f != "spacing")
+        out["volume"] = _check3d(obj[key])
+    if "spacing" in files:
+        sp = [float(v) for v in np.asarray(obj["spacing"]).ravel()[:3]]
+        if len(sp) == 3 and all(0.1 <= v <= 20 for v in sp):
+            out["spacing"] = sp
+    return out
+
+
+def load_volume_array(data: bytes, name: str) -> np.ndarray:
+    """.npy / .npz -> the CT volume (see load_volume_bundle)."""
+    return load_volume_bundle(data, name)["volume"]
+
+
 def ingest(data: bytes, filename: str, salt: str, patient_ref: str | None = None) -> Ingested:
     name = filename.lower()
     if name.endswith((".npy", ".npz")):
-        vol = load_volume_array(data, name)
+        b = load_volume_bundle(data, name)
+        vol = b["volume"]
         mid = vol[vol.shape[0] // 2].astype(np.float32)
-        lo, hi = float(mid.min()), float(mid.max())
-        px = ((mid - lo) / max(hi - lo, 1e-6) * 255).astype(np.uint8)
+        lo, hi = float(np.percentile(mid, 0.5)), float(np.percentile(mid, 99.5))
+        px = (np.clip((mid - lo) / max(hi - lo, 1e-6), 0, 1) * 255).astype(np.uint8)
         ident = patient_ref or hashlib.sha256(data[:65536]).hexdigest()
-        return Ingested(px, "npy", pseudonymize(ident, salt), modality_tag="CT", volume=vol)
+        return Ingested(
+            px,
+            "npy",
+            pseudonymize(ident, salt),
+            modality_tag="PT/CT" if "pet" in b else "CT",
+            volume=vol,
+            voxel_spacing_mm=b.get("spacing"),
+            pet=b.get("pet"),
+        )
     is_dicom = name.endswith((".dcm", ".dicom")) or data[128:132] == b"DICM"
     if is_dicom:
         import pydicom

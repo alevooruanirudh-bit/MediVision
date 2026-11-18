@@ -83,6 +83,36 @@ ROWS = [
         lambda t: f"{t.get('referable_auroc', 0):.3f} · {t.get('quadratic_kappa', 0):.3f}",
     ),
     (
+        "mammo_cls",
+        "Screening mammography (Mini-DDSM)",
+        "exam AUROC · sens / spec (view AUROC)",
+        lambda t: f"{t['exam_level']['auroc']:.3f} · {t['exam_level']['sensitivity']:.2f} / "
+        f"{t['exam_level']['specificity']:.2f} ({t.get('auroc', 0):.3f})",
+    ),
+    (
+        "lung_nodule_det",
+        "Whole-scan lung-nodule detector (LUNA16)",
+        "FROC CPM · sens @1 / @8 FP per scan",
+        lambda t: f"{t['test_froc']['cpm']:.3f} · {t['test_froc']['sens']['1']:.2f} / "
+        f"{t['test_froc']['sens']['8']:.2f}",
+    ),
+    (
+        "petct_seg",
+        "PET-CT tumour segmentation (7 pts, LOPO)",
+        "Dice CT / PET / PET+CT",
+        lambda t: f"{t['modes']['ct']['mean_dice']:.2f} / {t['modes']['pet']['mean_dice']:.2f} / "
+        f"{t['modes']['petct']['mean_dice']:.2f}",
+    ),
+    (
+        "fmri_glm",
+        "fMRI motor GLM (2 subjects)",
+        "somatotopic order reproduced",
+        lambda t: " · ".join(
+            f"{k} {'yes' if v['somatotopy_pass'] else 'no'}"
+            for k, v in t.get("subjects", {}).items()
+        ),
+    ),
+    (
         "sr_gan",
         "Super-resolution x2 (SR-GAN)",
         "PSNR bicubic → ours (dB)",
@@ -114,7 +144,7 @@ def table(profile: str = "starter") -> str:
         exp = ARTIFACTS / key / profile / "export.json"
         cpu = json.loads(exp.read_text()).get("cpu_ms_per_image") if exp.exists() else None
         cpu_txt = f"{cpu:.1f}" if cpu else "—"
-        lines.append(f"| {name} | {metric} | {_fmt(fn(m.get('test', {})))} | {cpu_txt} |")
+        lines.append(f"| {name} | {metric} | {_fmt(fn(m.get('test', m)))} | {cpu_txt} |")
     return "\n".join(lines)
 
 
@@ -152,11 +182,16 @@ def second_reader_section(profile: str = "starter") -> list[str]:
         ("head_ct_cls", "Head-CT hemorrhage"),
         ("nodule3d", "CT nodule malignancy"),
         ("breast_us", "Breast-US malignancy"),
+        ("mammo_cls", "Mammography (per view)"),
     ):
         p = ARTIFACTS / key / profile / "metrics.json"
         if p.exists():
             t = json.loads(p.read_text())["test"]
             add(name, "positive", t.get("sensitivity"), t.get("specificity"))
+    p = ARTIFACTS / "mammo_cls" / profile / "metrics.json"
+    if p.exists():
+        e = json.loads(p.read_text())["test"].get("exam_level") or {}
+        add("Mammography (per exam)", "cancer exam", e.get("sensitivity"), e.get("specificity"))
     p = ARTIFACTS / "retina_dr" / profile / "metrics.json"
     if p.exists():
         r = json.loads(p.read_text())["test"].get("referable") or {}

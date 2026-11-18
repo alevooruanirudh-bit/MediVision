@@ -65,6 +65,12 @@ NP: dict[str, tuple[str, str]] = {  # (with article, bare)
         "referable diabetic retinopathy",
         "referable diabetic retinopathy",
     ),
+    "Suspicious for breast cancer (mammography)": (
+        "mammographic features suspicious for malignancy",
+        "mammographic suspicion of malignancy",
+    ),
+    "Lung nodule (whole-scan detection)": ("a pulmonary nodule", "pulmonary nodule"),
+    "FDG-avid tumour (PET-CT)": ("an FDG-avid soft-tissue lesion", "FDG-avid lesion"),
     "Malignancy-suspicious lung nodule": (
         "a lung nodule with malignant features",
         "lung nodule with malignant features",
@@ -89,6 +95,24 @@ NEW_PIPES = {
         "Retina",
         "No referable diabetic retinopathy identified by the AI model.",
         "No referable diabetic retinopathy identified.",
+    ),
+    "mammo": (
+        "Single screening mammography view (de-identified upload).",
+        "Breast",
+        "No mammographic features flagged as suspicious by the AI model on this view.",
+        "No AI-flagged mammographic suspicion on this view; routine screening interval.",
+    ),
+    "ct_chest_scan": (
+        "Chest CT volume, resampled to 1 mm isotropic voxels (de-identified upload).",
+        "Lungs",
+        "No pulmonary nodule detected by the AI model above its operating threshold.",
+        "No AI-detected pulmonary nodule.",
+    ),
+    "petct": (
+        "FDG-PET/CT, co-registered PET and CT volumes (de-identified upload).",
+        "Soft tissues",
+        "No focal FDG-avid lesion segmented by the AI model.",
+        "No AI-segmented FDG-avid lesion.",
     ),
     "ct_volume": (
         "Chest CT sub-volume centred on a nodule (64³ patch, de-identified upload).",
@@ -288,6 +312,17 @@ def write_report(results: dict[str, Any], study: Any, style: str = "standard") -
                 extra_txt = f" Most probable ICDR grade: {f['grade']}."
             if pipe == "breast_us" and f.get("risk_category"):
                 extra_txt = f" AI suspicion category: {f['risk_category']}."
+            if pipe == "mammo" and f.get("risk_category"):
+                extra_txt = f" AI suspicion category: {f['risk_category']} (single view)."
+            if pipe == "ct_chest_scan" and (meas.get("top_nodule") or {}).get("diameter_mm"):
+                tn = meas["top_nodule"]
+                extra_txt = (
+                    f" Largest-scoring nodule at z {tn['centre_mm_zyx'][0]} mm, estimated diameter "
+                    f"{tn['diameter_mm']:.1f} mm; {meas.get('detections_above_threshold', 1)} detection(s) "
+                    "above threshold."
+                )
+            if pipe == "petct" and meas.get("suv_max"):
+                extra_txt = f" SUVmax {meas['suv_max']:.1f}, metabolic tumour volume {meas.get('mtv_ml', 0):.1f} ml."
             if pipe == "ct_volume" and meas.get("volume_mm3"):
                 extra_txt = (
                     f" Segmented volume ~{meas['volume_mm3']:.0f} mm³ "
@@ -334,6 +369,18 @@ def write_report(results: dict[str, Any], study: Any, style: str = "standard") -
             f"Nodule volume: {meas['volume_mm3']:.0f} mm³ · equivalent diameter "
             f"{meas['equivalent_diameter_mm']:.1f} mm · {meas['slices_with_nodule']} slices"
             + (" (voxel spacing assumed 1 mm — not in file)" if meas.get("spacing_assumed") else "")
+        )
+    if pipe == "ct_chest_scan" and meas.get("candidates_scored") is not None:
+        m_lines.append(
+            f"Nodule detection: {meas.get('detections_above_threshold', 0)} above threshold of "
+            f"{meas['candidates_scored']} candidates scored; lung volume ~{meas.get('lung_volume_ml', 0):,.0f} ml"
+            + (" (voxel spacing assumed 1 mm)" if meas.get("spacing_assumed") else "")
+        )
+    if pipe == "petct" and meas.get("suv_max") is not None:
+        m_lines.append(
+            f"PET: SUVmax {meas['suv_max']}, SUVmean {meas.get('suv_mean')}, MTV {meas.get('mtv_ml')} ml, "
+            f"TLG {meas.get('tlg')}"
+            + (" (5 mm voxels assumed)" if meas.get("spacing_assumed") else "")
         )
     rad = results.get("radiomics") or {}
     if rad.get("first_order"):

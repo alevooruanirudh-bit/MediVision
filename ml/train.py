@@ -112,6 +112,12 @@ def make_datasets(cfg: dict[str, Any], tokenizer: Any = None) -> tuple[Dataset, 
             D.BreastUSDataset("val", size, aug_ev),
             D.BreastUSDataset("test", size, aug_ev),
         )
+    if name == "mini_ddsm":
+        return (
+            D.MammoDataset("train", size, aug_tr, lt),
+            D.MammoDataset("val", size, aug_ev, lv),
+            D.MammoDataset("test", size, aug_ev),
+        )
     if name == "retina":
         return (
             D.RetinaDataset("train", size, True),

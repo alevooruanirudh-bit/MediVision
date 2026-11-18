@@ -1,0 +1,140 @@
+{
+  "name": "fmri_glm",
+  "profile": "starter",
+  "task": "fmri_activation",
+  "dataset": "OpenNeuro ds000114 retest session, finger/foot/lips (fMRIPrep, MNI152NLin2009cAsym)",
+  "method": "mass-univariate OLS GLM, double-gamma HRF, DCT high-pass 128 s, 6 mm FWHM smoothing, eroded brain mask, 6 motion regressors where available (ours, numpy)",
+  "tr_s": 2.5,
+  "subjects": {
+    "sub-01": {
+      "volumes": 184,
+      "dof": 173,
+      "motion_regressors": false,
+      "t_threshold_bonferroni": 4.77,
+      "peaks": {
+        "Finger > others": {
+          "mni": [
+            -24.0,
+            -64.0,
+            -46.0
+          ],
+          "t": 7.09,
+          "cerebral_mni": [
+            48.0,
+            -20.0,
+            62.0
+          ],
+          "cerebral_t": 3.51,
+          "cerebral_significant": false,
+          "n_voxels_sig": 11
+        },
+        "Foot > others": {
+          "mni": [
+            -32.0,
+            -8.0,
+            -38.0
+          ],
+          "t": 5.69,
+          "cerebral_mni": [
+            12.0,
+            -12.0,
+            86.0
+          ],
+          "cerebral_t": 4.6,
+          "cerebral_significant": false,
+          "n_voxels_sig": 10
+        },
+        "Lips > others": {
+          "mni": [
+            52.0,
+            -8.0,
+            38.0
+          ],
+          "t": 7.67,
+          "cerebral_mni": [
+            52.0,
+            -8.0,
+            38.0
+          ],
+          "cerebral_t": 7.67,
+          "cerebral_significant": true,
+          "n_voxels_sig": 111
+        }
+      },
+      "somatotopy": {
+        "lips_below_finger": true,
+        "finger_below_foot": true,
+        "foot_most_medial": true
+      },
+      "somatotopy_pass": true,
+      "all_cerebral_peaks_significant": false
+    },
+    "sub-02": {
+      "volumes": 184,
+      "dof": 167,
+      "motion_regressors": true,
+      "t_threshold_bonferroni": 4.76,
+      "peaks": {
+        "Finger > others": {
+          "mni": [
+            -16.0,
+            68.0,
+            6.0
+          ],
+          "t": 3.68,
+          "cerebral_mni": [
+            -16.0,
+            68.0,
+            6.0
+          ],
+          "cerebral_t": 3.68,
+          "cerebral_significant": false,
+          "n_voxels_sig": 0
+        },
+        "Foot > others": {
+          "mni": [
+            48.0,
+            -24.0,
+            30.0
+          ],
+          "t": 7.0,
+          "cerebral_mni": [
+            48.0,
+            -24.0,
+            30.0
+          ],
+          "cerebral_t": 7.0,
+          "cerebral_significant": true,
+          "n_voxels_sig": 56
+        },
+        "Lips > others": {
+          "mni": [
+            56.0,
+            -4.0,
+            34.0
+          ],
+          "t": 4.53,
+          "cerebral_mni": [
+            56.0,
+            -4.0,
+            34.0
+          ],
+          "cerebral_t": 4.53,
+          "cerebral_significant": false,
+          "n_voxels_sig": 0
+        }
+      },
+      "somatotopy": {
+        "lips_below_finger": false,
+        "finger_below_foot": true,
+        "foot_most_medial": false
+      },
+      "somatotopy_pass": false,
+      "all_cerebral_peaks_significant": false
+    }
+  },
+  "somatotopy_pass_all": false,
+  "caveat": "Two subjects, single session; sub-01 has no motion regressors in this release; AR(1) not modelled, so t is optimistic - a Bonferroni threshold is used to compensate.",
+  "seconds": 1.2,
+  "generated_at": "2026-11-18T17:42:12"
+}

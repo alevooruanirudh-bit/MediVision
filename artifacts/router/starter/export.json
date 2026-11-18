@@ -4,5 +4,5 @@
   "img_size": 96,
   "onnx": true,
   "max_abs_diff": 9.5367431640625e-07,
-  "cpu_ms_per_image": 26.4
+  "cpu_ms_per_image": 1.4
 }

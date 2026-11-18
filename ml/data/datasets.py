@@ -262,8 +262,8 @@ class BrainMRIDataset(Dataset):
 
 # --------------------------------------------------------------------------- router
 class RouterDataset(Dataset):
-    """8-way modality router: chest_xray / bone_xray / brain_mri / head_ct / breast_us / fundus /
-    other_medical (abdominal CT, CT patches, paediatric CXR) / not_medical (CIFAR-10 photos).
+    """9-way modality router: chest_xray / bone_xray / brain_mri / head_ct / breast_us / fundus /
+    mammography / other_medical (abdominal CT, CT patches, paediatric CXR) / not_medical (CIFAR-10 photos).
 
     Colour is preserved (natural photos are colourful) but half of the natural images are converted
     to grayscale so the router cannot rely on colour alone.
@@ -304,6 +304,11 @@ class RouterDataset(Dataset):
         with contextlib.suppress(FileNotFoundError):
             xr, _ = load_medmnist("retinamnist", 128, split)
             pools["fundus"] += take(xr, n)
+        with contextlib.suppress(FileNotFoundError):
+            xm = MammoDataset(split, 256).x
+            pools["mammography"] += [
+                cv2.resize(im, (128, 128), interpolation=cv2.INTER_AREA) for im in take(xm, n)
+            ]
         for flag in ("organamnist", "pneumoniamnist", "nodulemnist3d"):
             try:
                 if flag == "nodulemnist3d":
@@ -523,3 +528,32 @@ class Nodule3DDataset(Dataset):
         return torch.from_numpy(np.ascontiguousarray(v)[None].astype(np.float32)), torch.tensor(
             [self.y[i]]
         )
+
+
+class MammoDataset(Dataset):
+    """Mini-DDSM screening mammograms (D-33). Positive = view from an exam with biopsy-proven cancer.
+
+    `case` is kept so evaluation can aggregate the 4 views of an exam (exam-level labels).
+    """
+
+    def __init__(
+        self, split: str, size: int = 256, augment: Augment | None = None, limit: int | None = None
+    ) -> None:
+        d = PROCESSED / "mini_ddsm"
+        if not (d / "metadata.csv").exists():
+            raise FileNotFoundError("mini_ddsm not prepared; run make data-starter")
+        meta = pd.read_csv(d / "metadata.csv")
+        cache = np.load(next(d.glob("images_*.npy")), mmap_mode="r")
+        keep = np.where(meta["split"].to_numpy() == split)[0]
+        keep = keep[_subset(len(keep), limit)]
+        self.x = np.asarray(cache[keep])
+        self.meta = meta.iloc[keep].reset_index(drop=True)
+        self.y = self.meta["label"].to_numpy().astype(np.float32)
+        self.aug = augment or Augment(size, train=False)
+
+    def __len__(self) -> int:
+        return len(self.x)
+
+    def __getitem__(self, i: int) -> tuple[torch.Tensor, torch.Tensor]:
+        img, _ = self.aug(self.x[i])
+        return torch.from_numpy(normalize_gray(img)), torch.tensor([self.y[i]])

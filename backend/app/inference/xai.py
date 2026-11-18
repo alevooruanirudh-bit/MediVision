@@ -10,14 +10,32 @@ import cv2
 import numpy as np
 
 from app.inference.registry import ModelHandle
-from ml.data.transforms import preprocess, preprocess_rgb
+from ml.data.transforms import (
+    LETTERBOX_DATASETS,
+    letterbox_square,
+    preprocess,
+    preprocess_rgb,
+    unletterbox,
+)
 
 
 def _prep(handle: ModelHandle, img: np.ndarray, size: int | None = None) -> np.ndarray:
     size = size or handle.img_size
     if handle.cfg.get("dataset") == "retina":
         return preprocess_rgb(img if img.ndim == 3 else np.stack([img] * 3, -1), size)
+    if handle.cfg.get("dataset") in LETTERBOX_DATASETS:
+        return preprocess(letterbox_square(img, size)[0], size)
     return preprocess(img, size)
+
+
+def _to_image(m: np.ndarray, handle: ModelHandle, img: np.ndarray) -> np.ndarray:
+    """Model-space map -> image resolution (undoing the letterbox when the model used one)."""
+    if handle.cfg.get("dataset") in LETTERBOX_DATASETS:
+        size = handle.img_size
+        return unletterbox(m, letterbox_square(img, size)[1], size, img.shape[:2])
+    return cv2.resize(
+        m.astype(np.float32), (img.shape[1], img.shape[0]), interpolation=cv2.INTER_CUBIC
+    )
 
 
 _lock = threading.Lock()
@@ -49,9 +67,7 @@ def cam(
     cls = GradCAMPlusPlus if method == "gradcampp" else GradCAM
     with _lock, cls(model=model, target_layers=[layer]) as c:
         g = c(input_tensor=x, targets=[ClassifierOutputTarget(class_idx)])[0]
-    g = cv2.resize(
-        g.astype(np.float32), (img.shape[1], img.shape[0]), interpolation=cv2.INTER_CUBIC
-    )
+    g = _to_image(g, handle, img)
     g = cv2.GaussianBlur(g, (0, 0), max(1.0, img.shape[0] / 150))
     g -= g.min()
     return g / g.max() if g.max() > 0 else g
@@ -92,8 +108,7 @@ def occlusion(
     heat = np.zeros((grid, grid), np.float32)
     for (gy, gx), p in zip(coords, drops):
         heat[gy, gx] = max(0.0, base - p)
-    heat = cv2.resize(heat, (img.shape[1], img.shape[0]), interpolation=cv2.INTER_CUBIC)
-    heat = np.clip(heat, 0, None)
+    heat = np.clip(_to_image(heat, handle, img), 0, None)
     return heat / heat.max() if heat.max() > 0 else heat
 
 

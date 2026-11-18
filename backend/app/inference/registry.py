@@ -40,6 +40,9 @@ MODELS = [
     "retina_dr",
     "nodule3d",
     "sr_gan",
+    "mammo_cls",
+    "lung_nodule_det",
+    "petct_seg",
 ]
 CHEST_MEMBERS = MODELS[:3]
 

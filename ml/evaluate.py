@@ -456,6 +456,31 @@ def fairness_report(y: np.ndarray, p: np.ndarray, meta: Any) -> dict[str, Any]:
 
 
 # ----------------------------------------------------------------------------- generic models
+def mammo_exam_metrics(meta: Any, p: np.ndarray, thr: float) -> dict[str, Any]:
+    """Mini-DDSM labels are per exam: average the 4 view scores of each exam (D-33).
+
+    Also separates the two clinically different questions: cancer vs normal screening exams and
+    cancer vs benign (biopsied) exams, which is much harder.
+    """
+    df = meta[["case", "label3"]].copy()
+    df["p"] = p
+    ex = df.groupby("case").agg(p=("p", "mean"), label3=("label3", "first"))
+    y = (ex["label3"] == 2).astype(int).to_numpy()
+    s = ex["p"].to_numpy()
+    se, sp = sens_spec(y, s, thr)
+    out = {
+        "n_exams": int(len(ex)),
+        "auroc": safe_auroc(y, s),
+        "sensitivity": se,
+        "specificity": sp,
+        **second_reader(y, s, thr),
+    }
+    for other, code in (("normal", 0), ("benign", 1)):
+        m = ex["label3"].isin([2, code]).to_numpy()
+        out[f"auroc_cancer_vs_{other}"] = safe_auroc(y[m], s[m])
+    return out
+
+
 def evaluate_model(name: str, profile: str) -> dict[str, Any]:
     from ml.train import det_collate, make_datasets, predict_detection
 
@@ -519,6 +544,8 @@ def evaluate_model(name: str, profile: str) -> dict[str, Any]:
                 "roc": roc,
                 "reliability": rel,
             }
+            if cfg["dataset"] == "mini_ddsm":
+                res["test"]["exam_level"] = mammo_exam_metrics(test_ds.meta, pt, thr)
             lab = labels_for(cfg)[0]
             plot_roc({lab: roc}, {lab: auc}, plots / "roc.png", f"{name} ROC")
             plot_reliability(rel, plots / "reliability.png", name)

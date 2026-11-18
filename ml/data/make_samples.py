@@ -105,6 +105,106 @@ def new_modalities() -> list[dict[str, object]]:
         )
     except FileNotFoundError:
         pass
+    out += round2_modalities()
+    return out
+
+
+def round2_modalities() -> list[dict[str, object]]:
+    """Mammography, PET-CT and a whole-chest-CT slab (D-33/34/36). Held-out cases only, picked by a
+    fixed rule (first test-split exam / the pre-declared PET-CT hold-out / first test-split scan with
+    a nodule) - never by model output."""
+    out: list[dict[str, object]] = []
+    d = PROCESSED / "mini_ddsm"
+    raw = DATA_DIR / "raw" / "mini_ddsm" / "Mini_DDSM_Upload"
+    if (d / "metadata.csv").exists() and raw.exists():
+        meta = pd.read_csv(d / "metadata.csv")
+        folder = {0: "Normal", 2: "Cancer"}
+        for lab3, role in ((2, "mammo_cancer"), (0, "mammo_normal")):
+            r = (
+                meta[(meta.split == "test") & (meta.label3 == lab3)]
+                .sort_values(["case", "view"])
+                .iloc[0]
+            )
+            src = next((raw / folder[lab3]).glob(f"*_{r['case']}_*{r['view']}.LJPEG*"), None)
+            if src is None:
+                continue
+            img = cv2.imread(str(src), cv2.IMREAD_GRAYSCALE)
+            cv2.imwrite(str(OUT / f"{role}.png"), img)
+            out.append(
+                {
+                    "file": f"{role}.png",
+                    "source": "Mini-DDSM (DDSM screening mammography), test split",
+                    "original": src.name,
+                    "license": "DDSM - free for research, cite (see Kaggle page)",
+                    "modality": "mammography",
+                    "ground_truth": (
+                        "cancer exam (exam-level label)" if lab3 == 2 else "normal exam"
+                    ),
+                    "age": None if pd.isna(r["age"]) else int(r["age"]),
+                    "sex": "F",
+                    "patient_ref": f"DDSM-{r['case']}",
+                }
+            )
+    try:
+        from ml.petct_fusion import DEMO_HOLDOUT, load_patients
+
+        p = load_patients()[DEMO_HOLDOUT]
+        zs = np.where(p["mask"].any((1, 2)))[0]
+        z0, z1 = max(int(zs.min()) - 15, 0), min(int(zs.max()) + 16, len(p["mask"]))
+        np.savez_compressed(
+            OUT / "petct_sarcoma.npz",
+            ct=np.round(p["ct"][z0:z1]).astype(np.int16),
+            pet=p["pet"][z0:z1].astype(np.float16),
+            spacing=np.array([5.0, 5.0, 5.0], np.float32),
+        )
+        out.append(
+            {
+                "file": "petct_sarcoma.npz",
+                "source": "TCIA Soft-tissue-Sarcoma FDG-PET/CT (4quant 5 mm release); held out of the "
+                "deployed model",
+                "original": f"{DEMO_HOLDOUT}, slices {z0}-{z1 - 1}",
+                "license": "CC BY 3.0",
+                "modality": "petct",
+                "ground_truth": "soft-tissue sarcoma (expert contour)",
+                "patient_ref": f"STS-{DEMO_HOLDOUT}",
+            }
+        )
+    except (FileNotFoundError, KeyError, ImportError):
+        pass
+    try:
+        from ml.common import ARTIFACTS
+        from ml.data import luna as L
+
+        m = json.loads((ARTIFACTS / "lung_nodule_det" / "starter" / "metrics.json").read_text())
+        ann = L.annotations()
+        uid = sorted(s for s, sp in m["series_split"].items() if sp == "test" and s in ann)[0]
+        vol, spacing, origin = L.read_mhd(L.LUNA / "scans" / f"{uid}.mhd")
+        w, diam = ann[uid][0]
+        c = np.round((w - origin) / spacing).astype(int)
+        half = np.ceil(np.array([45.0, 120.0, 150.0]) / spacing).astype(
+            int
+        )  # 90 x 240 x 300 mm slab
+        lo, hi = np.maximum(c - half, 0), np.minimum(c + half, vol.shape)
+        slab = vol[lo[0] : hi[0], lo[1] : hi[1], lo[2] : hi[2]]
+        np.savez_compressed(
+            OUT / "chest_ct_scan.npz",
+            volume=slab.astype(np.int16),
+            spacing=spacing.astype(np.float32),
+        )
+        out.append(
+            {
+                "file": "chest_ct_scan.npz",
+                "source": "LUNA16 (LIDC-IDRI) test-split scan, 90 mm slab around the first annotated "
+                "nodule",
+                "original": f"{uid[-12:]} ({slab.shape[0]} slices)",
+                "license": "CC BY 4.0",
+                "modality": "ct_chest_scan",
+                "ground_truth": f"nodule, diameter {diam:.1f} mm",
+                "patient_ref": f"LUNA-{uid[-8:]}",
+            }
+        )
+    except (FileNotFoundError, KeyError, IndexError):
+        pass
     return out
 
 

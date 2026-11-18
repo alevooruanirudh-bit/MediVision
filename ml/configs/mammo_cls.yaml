@@ -1,0 +1,17 @@
+# Screening-mammography cancer classifier (ours) on Mini-DDSM (DDSM, Heath 2000), exam-level labels.
+common:
+  task: binary
+  label_name: Suspicious for breast cancer
+  dataset: mini_ddsm
+  model: {arch: classifier, backbone: efficientnet_b0, dropout: 0.4, hidden: 128}
+  loss: {type: weighted_bce}
+  optim: {lr: 3.0e-4, weight_decay: 1.0e-3}
+  augment: {scale: [0.85, 1.0], rotate: 8, brightness: 0.15, contrast: 0.2, clahe_p: 0.3, hflip: true}
+  train: {patience: 5, warmup_epochs: 1, num_workers: 0, monitor: val_auroc}
+starter:
+  img_size: 256
+  train: {epochs: 12, batch_size: 32}
+full:
+  img_size: 512
+  train: {epochs: 30, batch_size: 16, num_workers: 4}
+  kaggle: {dataset_sources: [cheddad/miniddsm], gpu_hours: 1.0}

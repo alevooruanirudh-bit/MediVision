@@ -177,8 +177,45 @@ FHIR DiagnosticReport remains the structured output.
 - FedAvg is now also evaluated per hospital scanner style. Worst-site AUROC and the site gap are reported to
   test the paper's claim that diverse training improves generalisation and reduces bias.
 
-**Skipped, with reasons.**
-- C3: stroke LVO and PE on CT angiography — no small free dataset; RSNA PE is ~900 GB.
-- C7: PET-CT fusion and fMRI — no free paired data. A registered false-colour fusion tool is provided as a
-  stand-in.
-- C8: wearables — outside imaging.
+**D-33 — Mammography (C1).** Mini-DDSM (2,414 screening exams × 4 views) is the only free mammography set
+that fits a laptop (CBIS-DDSM is 5–160 GB, VinDr-Mammo needs credentialed access). Its labels are per exam:
+all four views of a cancer exam are filed as Cancer, including the healthy breast, and this release has no
+lesion side or ROI. So the model is trained per view on exam labels (noisy by construction), and it is
+evaluated per view and per exam (mean of the 4 views). Cancer vs normal and cancer vs benign are reported
+separately, because the second is the harder clinical question. Splits are by exam, so no woman spans two
+splits. Mammograms are letterboxed (not stretched), and Grad-CAM maps are un-letterboxed back onto the
+original frame. The router gains a ninth class, mammography; the 8-class label set stays registered so older
+weights still load.
+
+**D-34 — PET-CT fusion (C7).** The 4quant release of TCIA Soft-tissue-Sarcoma provides co-registered PET (SUV)
+and CT at 5 mm with expert contours, for 7 patients only. The same 2.5-D U-Net is trained on CT only, PET
+only, and PET+CT (early fusion, 6 channels), each evaluated leave-one-patient-out. The deployed model is
+trained on 6 patients: STS_031, the last id and fixed in advance, is held out as the demo case. Read-outs are
+SUVmax, SUVmean, MTV and TLG from the largest predicted component. The registration-only fusion tool from
+round 1 stays as a generic 2-D utility.
+
+**D-35 — Functional MRI (C7).** OpenNeuro ds000114 (finger / foot / lips), already preprocessed in MNI space.
+We fit our own GLM in numpy: double-gamma HRF, DCT high-pass, 6 mm smoothing inside an eroded brain mask,
+and motion regressors where the release provides them (sub-02 only). Thresholds are Bonferroni. This is
+statistics, not a learned model.
+- The first unsmoothed, single-subject run put the finger peak in the cerebellum and the foot peak at the
+  mask edge. Smoothing, mask erosion and a cerebrum-only peak search (z > 0) were then fixed before the
+  analysis was extended to both subjects.
+- Both subjects are reported. Choosing one after seeing results would be cherry-picking.
+- A pre-declared sanity check tests the motor homunculus ordering (lips below finger below foot; foot most
+  medial).
+
+**D-36 — Whole-scan lung-nodule detection (M5).** LUNA16 is ~120 GB, so only 44 subset0 scans are downloaded
+(~3 GB; ~80 % with nodules, smallest first), split by scan into train / val / test.
+- Pipeline: 1 mm resampling → threshold lung mask (only in-plane borders count as "outside" — the trachea
+  leaves through the top slice) → multi-scale LoG candidates (≤ 600 per scan) → our 3-D CNN on 32 mm cubes.
+- Positives are annotated nodules with jittered 48 mm crops plus candidates inside a nodule. All other
+  candidates are hard negatives.
+- Evaluation is LUNA16 FROC on held-out scans. "Excluded" findings count as false positives, which is
+  stricter than the official script.
+- The operating threshold is set at 1 FP/scan on the validation scans.
+- Each detection is passed to the existing nodule3d malignancy model and the volumetrics.
+
+**D-37 — Scope trimmed.** C3 (stroke LVO / PE on CT angiography) and C8 (wearables) are removed from scope:
+there is no small, free, suitable dataset (RSNA PE is ~900 GB), and wearables are outside imaging. They are
+no longer listed as requirements.

@@ -19,6 +19,9 @@ LOINC_BY_PIPE = {
     "breast_us": ("24601-7", "US Breast"),
     "fundus": ("71490-5", "Retinal fundus imaging"),
     "ct_volume": ("24627-2", "CT Chest"),
+    "ct_chest_scan": ("24627-2", "CT Chest"),
+    "mammo": ("24606-6", "MG Breast Screening"),
+    "petct": ("44139-2", "PET+CT Whole body"),
 }
 
 

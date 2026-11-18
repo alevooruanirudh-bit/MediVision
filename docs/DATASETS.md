@@ -22,6 +22,10 @@ test-split samples (`sample_data/`, see its `SOURCES.md`).
 | Lung nodule (CT) | NoduleMNIST3D 64³ — LIDC-IDRI nodule patches, benign / malignant (1,633) | CC BY 4.0 | Armato et al., Med Phys 2011; Yang et al. 2023 | ✓ official split | ✓ |
 | Breast ultrasound | BreastMNIST+ 128 px — BUSI (780 images, malignant vs benign/normal) | CC BY 4.0 | Al-Dhabyani et al., Data in Brief 2020 | ✓ official split | ✓ |
 | Fundus (DR) | RetinaMNIST+ 128 px — DeepDRiD colour fundus (1,600, ICDR 0–4) | CC BY 4.0 | Liu et al., Patterns 2022; Yang et al. 2023 | ✓ official split | ✓ |
+| Mammography | Mini-DDSM (DDSM, downsampled): 2,414 screening exams × 4 views, Normal / Benign / Cancer (exam-level labels) | DDSM free for research, cite | Lekamlage et al., ICVIP 2020; Heath et al., IWDM 2000 | ✓ 70/15/15 split by exam | ✓ (512 px) |
+| PET-CT fusion | TCIA Soft-tissue-Sarcoma FDG-PET/CT, co-registered at 5 mm with expert tumour contours (4quant release; 7 labelled patients) | CC BY 3.0 | Vallières et al., Phys Med Biol 2015 | ✓ leave-one-patient-out | ✓ |
+| Functional MRI | OpenNeuro ds000114 finger/foot/lips motor task, fMRIPrep output in MNI space (sub-01, sub-02, retest) | CC0 / PDDL | Gorgolewski et al., GigaScience 2013 | ✓ | — |
+| Whole-scan lung nodules | LUNA16 (LIDC-IDRI) — 44 scans of subset0 (~3 GB), radiologist nodule annotations ≥ 3 mm | CC BY 4.0 (LIDC CC BY 3.0) | Setio et al., MedIA 2017; Armato et al., Med Phys 2011 | ✓ 44 scans, split by scan | ✓ more subsets (~13 GB each) |
 | Radiogenomics | LGG `data.csv` — TCGA molecular clusters, grade, survival, sex/age/race codes (110 patients) | CC BY-NC-SA 4.0 | Buda et al., CBM 2019; TCGA, NEJM 2015 | ✓ | ✓ |
 | Router "other medical" | OrganAMNIST (abdominal CT), PneumoniaMNIST (paediatric CXR), NoduleMNIST3D mid-slices | CC BY 4.0 | Yang et al. 2023 | ✓ | ✓ |
 | Router "not medical" | CIFAR-10 | Krizhevsky 2009 terms | Krizhevsky 2009 | ✓ | ✓ |

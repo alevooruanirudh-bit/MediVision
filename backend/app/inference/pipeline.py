@@ -19,6 +19,7 @@ from app.inference import measurements as M
 from app.inference import modalities as MOD
 from app.inference import radiomics as RAD
 from app.inference import triage, xai
+from app.inference import volumes3d as V3
 from app.inference.chest import analyze_chest
 from app.inference.other import analyze_brain, analyze_fracture
 from app.inference.rationale import reasons as rationale
@@ -51,7 +52,7 @@ def cam_handle_and_index(pipeline: str, key: str) -> tuple[Any, int, str]:
         return registry.get("fracture_cls"), 0, "sigmoid"
     if pipeline == "brain":
         return registry.get("brain_cls"), BRAIN_CLASSES.index(key), "softmax"
-    if pipeline in ("head_ct", "breast_us"):
+    if pipeline in ("head_ct", "breast_us", "mammo"):
         return registry.get(MOD.PIPELINE_MODEL[pipeline]), 0, "sigmoid"
     if pipeline == "fundus":
         return registry.get("retina_dr"), 2, "softmax"  # moderate NPDR = referable threshold
@@ -98,6 +99,8 @@ def explain(
         zone = _brain_region(hot["peak"])
     elif pipe == "breast_us":
         zone = "lesion region (image coordinates)"
+    elif pipe == "mammo":
+        zone = _breast_region(hot["peak"])
     elif pipe == "fundus":
         zone = _fundus_region(hot["peak"])
     return {
@@ -123,6 +126,13 @@ def _brain_region(peak: list[float]) -> str:
     side = "right" if side == "left" else "left"
     ap = "anterior" if y < 0.4 else "posterior" if y > 0.65 else "central"
     return f"{side} {ap} region"
+
+
+def _breast_region(peak: list[float]) -> str:
+    """Coarse location on a screening view: upper / middle / lower third of the image."""
+    y = float(peak[1]) if len(peak) > 1 else 0.5
+    third = "upper" if y < 1 / 3 else "middle" if y < 2 / 3 else "lower"
+    return f"{third} third of the view (image coordinates)"
 
 
 def _fundus_region(peak: list[float]) -> str:
@@ -156,8 +166,34 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
         T.stages["deidentify"] = deid["ms"]
     vol_path = storage.study_dir(study.id) / "volume.npy"
     volume = np.load(vol_path) if vol_path.exists() else None
+    pet_path = storage.study_dir(study.id) / "pet.npy"
+    pet = np.load(pet_path) if pet_path.exists() else None
+    vsp = json.loads(study.deid_json or "{}").get("voxel_spacing_mm")
     with T.stage("router_ood"):
-        if volume is not None:
+        if volume is not None and pet is not None:
+            modality = {
+                "label": "pet_ct",
+                "probs": {},
+                "confidence": None,
+                "pipeline": "petct",
+                "ood": False,
+                "warning": None if vsp else "No voxel spacing supplied - 5 mm isotropic assumed.",
+            }
+        elif volume is not None and V3.is_whole_scan(volume):
+            modality = {
+                "label": "chest_ct_scan",
+                "probs": {},
+                "confidence": None,
+                "pipeline": "ct_chest_scan",
+                "ood": False,
+                "warning": (
+                    None
+                    if vsp
+                    else "No voxel spacing supplied - 1 mm isotropic assumed; "
+                    "nodule sizes may be wrong."
+                ),
+            }
+        elif volume is not None:
             modality = {
                 "label": "chest_ct_volume",
                 "probs": {},
@@ -219,10 +255,20 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
             fu = MOD.analyze_fundus(img)
             findings = fu["findings"]
             extra["fundus"] = {k: fu.get(k) for k in ("grade_probs", "predicted_grade")}
+        elif pipeline == "mammo":
+            findings = MOD.analyze_mammo(gray, settings.mc_dropout_samples)["findings"]
         elif pipeline == "ct_volume" and volume is not None:
-            sp = json.loads(study.deid_json or "{}").get("voxel_spacing_mm")
-            cv = MOD.analyze_volume(volume, tuple(sp) if sp else None)
+            cv = MOD.analyze_volume(volume, tuple(vsp) if vsp else None)
             findings = cv["findings"]
+        elif pipeline == "ct_chest_scan" and volume is not None:
+            cs = V3.analyze_chest_scan(volume, tuple(vsp) if vsp else None)
+            findings = cs["findings"]
+            extra["chest_scan"] = {"detections": cs.get("detections", []), "error": cs.get("error")}
+        elif pipeline == "petct" and volume is not None and pet is not None:
+            pc = V3.analyze_petct(volume, pet, tuple(vsp) if vsp else None)
+            findings = pc["findings"]
+            if pc.get("error"):
+                extra["petct"] = {"error": pc["error"]}
     with T.stage("measurements"):
         if pipeline == "chest":
             lung = M.lung_measurements(gray, study.pixel_spacing_mm)
@@ -286,12 +332,38 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
                     ),
                 )
             )
+        elif pipeline == "ct_chest_scan" and volume is not None and "axial" in cs:
+            meas = cs["measurements"]
+            overlays["volume"] = _volume_overlay(study.id, cs["mpr"], cs["mip_frames"], 2)
+            overlays["volume"]["key_image"] = storage.url(
+                storage.save_rgba(study.id, "scan_key_axial", _rgba(cs["axial"]))
+            )
+        elif pipeline == "petct" and volume is not None and pet is not None and "mpr" in pc:
+            meas = pc["measurements"]
+            overlays["volume"] = _volume_overlay(study.id, pc["mpr"], [], 4)
+            overlays["volume"]["pet_mip"] = storage.url(
+                storage.save_rgba(
+                    study.id, "pet_mip", _rgba(np.kron(pc["pet_mip"], np.ones((3, 3, 1), np.uint8)))
+                )
+            )
     with T.stage("radiomics"):
         radiomics: dict[str, Any] | None = None
         try:
             if pipeline == "ct_volume" and volume is not None:
                 radiomics = RAD.features_3d(
                     cv["volume"], cv["mask"], tuple(meas.get("spacing_mm") or (1.0, 1.0, 1.0))
+                )
+            elif pipeline == "ct_chest_scan" and volume is not None and cs.get("top_crop"):
+                crop, cmask = cs["top_crop"]
+                radiomics = RAD.features_3d(crop, cmask, (1.0, 1.0, 1.0))
+            elif pipeline == "petct" and pet is not None and pc.get("mask") is not None:
+                z = pc["slice"]
+                from ml.petct_fusion import norm_pet
+
+                pet_u8 = (np.clip(norm_pet(pet[z]), 0, 1) * 255).astype(np.uint8)
+                m = pc["mask"][z]
+                radiomics = RAD.features(
+                    pet_u8, m if m.any() else None, "FDG-avid lesion (PET)", None
                 )
             elif pipeline == "chest" and lung is not None and "mask" in lung:
                 radiomics = RAD.features(
@@ -313,6 +385,8 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
             log.warning("radiomics failed: %s", exc)
     with T.stage("xai"):
         targets = [f for f in findings if f.get("positive")][:3] or findings[:1]
+        if pipeline in ("ct_chest_scan", "petct"):
+            targets = []
         if pipeline == "ct_volume":
             targets = []
             if volume is not None and cv.get("cam") is not None and findings:
@@ -445,11 +519,38 @@ MODELS_FOR = {
     "breast_us": ["breast_us"],
     "fundus": ["retina_dr"],
     "ct_volume": ["nodule3d"],
+    "mammo": ["mammo_cls"],
+    "ct_chest_scan": ["lung_nodule_det", "nodule3d"],
+    "petct": ["petct_seg"],
 }
+VOLUME_PIPELINES = {"ct_volume", "ct_chest_scan", "petct"}
+
+
+def _rgba(rgb: np.ndarray) -> np.ndarray:
+    return np.dstack([rgb, np.full(rgb.shape[:2], 255, np.uint8)])
+
+
+def _volume_overlay(
+    study_id: str, mpr: dict[str, np.ndarray], frames: list[np.ndarray], scale: int
+) -> dict[str, Any]:
+    up = np.ones((scale, scale, 1), np.uint8)
+    out: dict[str, Any] = {
+        "mpr": {
+            k: storage.url(storage.save_rgba(study_id, f"mpr_{k}", _rgba(np.kron(v, up))))
+            for k, v in mpr.items()
+        },
+        "mip_frames": [
+            storage.url(storage.save_rgba(study_id, f"mip_{i:02d}", _rgba(np.kron(f, up))))
+            for i, f in enumerate(frames)
+        ],
+    }
+    first = next(iter(mpr.values()), None)
+    out["shape"] = list(first.shape[:2]) if first is not None else []
+    return out
 
 
 def _models_used(pipeline: str | None) -> list[str]:
-    return ["router"] * (pipeline != "ct_volume") + MODELS_FOR.get(pipeline or "", [])
+    return ["router"] * (pipeline not in VOLUME_PIPELINES) + MODELS_FOR.get(pipeline or "", [])
 
 
 def _autonomy(

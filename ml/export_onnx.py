@@ -34,6 +34,7 @@ EXPORTABLE = [
     "denoiser",
     "head_ct_cls",
     "breast_us",
+    "mammo_cls",
     "retina_dr",
     "nodule3d",
     "sr_gan",

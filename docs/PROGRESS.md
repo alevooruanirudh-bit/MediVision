@@ -64,4 +64,11 @@
 - [x] Progression timeline; SR-GAN ×2 super-resolution; image fusion (D-31)
 - [x] Radiogenomics (LGG/TCGA) + segmentation fairness by sex/age/race; federated per-site generalisation + HIPAA/GDPR notes (D-32)
 - [x] Tests: backend/tests/test_requirements.py; docs updated (README, MODEL_CARD, DATASETS, DECISIONS)
-- [ ] Skipped with reasons: stroke LVO / PE (C3), PET-CT / fMRI (C7), wearables (C8)
+- [x] Removed from scope (D-37): stroke LVO / PE (C3), wearables (C8) — no suitable free data / not imaging
+
+## Phase 12 — Round 2: partial items completed (D-33 … D-36)
+- [x] Mammography (C1): Mini-DDSM classifier, exam-level metrics, letterbox-aware Grad-CAM, router v3 (9 classes)
+- [x] PET-CT fusion (C7): CT / PET / PET+CT leave-one-patient-out study, deployed segmenter, SUV / MTV / TLG, fused viewer
+- [x] fMRI (C7): GLM activation maps for 2 subjects, somatotopy check, Enhancement Lab card + `/api/fmri`
+- [x] Whole-scan lung-nodule detection (M5): LUNA16 subset, lung mask + LoG candidates + 3-D CNN, FROC; detections feed nodule3d
+- [x] Held-out demo samples (mammograms, PET-CT case, chest-CT slab); tests in backend/tests/test_round2.py; docs updated

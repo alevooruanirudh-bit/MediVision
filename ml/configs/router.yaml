@@ -2,7 +2,7 @@
 common:
   task: multiclass
   dataset: router
-  labels: router8
+  labels: router9
   model: {arch: smallcnn, width: 32, dropout: 0.3}
   loss: {type: ce, label_smoothing: 0.05}
   optim: {lr: 2.0e-3, weight_decay: 1.0e-4}

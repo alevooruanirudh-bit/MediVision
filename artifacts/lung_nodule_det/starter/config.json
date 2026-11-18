@@ -1,0 +1,11 @@
+{
+  "task": "binary",
+  "label_name": "Lung nodule",
+  "img_size": 32,
+  "dataset": "luna16",
+  "model": {
+    "arch": "cnn3d",
+    "width": 16,
+    "dropout": 0.3
+  }
+}

@@ -86,6 +86,8 @@ def create_study(
     )
     if ing.volume is not None:
         np.save(storage.study_dir(study.id) / "volume.npy", ing.volume)
+    if ing.pet is not None:
+        np.save(storage.study_dir(study.id) / "pet.npy", ing.pet.astype(np.float32))
     if ing.deid_dataset is not None:
         ing.deid_dataset.save_as(str(storage.study_dir(study.id) / "deidentified.dcm"))
     session.add(study)

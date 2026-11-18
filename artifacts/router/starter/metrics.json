@@ -2,86 +2,89 @@
   "model": "router",
   "profile": "starter",
   "task": "multiclass",
-  "generated_at": "2026-11-18T04:45:10+00:00",
-  "n_train": 9846,
-  "n_val": 1818,
-  "n_test": 2076,
+  "generated_at": "2026-11-18T11:39:18+00:00",
+  "n_train": 11346,
+  "n_val": 2118,
+  "n_test": 2376,
   "history": [
     {
       "epoch": 1,
-      "train_loss": 0.8123503946790508,
-      "val_macro_f1": 0.7564667835013976,
-      "val_accuracy": 0.8135313531353136,
+      "train_loss": 0.8174513829293224,
+      "val_macro_f1": 0.7865376541057905,
+      "val_accuracy": 0.7875354107648725,
       "lr": 0.0018687048957087501,
-      "seconds": 72.4
+      "seconds": 33.6
     },
     {
       "epoch": 2,
-      "train_loss": 0.45206238261235304,
-      "val_macro_f1": 0.9249416167823878,
-      "val_accuracy": 0.9207920792079208,
+      "train_loss": 0.4535370332709813,
+      "val_macro_f1": 0.9608017034706656,
+      "val_accuracy": 0.9608120868744098,
       "lr": 0.00151,
-      "seconds": 80.0
+      "seconds": 34.0
     },
     {
       "epoch": 3,
-      "train_loss": 0.37877213273173066,
-      "val_macro_f1": 0.9416127188761758,
-      "val_accuracy": 0.9345434543454345,
+      "train_loss": 0.38410614574022883,
+      "val_macro_f1": 0.9589761548815195,
+      "val_accuracy": 0.9518413597733711,
       "lr": 0.00102,
-      "seconds": 72.6
+      "seconds": 36.8
     },
     {
       "epoch": 4,
-      "train_loss": 0.34467580875540094,
-      "val_macro_f1": 0.9836865659318073,
-      "val_accuracy": 0.9851485148514851,
+      "train_loss": 0.3465987137481991,
+      "val_macro_f1": 0.9854156351523008,
+      "val_accuracy": 0.9867799811142587,
       "lr": 0.0005300000000000003,
-      "seconds": 66.4
+      "seconds": 37.9
     },
     {
       "epoch": 5,
-      "train_loss": 0.3239509032832252,
-      "val_macro_f1": 0.9960359242002621,
-      "val_accuracy": 0.9955995599559956,
+      "train_loss": 0.3317529299838395,
+      "val_macro_f1": 0.9969748452501044,
+      "val_accuracy": 0.9981114258734656,
       "lr": 0.00017129510429125008,
-      "seconds": 64.8
+      "seconds": 38.2
     },
     {
       "epoch": 6,
-      "train_loss": 0.3180340766127593,
-      "val_macro_f1": 0.9937485414357015,
-      "val_accuracy": 0.9933993399339934,
+      "train_loss": 0.31970771961966477,
+      "val_macro_f1": 0.9987364201748874,
+      "val_accuracy": 0.9990557129367328,
       "lr": 4e-05,
-      "seconds": 65.8
+      "seconds": 37.0
     }
   ],
   "test": {
-    "accuracy": 0.9894026974951831,
-    "macro_f1": 0.9868848333910265,
+    "accuracy": 0.9928451178451179,
+    "macro_f1": 0.9916936014020133,
     "per_class_f1": {
-      "chest_xray": 0.9933774834437086,
+      "chest_xray": 0.9950248756218906,
       "bone_xray": 0.998330550918197,
-      "brain_mri": 0.9769736842105263,
-      "head_ct": 0.95,
-      "breast_us": 0.9968051118210862,
-      "fundus": 1.0,
-      "other_medical": 0.9795918367346939,
-      "not_medical": 1.0
+      "brain_mri": 0.9818181818181818,
+      "head_ct": 0.975,
+      "breast_us": 0.9936305732484076,
+      "fundus": 0.9983361064891847,
+      "mammography": 1.0,
+      "other_medical": 0.9847715736040609,
+      "not_medical": 0.998330550918197
     },
     "per_class_auroc": {
-      "chest_xray": 0.9999774774774774,
-      "bone_xray": 0.9999943693693694,
-      "brain_mri": 0.9995701951951952,
-      "head_ct": 0.9996037832310838,
-      "breast_us": 0.9999966613247864,
+      "chest_xray": 1.0,
+      "bone_xray": 0.9999983943481054,
+      "brain_mri": 0.9995825305073861,
+      "head_ct": 0.9998781028368795,
+      "breast_us": 0.9999740124740125,
       "fundus": 1.0,
-      "other_medical": 0.999984984984985,
+      "mammography": 1.0,
+      "other_medical": 0.9999149004495826,
       "not_medical": 1.0
     },
     "confusion_matrix": [
       [
         300,
+        0,
         0,
         0,
         0,
@@ -98,6 +101,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       [
@@ -108,13 +112,15 @@
         0,
         0,
         0,
+        0,
         0
       ],
       [
         0,
         0,
-        6,
-        114,
+        3,
+        117,
+        0,
         0,
         0,
         0,
@@ -128,6 +134,7 @@
         156,
         0,
         0,
+        0,
         0
       ],
       [
@@ -138,16 +145,29 @@
         0,
         300,
         0,
+        0,
         0
       ],
       [
-        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        300,
+        0,
+        0
+      ],
+      [
+        2,
         0,
         5,
-        3,
-        1,
         0,
-        288,
+        2,
+        0,
+        0,
+        291,
         0
       ],
       [
@@ -156,9 +176,10 @@
         0,
         0,
         0,
+        1,
         0,
         0,
-        300
+        299
       ]
     ],
     "classes": [
@@ -168,15 +189,16 @@
       "head_ct",
       "breast_us",
       "fundus",
+      "mammography",
       "other_medical",
       "not_medical"
     ],
-    "temperature": 0.3551078391551952,
+    "temperature": 0.25,
     "per_class_reader": {
       "chest_xray": {
         "sensitivity": 1.0,
-        "specificity": 0.9977477477477478,
-        "fpr": 0.0022522522522522522,
+        "specificity": 0.9985549132947977,
+        "fpr": 0.001445086705202312,
         "fnr": 0.0
       },
       "bone_xray": {
@@ -187,108 +209,96 @@
       },
       "brain_mri": {
         "sensitivity": 0.99,
-        "specificity": 0.9938063063063063,
-        "fpr": 0.006193693693693694,
+        "specificity": 0.9961464354527938,
+        "fpr": 0.0038535645472061657,
         "fnr": 0.01
       },
       "head_ct": {
-        "sensitivity": 0.95,
-        "specificity": 0.9969325153374233,
-        "fpr": 0.003067484662576687,
-        "fnr": 0.05
+        "sensitivity": 0.975,
+        "specificity": 0.9986702127659575,
+        "fpr": 0.0013297872340425532,
+        "fnr": 0.025
       },
       "breast_us": {
         "sensitivity": 1.0,
-        "specificity": 0.9994791666666667,
-        "fpr": 0.0005208333333333333,
+        "specificity": 0.9990990990990991,
+        "fpr": 0.0009009009009009009,
         "fnr": 0.0
       },
       "fundus": {
+        "sensitivity": 1.0,
+        "specificity": 0.9995183044315993,
+        "fpr": 0.0004816955684007707,
+        "fnr": 0.0
+      },
+      "mammography": {
         "sensitivity": 1.0,
         "specificity": 1.0,
         "fpr": 0.0,
         "fnr": 0.0
       },
       "other_medical": {
-        "sensitivity": 0.96,
+        "sensitivity": 0.97,
         "specificity": 1.0,
         "fpr": 0.0,
-        "fnr": 0.04
+        "fnr": 0.03
       },
       "not_medical": {
-        "sensitivity": 1.0,
+        "sensitivity": 0.9966666666666667,
         "specificity": 1.0,
         "fpr": 0.0,
-        "fnr": 0.0
+        "fnr": 0.0033333333333333335
       }
     },
     "reliability": {
       "bins": [
         {
           "bin": [
-            0.30000000000000004,
-            0.4
-          ],
-          "confidence": 0.3928849697113037,
-          "accuracy": 0.0,
-          "count": 1
-        },
-        {
-          "bin": [
-            0.4,
-            0.5
-          ],
-          "confidence": 0.46801650524139404,
-          "accuracy": 0.3333333333333333,
-          "count": 3
-        },
-        {
-          "bin": [
             0.5,
             0.6000000000000001
           ],
-          "confidence": 0.5570594072341919,
-          "accuracy": 0.75,
-          "count": 4
+          "confidence": 0.5071320533752441,
+          "accuracy": 0.5,
+          "count": 2
         },
         {
           "bin": [
             0.6000000000000001,
             0.7000000000000001
           ],
-          "confidence": 0.6376347541809082,
-          "accuracy": 1.0,
-          "count": 2
+          "confidence": 0.660176694393158,
+          "accuracy": 0.6666666666666666,
+          "count": 3
         },
         {
           "bin": [
             0.7000000000000001,
             0.8
           ],
-          "confidence": 0.7525277137756348,
-          "accuracy": 0.625,
-          "count": 8
+          "confidence": 0.7228971719741821,
+          "accuracy": 0.5,
+          "count": 2
         },
         {
           "bin": [
             0.8,
             0.9
           ],
-          "confidence": 0.8671514391899109,
-          "accuracy": 0.5,
-          "count": 10
+          "confidence": 0.8470376133918762,
+          "accuracy": 0.75,
+          "count": 4
         },
         {
           "bin": [
             0.9,
             1.0
           ],
-          "confidence": 0.9993816614151001,
-          "accuracy": 0.9951171875,
-          "count": 2048
+          "confidence": 0.999758243560791,
+          "accuracy": 0.9945031712473573,
+          "count": 2365
         }
       ],
-      "ece": 0.007571679204415265
+      "ece": 0.005595927963955207
     }
   },
   "class_counts_test": {
@@ -298,6 +308,7 @@
     "head_ct": 120,
     "breast_us": 156,
     "fundus": 300,
+    "mammography": 300,
     "other_medical": 300,
     "not_medical": 300
   }

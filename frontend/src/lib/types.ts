@@ -121,6 +121,56 @@ export interface Measurements {
   slices_with_nodule?: number;
   spacing_assumed?: boolean;
   voxels?: number;
+  // whole-scan chest CT
+  candidates_scored?: number;
+  detections_above_threshold?: number;
+  operating_point?: string;
+  lung_volume_ml?: number;
+  // PET-CT
+  suv_max?: number;
+  suv_mean?: number;
+  mtv_ml?: number;
+  tlg?: number;
+  suv_max_whole_body?: number;
+}
+
+export interface NoduleDetection {
+  rank: number;
+  centre_mm_zyx: [number, number, number];
+  probability: number;
+  positive: boolean;
+  diameter_mm: number | null;
+  volume_mm3: number | null;
+  size_note?: string | null;
+  malignancy_probability: number | null;
+}
+
+export interface FmriPeak {
+  mni: number[];
+  t: number;
+  cerebral_mni: number[];
+  cerebral_t: number;
+  cerebral_significant: boolean;
+  n_voxels_sig: number;
+}
+
+export interface FmriSummary {
+  method: string;
+  dataset: string;
+  caveat: string;
+  somatotopy_pass_all: boolean;
+  uncorrected_t: number;
+  subjects: Record<
+    string,
+    {
+      t_threshold_bonferroni: number;
+      motion_regressors: boolean;
+      peaks: Record<string, FmriPeak>;
+      somatotopy: Record<string, boolean>;
+      somatotopy_pass: boolean;
+      images: Record<string, string>;
+    }
+  >;
 }
 
 export interface Triage {
@@ -137,7 +187,18 @@ export interface Detection {
 }
 
 export interface Results {
-  pipeline: "chest" | "fracture" | "brain" | "head_ct" | "breast_us" | "fundus" | "ct_volume" | null;
+  pipeline:
+    | "chest"
+    | "fracture"
+    | "brain"
+    | "head_ct"
+    | "breast_us"
+    | "fundus"
+    | "mammo"
+    | "ct_volume"
+    | "ct_chest_scan"
+    | "petct"
+    | null;
   modality: Modality;
   findings: Finding[];
   detections: Detection[];
@@ -146,13 +207,14 @@ export interface Results {
     heatmaps: Record<string, Record<string, string>>;
     lung_mask?: string;
     tumour_mask?: string;
-    volume?: { mpr: Record<string, string>; mip_frames: string[]; shape: number[] };
+    volume?: { mpr: Record<string, string>; mip_frames: string[]; shape: number[]; key_image?: string; pet_mip?: string };
   };
   triage: Triage;
   extra: {
     chest?: { members: string[]; profile: string; energy: number; energy_threshold: number; energy_ood: boolean };
     brain?: { class_probs: Record<string, number>; predicted: string; no_tumour_prob: number };
     fundus?: { grade_probs: Record<string, number>; predicted_grade: string };
+    chest_scan?: { detections: NoduleDetection[]; error?: string | null };
   };
   model_versions?: { name: string; profile: string; version: string; trained_at: string | null; backend: string }[];
   radiomics?: Radiomics | null;

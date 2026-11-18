@@ -26,6 +26,9 @@ weights:
   Malignancy-suspicious lung nodule: 0.60
   Suspicious breast lesion: 0.55
   Referable diabetic retinopathy: 0.35
+  Suspicious for breast cancer (mammography): 0.55
+  Lung nodule (whole-scan detection): 0.50
+  FDG-avid tumour (PET-CT): 0.60
 levels:          # lower bounds
   CRITICAL: 75
   URGENT: 45

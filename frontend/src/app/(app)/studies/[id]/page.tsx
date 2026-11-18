@@ -340,8 +340,23 @@ export default function StudyPage() {
             )}
           </div>
           <div className="relative h-[62vh] min-h-[380px] xl:h-[calc(100dvh-260px)]">
-            {res.pipeline === "ct_volume" && res.overlays.volume ? (
-              <VolumeViewer mpr={res.overlays.volume.mpr} frames={res.overlays.volume.mip_frames} />
+            {(res.pipeline === "ct_volume" || res.pipeline === "ct_chest_scan" || res.pipeline === "petct") && res.overlays.volume ? (
+              <VolumeViewer
+                mpr={{
+                  ...(res.overlays.volume.key_image ? { "detections (axial)": res.overlays.volume.key_image } : {}),
+                  ...res.overlays.volume.mpr,
+                  ...(res.overlays.volume.pet_mip ? { "PET MIP (coronal)": res.overlays.volume.pet_mip } : {}),
+                }}
+                frames={res.overlays.volume.mip_frames}
+                startOnSlice={res.pipeline === "ct_chest_scan"}
+                caption={
+                  res.pipeline === "ct_chest_scan"
+                    ? "3-D MIP · orange = detection above threshold, gray = below"
+                    : res.pipeline === "petct"
+                      ? "PET-CT fusion · cyan = tumour contour"
+                      : undefined
+                }
+              />
             ) : (
               <ImageViewer
                 src={study.image_url ?? ""}

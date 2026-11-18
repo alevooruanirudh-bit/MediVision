@@ -171,5 +171,45 @@
     "modality": "ct_volume",
     "ground_truth": "malignant nodule",
     "patient_ref": "LIDC-7"
+  },
+  {
+    "file": "mammo_cancer.png",
+    "source": "Mini-DDSM (DDSM screening mammography), test split",
+    "original": "624_A_1000_1.LEFT_CC.LJPEG.1_highpass.png",
+    "license": "DDSM - free for research, cite (see Kaggle page)",
+    "modality": "mammography",
+    "ground_truth": "cancer exam (exam-level label)",
+    "age": 46,
+    "sex": "F",
+    "patient_ref": "DDSM-A_1000"
+  },
+  {
+    "file": "mammo_normal.png",
+    "source": "Mini-DDSM (DDSM screening mammography), test split",
+    "original": "7_A_0003_1.LEFT_CC.LJPEG.1_highpass.png",
+    "license": "DDSM - free for research, cite (see Kaggle page)",
+    "modality": "mammography",
+    "ground_truth": "normal exam",
+    "age": 66,
+    "sex": "F",
+    "patient_ref": "DDSM-A_0003"
+  },
+  {
+    "file": "petct_sarcoma.npz",
+    "source": "TCIA Soft-tissue-Sarcoma FDG-PET/CT (4quant 5 mm release); held out of the deployed model",
+    "original": "STS_031, slices 0-55",
+    "license": "CC BY 3.0",
+    "modality": "petct",
+    "ground_truth": "soft-tissue sarcoma (expert contour)",
+    "patient_ref": "STS-STS_031"
+  },
+  {
+    "file": "chest_ct_scan.npz",
+    "source": "LUNA16 (LIDC-IDRI) test-split scan, 90 mm slab around the first annotated nodule",
+    "original": "767743874565 (52 slices)",
+    "license": "CC BY 4.0",
+    "modality": "ct_chest_scan",
+    "ground_truth": "nodule, diameter 6.4 mm",
+    "patient_ref": "LUNA-43874565"
   }
 ]

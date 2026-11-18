@@ -255,6 +255,53 @@ export function MeasurementsPanel({ results }: { results: Results }) {
         <RadiomicsPanel results={results} />
       </div>
     );
+  if (results.pipeline === "ct_chest_scan") {
+    const dets = results.extra.chest_scan?.detections ?? [];
+    return (
+      <div className="space-y-4 p-1">
+        <SectionTitle>Whole-scan nodule detection</SectionTitle>
+        <div className="grid grid-cols-2 gap-3">
+          <Metric label="Detections ≥ threshold" value={m.detections_above_threshold ?? 0} hint={m.operating_point ?? undefined} />
+          <Metric label="Candidates scored" value={m.candidates_scored ?? "—"} hint="LoG blob candidates in the lung mask" />
+          <Metric label="Lung volume" value={m.lung_volume_ml != null ? `${m.lung_volume_ml.toLocaleString()} ml` : "—"} hint={m.spacing_assumed ? "1 mm spacing assumed" : "from supplied spacing"} />
+        </div>
+        {dets.length > 0 && (
+          <table className="w-full text-[11px]" data-testid="nodule-detections">
+            <thead className="text-left text-muted">
+              <tr><th className="py-1">#</th><th>Position z/y/x (mm)</th><th>Score</th><th>Ø mm</th><th>Malignancy</th></tr>
+            </thead>
+            <tbody>
+              {dets.map((d) => (
+                <tr key={d.rank} className="num border-t border-border/50">
+                  <td className="py-1">{d.rank}</td>
+                  <td>{d.centre_mm_zyx.join(" / ")}</td>
+                  <td className={d.positive ? "font-medium text-fg" : "text-muted"}>{pct(d.probability, 0)}</td>
+                  <td title={d.size_note ?? undefined}>{d.diameter_mm ?? "indet."}</td>
+                  <td>{d.malignancy_probability != null ? pct(d.malignancy_probability, 0) : "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        <p className="text-[11px] text-subtle">Our lung mask + blob candidates + 3-D CNN (LUNA16). Top 5 candidates shown; bold rows are above the operating threshold. Size and malignancy come from the 64 mm cube around each detection.</p>
+        <RadiomicsPanel results={results} />
+      </div>
+    );
+  }
+  if (results.pipeline === "petct")
+    return (
+      <div className="space-y-4 p-1">
+        <SectionTitle>PET-CT quantification</SectionTitle>
+        <div className="grid grid-cols-2 gap-3">
+          <Metric label="SUVmax (lesion)" value={fmt(m.suv_max, 2)} hint={`whole body ${fmt(m.suv_max_whole_body, 2)}`} />
+          <Metric label="SUVmean (lesion)" value={fmt(m.suv_mean, 2)} />
+          <Metric label="Metabolic tumour volume" value={`${fmt(m.mtv_ml, 1)} ml`} hint={m.spacing_assumed ? "5 mm voxels assumed" : "from supplied spacing"} />
+          <Metric label="Total lesion glycolysis" value={fmt(m.tlg, 1)} hint="SUVmean × MTV" />
+        </div>
+        <p className="text-[11px] text-subtle">Lesion mask from our PET+CT fusion U-Net (largest component). SUV values are taken as supplied in the upload.</p>
+        <RadiomicsPanel results={results} />
+      </div>
+    );
   if (!m?.available)
     return results.radiomics ? (
       <RadiomicsPanel results={results} />

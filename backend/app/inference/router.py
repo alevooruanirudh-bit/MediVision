@@ -7,8 +7,9 @@ from typing import Any
 import numpy as np
 
 from app.inference.registry import registry
-from ml.common import ROUTER_CLASSES, ROUTER_CLASSES_V1
+from ml.common import ROUTER_CLASSES, ROUTER_CLASSES_V1, ROUTER_CLASSES_V2
 from ml.data.transforms import preprocess_rgb
+from ml.models import LABEL_SETS
 
 PIPELINE_FOR = {
     "chest_xray": "chest",
@@ -17,6 +18,7 @@ PIPELINE_FOR = {
     "head_ct": "head_ct",
     "breast_us": "breast_us",
     "fundus": "fundus",
+    "mammography": "mammo",
 }
 # Colour is expected only for fundus photographs; any other colourful input is not a scan.
 COLOUR_MODALITIES = {"fundus"}
@@ -34,10 +36,13 @@ HINTS = {
     "breast_us": "breast_us",
     "fundus": "fundus",
     "retina": "fundus",
+    "mammo": "mammography",
+    "mammography": "mammography",
+    "mammogram": "mammography",
 }
 SUPPORTED = (
-    "chest X-ray, bone X-ray, brain MRI, head CT, breast ultrasound, colour fundus photo, "
-    "chest-CT nodule volume (.npy)"
+    "chest X-ray, bone X-ray, brain MRI, head CT, breast ultrasound, mammogram, colour fundus "
+    "photo, chest-CT nodule cube or whole chest CT (.npy/.npz), PET-CT (.npz with ct + pet)"
 )
 
 
@@ -72,10 +77,12 @@ def route(img: np.ndarray, hint: str | None = None) -> dict[str, Any]:
             "colorfulness": color,
         }
     t = float(h.metrics.get("test", {}).get("temperature", 1.0) or 1.0)
-    classes = ROUTER_CLASSES_V1 if h.cfg.get("labels") == "router5" else ROUTER_CLASSES
+    classes = LABEL_SETS.get(h.cfg.get("labels", ""), ROUTER_CLASSES)
     logits = h.run(preprocess_rgb(img, h.img_size))[0][0]
-    if len(classes) != len(logits):
-        classes = ROUTER_CLASSES if len(logits) == len(ROUTER_CLASSES) else ROUTER_CLASSES_V1
+    if len(classes) != len(logits):  # older artifacts without a label-set name
+        classes = {len(c): c for c in (ROUTER_CLASSES_V1, ROUTER_CLASSES_V2, ROUTER_CLASSES)}[
+            len(logits)
+        ]
     p = softmax(logits / t)
     k = int(p.argmax())
     label = classes[k]

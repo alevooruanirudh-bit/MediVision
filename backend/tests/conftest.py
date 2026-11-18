@@ -35,6 +35,11 @@ needs_headct = pytest.mark.skipif(not have("head_ct_cls"), reason="head-CT model
 needs_nodule = pytest.mark.skipif(not have("nodule3d"), reason="nodule model not trained")
 needs_breast = pytest.mark.skipif(not have("breast_us"), reason="breast model not trained")
 needs_retina = pytest.mark.skipif(not have("retina_dr"), reason="retina model not trained")
+needs_mammo = pytest.mark.skipif(not have("mammo_cls"), reason="mammography model not trained")
+needs_petct = pytest.mark.skipif(not have("petct_seg"), reason="PET-CT model not trained")
+needs_lungdet = pytest.mark.skipif(
+    not have("lung_nodule_det"), reason="nodule detector not trained"
+)
 
 
 @pytest.fixture(scope="session")
@@ -62,6 +67,9 @@ def uploaded(client):
         ("breast_us_malignant.png", "breast"),
         ("fundus_dr.png", "fundus"),
         ("ct_nodule_volume.npy", None),
+        ("mammo_cancer.png", "mammo"),
+        ("petct_sarcoma.npz", None),
+        ("chest_ct_scan.npz", None),
     ]:
         p = SAMPLES / name
         if not p.exists():

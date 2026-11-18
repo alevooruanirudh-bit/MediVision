@@ -149,7 +149,8 @@ export default function EnhancePage() {
               </div>
             </Card>
           </div>
-          <FusionCard studies={(studies.data ?? []).filter((s) => s.pipeline && s.pipeline !== "ct_volume")} />
+          <FusionCard studies={(studies.data ?? []).filter((s) => s.pipeline && !["ct_volume", "ct_chest_scan", "petct"].includes(s.pipeline))} />
+          <FmriCard />
         </div>
       )}
     </div>
@@ -177,7 +178,7 @@ function FusionCard({ studies }: { studies: { id: string; filename: string; pati
     <Card className="p-4 xl:col-span-2" data-testid="fusion-card">
       <CardHeader
         title="Image fusion (experimental)"
-        subtitle="Two co-located images registered by rigid phase correlation; base in gray, overlay in magenta. A stand-in for PET-CT-style fusion — no PET data is used."
+        subtitle="Any two co-located 2-D images, registered by rigid phase correlation; base in gray, overlay in magenta. Real PET-CT fusion runs on PET-CT uploads (open a PET-CT study)."
       />
       <div className="grid gap-4 px-1 pb-1 md:grid-cols-[1fr_300px]">
         <div className="mx-auto aspect-square w-full max-w-[460px] overflow-hidden rounded-2xl bg-black">
@@ -208,6 +209,52 @@ function FusionCard({ studies }: { studies: { id: string; filename: string; pati
           )}
         </div>
       </div>
+    </Card>
+  );
+}
+
+/** Functional MRI (C7): GLM activation maps computed by ml/fmri_glm.py (statistics, not a learned model). */
+function FmriCard() {
+  const q = useQuery({ queryKey: ["fmri"], queryFn: api.fmri, retry: false });
+  const subs = Object.entries(q.data?.subjects ?? {});
+  const [sub, setSub] = React.useState<string>("");
+  const cur = q.data?.subjects[sub || subs[0]?.[0] || ""];
+  return (
+    <Card className="p-4 xl:col-span-2" data-testid="fmri-card">
+      <CardHeader
+        title="Functional MRI — motor task activation"
+        subtitle="Finger / foot / lips blocks (OpenNeuro ds000114). Our GLM t-maps on the subject's mean EPI: yellow = Bonferroni-significant, orange = t > 3.1 uncorrected."
+      />
+      {q.isError ? (
+        <p className="px-1 pb-2 text-xs text-muted">fMRI maps not computed yet (python -m ml.fmri_glm).</p>
+      ) : !cur ? (
+        <Skeleton className="h-48" />
+      ) : (
+        <div className="space-y-3 px-1 pb-1">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <NativeSelect value={sub || subs[0][0]} onChange={(e) => setSub(e.target.value)} className="h-8 text-xs" aria-label="fMRI subject">
+              {subs.map(([k]) => <option key={k} value={k}>{k}</option>)}
+            </NativeSelect>
+            <Badge tone={cur.somatotopy_pass ? "teal" : "amber"}>
+              {cur.somatotopy_pass ? "Somatotopic order holds" : "Somatotopic order not reproduced"}
+            </Badge>
+            <span className="text-muted">Bonferroni t &gt; {fmt(cur.t_threshold_bonferroni, 2)} · motion regressors {cur.motion_regressors ? "yes" : "not available"}</span>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {Object.entries(cur.peaks).map(([name, p]) => (
+              <figure key={name} className="overflow-hidden rounded-xl border border-border bg-black">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={cur.images[name]} alt={`${name} activation, axial slice through the peak`} className="w-full [image-rendering:pixelated]" />
+                <figcaption className="num space-y-0.5 bg-surface px-2 py-1.5 text-[11px] text-muted">
+                  <div className="font-medium text-fg">{name}</div>
+                  <div>peak (cerebrum) MNI {p.cerebral_mni.map((v) => v.toFixed(0)).join(", ")} · t {fmt(p.cerebral_t, 1)} {p.cerebral_significant ? "" : "(n.s.)"}</div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="text-[11px] leading-relaxed text-subtle">{q.data?.caveat}</p>
+        </div>
+      )}
     </Card>
   );
 }

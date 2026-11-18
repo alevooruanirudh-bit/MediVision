@@ -12,8 +12,8 @@ this project on free public datasets**, inference runs **fully offline on CPU**,
 
 | Paper section | Implemented as |
 |---|---|
-| III-A Diagnostic accuracy | Our DenseNet-121 + EfficientNet-B2 + ConvNeXt-Tiny **ensemble** for 14 chest findings (NIH ChestX-ray14); Faster R-CNN **fracture detector** + classifier (FracAtlas); 4-class **brain-tumour MRI classifier**; **head-CT hemorrhage** classifier; **3-D CNN for CT lung-nodule malignancy**; **breast-ultrasound** malignancy; **diabetic-retinopathy** grading on fundus photos. Every classifier reports sensitivity / specificity / FPR / FNR ("second-reader" table) |
-| Modalities | X-ray · MRI · CT (head slices + chest-CT volumes) · ultrasound · fundus photography, routed by our 8-class modality router |
+| III-A Diagnostic accuracy | Our DenseNet-121 + EfficientNet-B2 + ConvNeXt-Tiny **ensemble** for 14 chest findings (NIH ChestX-ray14); Faster R-CNN **fracture detector** + classifier (FracAtlas); 4-class **brain-tumour MRI classifier**; **head-CT hemorrhage** classifier; **3-D CNN for CT lung-nodule malignancy**; **breast-ultrasound** malignancy; **screening-mammography** cancer classifier (Mini-DDSM); **whole-scan lung-nodule detection** on chest CT (LUNA16); **PET-CT fusion** tumour segmentation with SUV / MTV / TLG; **diabetic-retinopathy** grading on fundus photos. Every classifier reports sensitivity / specificity / FPR / FNR ("second-reader" table) |
+| Modalities | X-ray · mammography · MRI + task fMRI (activation maps) · CT (head slices, nodule cubes, whole chest scans) · PET-CT · ultrasound · fundus photography, routed by our 9-class modality router (volumes by content) |
 | III-C Segmentation | Our **U-Net** (lungs) and **Attention U-Net** (brain tumour); automatic **cardiothoracic ratio**, lung areas, symmetry, tumour area, **3-D nodule volumetrics** (volume, equivalent diameter, sphericity); heatmap peak → **lung zone** |
 | III-D Triage | Urgency 0–100 from severity weights × calibrated exceedance × confidence (strongest finding + diminishing credit for others) → CRITICAL / URGENT / ROUTINE / NORMAL worklist; **critical-finding alerts** on every page until acknowledged; optional **autonomous mode** (pre-clears confident normals into a confirm queue — always human-confirmed) |
 | III-E Reporting & NLP | **MediVision Copilot**: structured report writer (content selection → sentence planning → realisation with a phrase bank mined from IU X-ray), 22-intent chat with our intent model + BM25 knowledge base, streamed over SSE with UI action chips; rewrite as concise / detailed / patient-friendly; **experimental** CNN + Transformer report generator trained from scratch |
@@ -43,7 +43,7 @@ A requirement-by-requirement audit against the source paper is in [docs/REQUIREM
 | Fracture detector | mAP@0.5 | 0.048 | — |
 | Brain MRI classifier | accuracy / macro-F1 | 0.953 / 0.952 | 2.7 |
 | Brain tumour Attention U-Net | Dice (tumour slices) | 0.752 | 5.4 |
-| Modality router | accuracy / macro-F1 | 0.989 / 0.987 | 26.4 |
+| Modality router | accuracy / macro-F1 | 0.993 / 0.992 | 1.4 |
 | DnCNN denoiser | PSNR noisy → ours (dB) | 22.9 → 32.8 | 7.9 |
 | Report generator (experimental) | BLEU-4 / ROUGE-L | 0.095 / 0.248 | — |
 | Copilot intent model | held-out accuracy | 0.964 | — |
@@ -51,6 +51,10 @@ A requirement-by-requirement audit against the source paper is in [docs/REQUIREM
 | Chest-CT nodule malignancy (3-D CNN) | AUROC · sens / spec | 0.900 · 0.72 / 0.85 | 84.5 |
 | Breast-ultrasound malignancy | AUROC · sens / spec | 0.907 · 0.64 / 0.95 | 2.9 |
 | Diabetic-retinopathy grader (fundus) | referable AUROC · κ | 0.882 · 0.688 | 2.9 |
+| Screening mammography (Mini-DDSM) | exam AUROC · sens / spec (view AUROC) | 0.892 · 0.64 / 0.91 (0.847) | 6.7 |
+| Whole-scan lung-nodule detector (LUNA16) | FROC CPM · sens @1 / @8 FP per scan | 0.223 · 0.12 / 0.50 | — |
+| PET-CT tumour segmentation (7 pts, LOPO) | Dice CT / PET / PET+CT | 0.00 / 0.30 / 0.34 | — |
+| fMRI motor GLM (2 subjects) | somatotopic order reproduced | sub-01 yes · sub-02 no | — |
 | Super-resolution x2 (SR-GAN) | PSNR bicubic → ours (dB) | 36.94 → 37.91 | 19.7 |
 | Radiogenomics (LGG / TCGA) | targets above chance | 5/6 | — |
 <!-- METRICS:END -->
@@ -110,8 +114,11 @@ TanStack Query · zustand.
 - The chest ensemble's energy score is a weak OOD signal on its own (starter AUROC < 0.5 vs photos/MRI/bone); the
   modality router + grayscale check carry the OOD guard. Both are reported honestly in the Lab.
 - The experimental report generator is small and can hallucinate; the rule-based report is the default.
-- New-modality starter sets are small (head CT: 200 slices); CT nodules are characterised on supplied 64³
-  patches, not detected in whole scans. Stroke LVO / PE, mammography and wearables are not covered.
+- New-modality starter sets are small (head CT: 200 slices; PET-CT: 7 patients; LUNA16: 44 scans). The
+  whole-scan nodule detector is weak (sensitivity 0.12 at 1 FP / scan); it misses the demo scan's nodule.
+- Mammography labels are per exam (Mini-DDSM has no lesion side), so single-view scores are noisy.
+- fMRI maps reproduce the motor homunculus in one of two subjects only; the signal in this release is weak.
+- Stroke LVO / PE and wearables are out of scope (no suitable free data / not imaging — D-37).
 - Radiomics / radiogenomics are exploratory; SR-GAN output is for viewing only.
 - Auth is off by default (single-user demo); set `AUTH_ENABLED=true` for any shared deployment.
 
@@ -129,7 +136,9 @@ al., Sci Data 2023) · Brain Tumor MRI (Nickparvar 2021) · LGG MRI Segmentation
 Indiana University Chest X-rays / OpenI (Demner-Fushman et al., JAMIA 2016) · COVID-19 Radiography
 Database (Chowdhury et al. 2020; Rahman et al. 2021) · RSNA Pneumonia (Shih et al. 2019) · CIFAR-10
 (Krizhevsky 2009) · Head CT – hemorrhage (Kitamura 2018) · NoduleMNIST3D / LIDC-IDRI (Armato et al. 2011) ·
-BreastMNIST / BUSI (Al-Dhabyani et al. 2020) · RetinaMNIST / DeepDRiD (Liu et al. 2022) · TCGA LGG clusters. Licenses: [docs/DATASETS.md](docs/DATASETS.md).
+BreastMNIST / BUSI (Al-Dhabyani et al. 2020) · RetinaMNIST / DeepDRiD (Liu et al. 2022) · TCGA LGG clusters ·
+Mini-DDSM (Lekamlage et al. 2020; DDSM, Heath et al. 2000) · LUNA16 (Setio et al. 2017; LIDC-IDRI) · TCIA
+Soft-tissue-Sarcoma PET/CT (Vallières et al. 2015) · OpenNeuro ds000114 (Gorgolewski et al. 2013). Licenses: [docs/DATASETS.md](docs/DATASETS.md).
 
 ## Docs
 

@@ -12,13 +12,15 @@ from ml.common import (
     RETINA_GRADES,
     ROUTER_CLASSES,
     ROUTER_CLASSES_V1,
+    ROUTER_CLASSES_V2,
 )
 
 LABEL_SETS = {
     "nih14": NIH_LABELS,
     "brain4": BRAIN_CLASSES,
     "router5": ROUTER_CLASSES_V1,
-    "router8": ROUTER_CLASSES,
+    "router8": ROUTER_CLASSES_V2,
+    "router9": ROUTER_CLASSES,
     "retina5": RETINA_GRADES,
 }
 
@@ -56,7 +58,9 @@ def build_model(cfg: dict[str, Any], pretrained: bool | None = None) -> nn.Modul
         from ml.models.unet import build_segmenter
 
         pre = pretrained_backbone() if pretrained is None else pretrained
-        return build_segmenter(arch, 1, m.get("base", 32), m.get("depth", 4), m.get("encoder"), pre)
+        return build_segmenter(
+            arch, m.get("in_ch", 1), m.get("base", 32), m.get("depth", 4), m.get("encoder"), pre
+        )
     if arch == "fasterrcnn_mobilenet":
         from ml.models.detector import build_detector
 

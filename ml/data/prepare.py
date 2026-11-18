@@ -445,7 +445,78 @@ def prepare_head_ct(size: int = 256) -> None:
     print(f"[prepare] head_ct: {len(df)} images {df['split'].value_counts().to_dict()}")
 
 
+def letterbox_gray(img: Image.Image, size: int) -> np.ndarray:
+    """Fit inside size x size keeping aspect ratio, zero-padded (mammograms are ~1.6:1)."""
+    g = img.convert("L")
+    g.thumbnail((size, size), Image.BILINEAR)
+    out = np.zeros((size, size), np.uint8)
+    a = np.asarray(g)
+    y0, x0 = (size - a.shape[0]) // 2, (size - a.shape[1]) // 2
+    out[y0 : y0 + a.shape[0], x0 : x0 + a.shape[1]] = a
+    return out
+
+
+def prepare_mini_ddsm(size: int = 256) -> None:
+    """Mini-DDSM: 2,414 screening exams x 4 views, exam-level label Normal / Benign / Cancer.
+
+    DDSM labels the *exam*: every view of a cancer exam is in Cancer/, including the unaffected
+    breast, and this release carries no lesion side or ROI. The split is by exam (case id), stratified
+    by label, 70/15/15, so no woman spans two splits (D-33). Cases filed under both Benign and Cancer
+    keep the Cancer copy only.
+    """
+    root = RAW / "mini_ddsm" / "Mini_DDSM_Upload"
+    if not root.exists():
+        raise FileNotFoundError("mini_ddsm not downloaded")
+    rank = {"Normal": 0, "Benign": 1, "Cancer": 2}
+    info: dict[str, dict[str, object]] = {}
+    for cls in rank:
+        lst = pd.read_excel(root / f"List_{cls}.xlsx")
+        for _, r in lst.iterrows():
+            info[str(r["fileName"])] = {"age": r.get("Age"), "density": r.get("Density")}
+    recs = []
+    for cls in rank:
+        for f in sorted((root / cls).glob("*.png")):
+            parts = f.name.split("_")
+            case = f"{parts[1]}_{parts[2]}"
+            view = f.name.split(".")[1]  # LEFT_CC, RIGHT_MLO, ...
+            recs.append({"file": f, "case": case, "cls": cls, "view": view})
+    df = pd.DataFrame(recs)
+    best = df.groupby("case")["cls"].agg(lambda s: max(s, key=rank.get))
+    df = (
+        df[df["cls"] == df["case"].map(best)]
+        .drop_duplicates(["case", "view"])
+        .reset_index(drop=True)
+    )
+    case_lab = df.groupby("case")["cls"].first()
+    case_split = pd.Series(
+        stratified_split(case_lab.map(rank).to_numpy(), (0.7, 0.15, 0.15), 42), index=case_lab.index
+    )
+    imgs = [letterbox_gray(Image.open(f), size) for f in df["file"]]
+    meta = pd.DataFrame(
+        {
+            "id": [f"mddsm_{c}_{v}" for c, v in zip(df["case"], df["view"], strict=True)],
+            "case": df["case"],
+            "view": df["view"],
+            "side": df["view"].str.split("_").str[0].str.lower(),
+            "label3": df["cls"].map(rank),
+            "label": (df["cls"] == "Cancer").astype(int),
+            "age": [info.get(f.name, {}).get("age") for f in df["file"]],
+            "density": [info.get(f.name, {}).get("density") for f in df["file"]],
+            "split": df["case"].map(case_split),
+        }
+    )
+    out = _out("mini_ddsm")
+    np.save(out / f"images_{size}.npy", np.stack(imgs).astype(np.uint8))
+    meta.to_csv(out / "metadata.csv", index=False)
+    save_split(meta[["id", "case", "label", "split"]], SPLITS / "mini_ddsm.csv")
+    print(
+        f"[prepare] mini_ddsm: {len(meta)} views / {meta['case'].nunique()} exams "
+        f"{meta.groupby('split')['case'].nunique().to_dict()} cancer views {int(meta['label'].sum())}"
+    )
+
+
 PREPARERS: dict[str, Callable[[], None]] = {
+    "mini_ddsm": prepare_mini_ddsm,
     "nih_meta": prepare_nih_meta,
     "nih_sample": prepare_nih_sample,
     "lung_covidqu": prepare_lung_covidqu,

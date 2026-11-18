@@ -40,9 +40,12 @@ ROUTER_CLASSES: list[str] = [
     "head_ct",
     "breast_us",
     "fundus",
+    "mammography",
     "other_medical",
     "not_medical",
 ]
+# 8-class router v2 (before mammography was added, D-33).
+ROUTER_CLASSES_V2: list[str] = [c for c in ROUTER_CLASSES if c != "mammography"]
 # Previous 5-class router (artifacts trained before D-21 carry their own label list).
 ROUTER_CLASSES_V1: list[str] = [
     "chest_xray",

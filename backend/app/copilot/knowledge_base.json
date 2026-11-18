@@ -1213,6 +1213,142 @@
    "related": [],
    "urgency": "Not applicable.",
    "lay": "A way for hospitals to build a better AI together without sending their patients' scans to each other."
+  },
+  {
+   "id": "mammo_suspicion",
+   "name": "Suspicious for breast cancer (mammography)",
+   "system": "breast",
+   "synonyms": [
+    "mammogram",
+    "mammography",
+    "screening mammogram",
+    "breast cancer screening",
+    "bi-rads",
+    "recall"
+   ],
+   "definition": "A screening mammogram view with features the model associates with breast cancer (mass, architectural distortion, suspicious calcifications or asymmetry).",
+   "appearance": "Spiculated or irregular mass, clustered pleomorphic calcifications, focal asymmetry or architectural distortion.",
+   "causes": [
+    "Invasive carcinoma",
+    "Ductal carcinoma in situ (calcifications)"
+   ],
+   "differential": [
+    "Benign mass (fibroadenoma, cyst)",
+    "Summation of normal tissue",
+    "Post-surgical scar"
+   ],
+   "next_steps": [
+    "Recall for diagnostic mammography views and targeted ultrasound.",
+    "Biopsy if BI-RADS 4-5 after work-up.",
+    "Compare with prior mammograms where available."
+   ],
+   "related": [
+    "Suspicious breast lesion"
+   ],
+   "urgency": "Non-urgent but time-sensitive: diagnostic work-up within weeks.",
+   "lay": "The X-ray of the breast shows something that should be checked with more pictures, and sometimes a small sample."
+  },
+  {
+   "id": "lung_nodule_detection",
+   "name": "Lung nodule (whole-scan detection)",
+   "system": "chest",
+   "synonyms": [
+    "pulmonary nodule",
+    "lung nodule",
+    "nodule detection",
+    "luna16",
+    "ct chest nodule",
+    "fleischner"
+   ],
+   "definition": "A rounded opacity up to 30 mm within the lung, found by searching the whole chest CT.",
+   "appearance": "Round or oval soft-tissue or ground-glass density surrounded by lung, sometimes touching the pleura or a vessel.",
+   "causes": [
+    "Granuloma",
+    "Intrapulmonary lymph node",
+    "Primary lung cancer",
+    "Metastasis",
+    "Hamartoma"
+   ],
+   "differential": [
+    "Vessel seen end-on",
+    "Mucus plug",
+    "Pleural plaque"
+   ],
+   "next_steps": [
+    "Measure the nodule and follow Fleischner Society (incidental) or Lung-RADS (screening) guidance.",
+    "Solid nodules >= 8 mm: consider PET-CT or biopsy; smaller nodules: interval CT follow-up.",
+    "Compare with prior CT to assess growth (volume doubling time)."
+   ],
+   "related": [
+    "Malignancy-suspicious lung nodule",
+    "Nodule"
+   ],
+   "urgency": "Usually non-urgent; follow-up interval depends on size and risk.",
+   "lay": "A small spot in the lung. Most are harmless, but some need a repeat scan to make sure they do not grow."
+  },
+  {
+   "id": "fdg_avid_tumour",
+   "name": "FDG-avid tumour (PET-CT)",
+   "system": "oncology",
+   "synonyms": [
+    "pet-ct",
+    "pet ct",
+    "fdg",
+    "suv",
+    "suvmax",
+    "metabolic tumour volume",
+    "mtv",
+    "tlg",
+    "sarcoma pet"
+   ],
+   "definition": "A lesion taking up more radioactive glucose (FDG) than background on PET, localised anatomically on the fused CT.",
+   "appearance": "Focal uptake above background (SUVmax often > 2.5) corresponding to a soft-tissue mass on CT.",
+   "causes": [
+    "Malignant tumour (e.g. soft-tissue sarcoma, lymphoma, carcinoma)",
+    "Active infection or inflammation"
+   ],
+   "differential": [
+    "Physiological uptake (brain, heart, bladder, brown fat, muscle)",
+    "Post-treatment inflammation"
+   ],
+   "next_steps": [
+    "Correlate SUVmax / MTV / TLG with histology and prior PET.",
+    "Biopsy the most avid region if not yet diagnosed.",
+    "Use the same scanner and protocol for follow-up SUV comparison."
+   ],
+   "related": [],
+   "urgency": "Depends on the clinical context; usually managed by the oncology team.",
+   "lay": "Part of the body is using a lot of sugar, which can be a sign of a tumour or inflammation."
+  },
+  {
+   "id": "fmri_activation",
+   "name": "Functional MRI activation",
+   "system": "neuro",
+   "synonyms": [
+    "fmri",
+    "bold",
+    "activation map",
+    "glm",
+    "motor cortex",
+    "somatotopy",
+    "homunculus"
+   ],
+   "definition": "Regions where the BOLD MRI signal rises during a task compared with rest, estimated with a general linear model (GLM).",
+   "appearance": "Clusters of voxels whose t-statistic exceeds a corrected threshold, overlaid on the brain image.",
+   "causes": [],
+   "differential": [
+    "Head-motion artefact",
+    "Draining-vein signal",
+    "Physiological noise"
+   ],
+   "next_steps": [
+    "Use a corrected threshold (Bonferroni / FWE / FDR).",
+    "Check head motion and include motion regressors.",
+    "For surgical planning, confirm with intra-operative mapping."
+   ],
+   "related": [],
+   "urgency": "Not applicable.",
+   "lay": "A brain scan that shows which parts of the brain work harder when you move your fingers, feet or lips."
   }
  ]
 }
