@@ -120,3 +120,96 @@ def heatmap_difference(a: Study, b: Study, key: str) -> str | None:
     return storage.url(
         storage.save_rgba(b.id, f"diff_{key}_vs_{a.id}", xai.diff_overlay(ha, heats[1]))
     )
+
+
+def _slope(t: list[float], y: list[float]) -> float:
+    import numpy as np
+
+    if len(t) < 2 or max(t) == min(t):
+        return 0.0
+    return float(np.polyfit(np.asarray(t), np.asarray(y), 1)[0])
+
+
+def progression(studies: list[Study]) -> dict[str, Any]:
+    """Per-finding probability trajectories across a patient's studies (same pipeline), a linear
+    trend per 30 days and a rule-based progression call. Descriptive — not a prognostic model."""
+    from datetime import date
+
+    def when(s: Study) -> date:
+        try:
+            return date.fromisoformat(s.study_date) if s.study_date else s.created_at.date()
+        except ValueError:
+            return s.created_at.date()
+
+    by_pipe: dict[str, list[Study]] = {}
+    for s in studies:
+        by_pipe.setdefault(s.results.get("pipeline") or "unknown", []).append(s)
+    pipe, group = max(by_pipe.items(), key=lambda kv: len(kv[1]))
+    group.sort(key=when)
+    t0 = when(group[0])
+    days = [float((when(s) - t0).days) for s in group]
+    points = []
+    labels: set[str] = set()
+    for s, d in zip(group, days):
+        r = s.results
+        probs = {f["label"]: f["probability"] for f in r.get("findings", [])}
+        labels |= set(probs)
+        m = r.get("measurements") or {}
+        points.append(
+            {
+                "study_id": s.id,
+                "date": when(s).isoformat(),
+                "day": d,
+                "urgency_score": s.urgency_score,
+                "urgency_level": s.urgency_level,
+                "probabilities": probs,
+                "positive": [f["label"] for f in r.get("findings", []) if f.get("positive")],
+                "ctr": m.get("ctr"),
+                "lesion_size": m.get("tumour_area_px") or m.get("volume_mm3"),
+            }
+        )
+    trends = []
+    for lab in sorted(labels):
+        ys = [p["probabilities"].get(lab, 0.0) for p in points]
+        sl = _slope(days, ys) * 30
+        trends.append(
+            {
+                "label": lab,
+                "first": round(ys[0], 4),
+                "last": round(ys[-1], 4),
+                "slope_per_30d": round(sl, 4),
+                "trend": "worsening" if sl > 0.03 else "improving" if sl < -0.03 else "stable",
+                "series": [round(v, 4) for v in ys],
+            }
+        )
+    trends.sort(key=lambda x: -abs(x["slope_per_30d"]))
+    us = [float(p["urgency_score"] or 0) for p in points]
+    us_slope = _slope(days, us) * 30
+    if len(points) < 2:
+        call = "insufficient — a single time point"
+    elif us_slope > 3 or any(t["trend"] == "worsening" and t["last"] >= 0.3 for t in trends):
+        call = "possible progression"
+    elif us_slope < -3 or (all(t["trend"] != "worsening" for t in trends) and us[-1] < us[0]):
+        call = "possible improvement / response"
+    else:
+        call = "stable"
+    sizes = [p["lesion_size"] for p in points if p["lesion_size"]]
+    growth = None
+    if len(sizes) >= 2 and sizes[0]:
+        growth = {
+            "first": sizes[0],
+            "last": sizes[-1],
+            "change_pct": round(100 * (sizes[-1] / sizes[0] - 1), 1),
+        }
+    return {
+        "pipeline": pipe,
+        "n_studies": len(points),
+        "span_days": days[-1] if days else 0,
+        "points": points,
+        "trends": trends,
+        "urgency_slope_per_30d": round(us_slope, 2),
+        "lesion_growth": growth,
+        "call": call,
+        "note": "Trend of AI probabilities over time; descriptive, not a validated prognostic "
+        "model. Differences in positioning or technique can change probabilities.",
+    }

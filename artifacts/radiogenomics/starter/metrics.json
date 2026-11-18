@@ -1,0 +1,125 @@
+{
+  "model": "radiogenomics",
+  "profile": "starter",
+  "task": "radiogenomics",
+  "n_patients": 110,
+  "features": [
+    "volume_vox",
+    "slices",
+    "max_area",
+    "circularity",
+    "solidity",
+    "eccentricity",
+    "mean",
+    "std",
+    "skew",
+    "entropy",
+    "glcm_contrast",
+    "glcm_homogeneity",
+    "glcm_energy"
+  ],
+  "test": {
+    "targets": {
+      "RNASeqCluster": {
+        "description": "RNA-seq cluster 1 vs rest",
+        "n": 92,
+        "n_positive": 25,
+        "cv_auroc": 0.753,
+        "cv_auroc_sd": 0.023,
+        "permutation_auroc_mean": 0.514,
+        "permutation_auroc_p95": 0.611,
+        "above_chance": true
+      },
+      "MethylationCluster": {
+        "description": "methylation cluster 4 vs rest",
+        "n": 109,
+        "n_positive": 21,
+        "cv_auroc": 0.735,
+        "cv_auroc_sd": 0.022,
+        "permutation_auroc_mean": 0.508,
+        "permutation_auroc_p95": 0.636,
+        "above_chance": true
+      },
+      "CNCluster": {
+        "description": "copy-number cluster 2 vs rest",
+        "n": 108,
+        "n_positive": 20,
+        "cv_auroc": 0.752,
+        "cv_auroc_sd": 0.016,
+        "permutation_auroc_mean": 0.512,
+        "permutation_auroc_p95": 0.628,
+        "above_chance": true
+      },
+      "COCCluster": {
+        "description": "cluster-of-clusters 2 vs rest",
+        "n": 110,
+        "n_positive": 24,
+        "cv_auroc": 0.664,
+        "cv_auroc_sd": 0.032,
+        "permutation_auroc_mean": 0.525,
+        "permutation_auroc_p95": 0.637,
+        "above_chance": true
+      },
+      "neoplasm_histologic_grade": {
+        "description": "WHO grade III vs II",
+        "n": 109,
+        "n_positive": 58,
+        "cv_auroc": 0.604,
+        "cv_auroc_sd": 0.031,
+        "permutation_auroc_mean": 0.517,
+        "permutation_auroc_p95": 0.608,
+        "above_chance": false
+      },
+      "death01": {
+        "description": "death during follow-up",
+        "n": 109,
+        "n_positive": 27,
+        "cv_auroc": 0.65,
+        "cv_auroc_sd": 0.043,
+        "permutation_auroc_mean": 0.486,
+        "permutation_auroc_p95": 0.627,
+        "above_chance": true
+      }
+    }
+  },
+  "feature_grade_correlation": {},
+  "fairness_brain_seg": {
+    "n_patients": 16,
+    "overall_dice": 0.7497066587080995,
+    "groups": {
+      "sex:code 1": {
+        "n": 9,
+        "dice": 0.6705
+      },
+      "sex:code 2": {
+        "n": 7,
+        "dice": 0.8515
+      },
+      "age:40-59": {
+        "n": 3,
+        "dice": 0.6826
+      },
+      "age:60+": {
+        "n": 6,
+        "dice": 0.6693
+      },
+      "age:<40": {
+        "n": 7,
+        "dice": 0.8474
+      },
+      "race:code 2": {
+        "n": 1,
+        "dice": 0.7288
+      },
+      "race:code 3": {
+        "n": 15,
+        "dice": 0.7511
+      }
+    },
+    "sex_gap": 0.181,
+    "race_gap": null,
+    "note": "Sex / race are shown as the numeric codes of the dataset's data.csv (the Kaggle copy does not document the code-to-category mapping, so we do not guess it); groups with n < 3 are shown but excluded from the gap. Small n \u2014 no fairness claim."
+  },
+  "method": "Expert-mask radiomics (FLAIR) -> logistic regression, repeated stratified 5-fold CV; permutation baseline (10 label shuffles).",
+  "note": "Exploratory, n ~ 100; associations are hypotheses, not predictors."
+}

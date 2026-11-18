@@ -32,6 +32,11 @@ EXPORTABLE = [
     "brain_seg",
     "router",
     "denoiser",
+    "head_ct_cls",
+    "breast_us",
+    "retina_dr",
+    "nodule3d",
+    "sr_gan",
 ]
 
 
@@ -105,9 +110,23 @@ def export(name: str, profile: str) -> dict[str, Any]:
             info["onnx_error"] = str(exc)[:200]
         write_json(d / "export.json", info)
         return info
-    chans = 3 if cfg["model"]["arch"] in ("classifier", "smallcnn") else 1
+    arch = cfg["model"]["arch"]
+    chans = 3 if arch in ("classifier", "smallcnn") else 1
     x = torch.randn(1, chans, size, size)
-    if cfg["model"]["arch"] == "classifier":
+    if arch == "cnn3d":
+        x = torch.randn(1, 1, size, size, size)
+    if arch == "srgan":
+        x = torch.rand(1, 1, size, size)
+    if arch == "srgan":
+        _export(
+            model,
+            x,
+            path,
+            ["input"],
+            ["output"],
+            {"input": {0: "batch", 2: "h", 3: "w"}, "output": {0: "batch", 2: "oh", 3: "ow"}},
+        )
+    elif arch == "classifier":
         _export(
             WithFeatures(model),
             x,

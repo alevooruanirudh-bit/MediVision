@@ -12,6 +12,7 @@ import { type AnyJson, api } from "@/lib/api";
 import { cn, fmt, pct, titleCase } from "@/lib/utils";
 
 const NAMES: Record<string, string> = {
+  second_reader: "★ Second-reader summary (all models)",
   chest_ensemble: "Chest X-ray ensemble (14 labels)",
   chest_densenet121: "· DenseNet-121 member",
   chest_efficientnet_b2: "· EfficientNet-B2 member",
@@ -26,7 +27,163 @@ const NAMES: Record<string, string> = {
   report_gen: "Experimental report generator",
   copilot_intent: "Copilot intent model",
   pneumonia_det: "Pneumonia localiser (RSNA)",
+  head_ct_cls: "Head-CT hemorrhage classifier",
+  nodule3d: "Chest-CT nodule malignancy (3-D CNN)",
+  breast_us: "Breast-ultrasound malignancy",
+  retina_dr: "Diabetic-retinopathy grader (fundus)",
+  sr_gan: "Super-resolution ×2 (SR-GAN)",
+  radiogenomics: "Radiogenomics + seg. fairness (LGG/TCGA)",
 };
+
+const BINARY = ["fracture_cls", "head_ct_cls", "nodule3d", "breast_us"];
+
+/** One row per model at its operating point: sensitivity / specificity / FPR / FNR (M7). */
+function SecondReader({ models, profile }: { models: Record<string, Record<string, AnyJson>>; profile: string }) {
+  const rows: { model: string; target: string; auroc?: number; se?: number; sp?: number; ppv?: number; npv?: number; n?: number }[] = [];
+  const get = (n: string) => models[n]?.[profile] ?? models[n]?.starter;
+  const ce = get("chest_ensemble");
+  if (ce?.test?.per_label)
+    Object.entries(ce.test.per_label as Record<string, AnyJson>).forEach(([lab, v]) =>
+      rows.push({ model: "Chest ensemble", target: lab.replace("_", " "), auroc: v.auroc, se: v.sensitivity, sp: v.specificity, ppv: v.ppv, npv: v.npv, n: ce.n_test }),
+    );
+  BINARY.forEach((n) => {
+    const t = get(n)?.test;
+    if (t) rows.push({ model: NAMES[n], target: get(n)?.config?.label_name ?? "positive", auroc: t.auroc, se: t.sensitivity, sp: t.specificity, ppv: t.ppv, npv: t.npv, n: get(n)?.n_test });
+  });
+  const r = get("retina_dr")?.test;
+  if (r?.referable) rows.push({ model: NAMES.retina_dr, target: "Referable DR (grade ≥ 2)", auroc: r.referable_auroc, se: r.referable.sensitivity, sp: r.referable.specificity, ppv: r.referable.ppv, npv: r.referable.npv, n: get("retina_dr")?.n_test });
+  ["brain_cls", "router"].forEach((n) => {
+    const t = get(n)?.test;
+    Object.entries((t?.per_class_reader ?? {}) as Record<string, AnyJson>).forEach(([c, v]) =>
+      rows.push({ model: NAMES[n], target: titleCase(c), auroc: t.per_class_auroc?.[c], se: v.sensitivity, sp: v.specificity, n: get(n)?.n_test }),
+    );
+  });
+  return (
+    <Card className="overflow-hidden" data-testid="second-reader">
+      <CardHeader
+        title="AI as a second reader — error rates at the operating point"
+        subtitle="False-positive rate = 1 − specificity (extra work for the radiologist); false-negative rate = 1 − sensitivity (missed findings). Thresholds: Youden's J on validation."
+      />
+      <div className="scrollbar-thin max-h-[70vh] overflow-auto">
+        <table className="w-full min-w-[820px] text-sm">
+          <thead className="sticky top-0 bg-surface">
+            <tr className="border-y border-border text-left text-[11px] uppercase tracking-wider text-subtle">
+              {["Model", "Target", "AUROC", "Sensitivity", "Specificity", "FPR", "FNR", "PPV", "NPV", "n test"].map((h) => (
+                <th key={h} className={cn("px-3 py-2 font-medium", h !== "Model" && h !== "Target" && "text-right")}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((x, i) => (
+              <tr key={i} className="border-b border-border/50">
+                <td className="px-3 py-1.5 text-muted">{x.model}</td>
+                <td className="px-3 py-1.5 text-fg">{x.target}</td>
+                <td className="num px-3 py-1.5 text-right text-fg">{fmt(x.auroc, 3)}</td>
+                <td className="num px-3 py-1.5 text-right">{pct(x.se, 1)}</td>
+                <td className="num px-3 py-1.5 text-right">{pct(x.sp, 1)}</td>
+                <td className="num px-3 py-1.5 text-right text-amber">{x.sp != null ? pct(1 - x.sp, 1) : "—"}</td>
+                <td className="num px-3 py-1.5 text-right text-red">{x.se != null ? pct(1 - x.se, 1) : "—"}</td>
+                <td className="num px-3 py-1.5 text-right text-muted">{x.ppv != null ? pct(x.ppv, 1) : "—"}</td>
+                <td className="num px-3 py-1.5 text-right text-muted">{x.npv != null ? pct(x.npv, 1) : "—"}</td>
+                <td className="num px-3 py-1.5 text-right text-subtle">{x.n ?? "—"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="px-5 py-3 text-xs text-subtle">
+        Small test sets (e.g. head CT n = 40) give wide confidence intervals; these are starter-profile numbers on public data, not
+        clinical performance.
+      </p>
+    </Card>
+  );
+}
+
+function BinarySection({ m }: { m: AnyJson }) {
+  const t = m.test ?? {};
+  const roc = (t.roc ?? []).map(([x, y]: number[]) => ({ fpr: x, tpr: y }));
+  return (
+    <div className="space-y-4">
+      <Tiles
+        items={[
+          ["AUROC", fmt(t.auroc, 3)],
+          ["Sensitivity", pct(t.sensitivity, 1)],
+          ["Specificity", pct(t.specificity, 1)],
+          ["Threshold", fmt(t.threshold, 3)],
+          ["False-positive rate", pct(t.fpr ?? 1 - t.specificity, 1)],
+          ["False-negative rate", pct(t.fnr ?? 1 - t.sensitivity, 1)],
+          ["PPV / NPV", t.ppv != null ? `${pct(t.ppv, 0)} / ${pct(t.npv, 0)}` : "—"],
+          ["TP · FP · FN · TN", t.tp != null ? `${t.tp} · ${t.fp} · ${t.fn} · ${t.tn}` : `n=${m.n_test}`],
+        ]}
+      />
+      {roc.length > 0 && (
+        <Card className="p-4">
+          <SectionTitle>ROC (test)</SectionTitle>
+          <div className="h-64">
+            <ResponsiveContainer>
+              <LineChart data={roc} margin={{ top: 8, right: 16, left: 0, bottom: 8 }}>
+                <CartesianGrid {...grid} />
+                <XAxis dataKey="fpr" type="number" domain={[0, 1]} {...axis} tickFormatter={(v) => v.toFixed(1)} />
+                <YAxis domain={[0, 1]} {...axis} tickFormatter={(v) => v.toFixed(1)} width={36} />
+                <ReferenceLine segment={[{ x: 0, y: 0 }, { x: 1, y: 1 }]} stroke="var(--border-strong)" strokeDasharray="4 4" />
+                <Tooltip content={<ChartTooltip format={(v) => Number(v).toFixed(3)} labelFormat={(l) => `FPR ${Number(l).toFixed(2)}`} />} />
+                <Line dataKey="tpr" name="TPR" stroke={SERIES[0]} strokeWidth={2} dot={false} isAnimationActive={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+      )}
+      <Card className="p-4"><History hist={m.history} /></Card>
+    </div>
+  );
+}
+
+function RadiogenomicsSection({ m }: { m: AnyJson }) {
+  const targets = Object.entries((m.test?.targets ?? {}) as Record<string, AnyJson>);
+  const fair = m.fairness_brain_seg ?? {};
+  return (
+    <div className="space-y-4">
+      <Card className="overflow-hidden">
+        <CardHeader title="Imaging features ↔ TCGA molecular subtypes" subtitle={`${m.n_patients} LGG patients · ${m.method}`} />
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-y border-border text-left text-[11px] uppercase tracking-wider text-subtle">
+              <th className="px-5 py-2 font-medium">Target</th><th className="px-3 py-2 text-right font-medium">n (pos)</th>
+              <th className="px-3 py-2 text-right font-medium">CV AUROC</th><th className="px-3 py-2 text-right font-medium">Permutation p95</th>
+              <th className="px-5 py-2 text-right font-medium">Above chance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {targets.map(([k, v]) => (
+              <tr key={k} className="border-b border-border/60">
+                <td className="px-5 py-2 text-fg">{v.description}</td>
+                <td className="num px-3 py-2 text-right text-muted">{v.n} ({v.n_positive})</td>
+                <td className="num px-3 py-2 text-right text-fg">{fmt(v.cv_auroc, 3)} ± {fmt(v.cv_auroc_sd, 3)}</td>
+                <td className="num px-3 py-2 text-right text-muted">{fmt(v.permutation_auroc_p95, 3)}</td>
+                <td className="px-5 py-2 text-right">{v.above_chance ? <Badge tone="teal">yes</Badge> : <Badge>no</Badge>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="px-5 py-3 text-xs text-subtle">{m.note}</p>
+      </Card>
+      {fair.groups && (
+        <Card className="overflow-hidden">
+          <CardHeader title="Fairness: tumour-segmentation Dice by subgroup" subtitle={`${fair.n_patients} test patients · overall Dice ${fmt(fair.overall_dice, 3)}`} />
+          <div className="grid gap-2 px-5 pb-3 text-xs sm:grid-cols-3">
+            {Object.entries(fair.groups as Record<string, AnyJson>).map(([g, v]) => (
+              <div key={g} className="flex justify-between rounded-lg border border-border bg-surface-2 px-3 py-1.5">
+                <span className="text-muted">{g.replace(":", " · ")}</span>
+                <span className="num text-fg">{fmt(v.dice, 3)} <span className="text-subtle">n={v.n}</span></span>
+              </div>
+            ))}
+          </div>
+          <p className="px-5 pb-4 text-xs text-subtle">{fair.note}</p>
+        </Card>
+      )}
+    </div>
+  );
+}
 
 function headline(name: string, m: AnyJson): [string, string] {
   const t = m?.test ?? {};
@@ -38,6 +195,11 @@ function headline(name: string, m: AnyJson): [string, string] {
   if (name === "denoiser") return ["PSNR gain", `${fmt((t.psnr_denoised ?? 0) - (t.psnr_noisy ?? 0), 1)} dB`];
   if (name === "report_gen") return ["BLEU-4", fmt(t.bleu4, 3)];
   if (name === "copilot_intent") return ["accuracy", pct(t.accuracy, 1)];
+  if (BINARY.includes(name)) return ["AUROC", fmt(t.auroc, 3)];
+  if (name === "retina_dr") return ["referable AUROC", fmt(t.referable_auroc, 3)];
+  if (name === "sr_gan") return ["PSNR vs bicubic", `${fmt((t.psnr_ours ?? 0) - (t.psnr_bicubic ?? 0), 2)} dB`];
+  if (name === "radiogenomics")
+    return ["above chance", `${Object.values(t.targets ?? {}).filter((x: AnyJson) => x.above_chance).length}/${Object.keys(t.targets ?? {}).length}`];
   return ["macro-F1", fmt(t.macro_f1, 3)];
 }
 
@@ -236,10 +398,22 @@ function ChestSection({ m }: { m: AnyJson }) {
 
 function GenericSection({ name, m }: { name: string; m: AnyJson }) {
   const t = m.test ?? {};
+  if (BINARY.includes(name)) return <BinarySection m={m} />;
+  if (name === "radiogenomics") return <RadiogenomicsSection m={m} />;
+  if (name === "sr_gan")
+    return (
+      <div className="space-y-4">
+        <Tiles items={[["PSNR bicubic", `${fmt(t.psnr_bicubic, 2)} dB`], ["PSNR SR-GAN", `${fmt(t.psnr_ours, 2)} dB`], ["SSIM bicubic", fmt(t.ssim_bicubic, 3)], ["SSIM SR-GAN", fmt(t.ssim_ours, 3)]]} />
+        <p className="text-xs text-subtle">{m.note}</p>
+      </div>
+    );
   if (t.confusion_matrix)
     return (
       <div className="space-y-4">
         <Tiles items={[["Accuracy", pct(t.accuracy, 1)], ["Macro-F1", fmt(t.macro_f1, 3)], ["Temperature", fmt(t.temperature, 2)], ["Test images", m.n_test]]} />
+        {t.referable_auroc != null && (
+          <Tiles items={[["Referable-DR AUROC", fmt(t.referable_auroc, 3)], ["Quadratic κ", fmt(t.quadratic_kappa, 3)], ["Referable sensitivity", pct(t.referable?.sensitivity, 1)], ["Referable specificity", pct(t.referable?.specificity, 1)]]} />
+        )}
         <div className="grid gap-4 lg:grid-cols-2">
           <Card className="p-4"><SectionTitle>Confusion matrix (test)</SectionTitle><ConfusionMatrix cm={t.confusion_matrix} classes={t.classes} /></Card>
           <Card className="p-4">
@@ -314,8 +488,8 @@ export default function LabPage() {
   const [model, setModel] = React.useState("chest_ensemble");
   const models = q.data?.models ?? {};
   const hasFull = Object.values(models).some((p) => p.full);
-  const order = Object.keys(NAMES).filter((n) => models[n]);
-  const m = models[model]?.[profile] ?? models[model]?.starter;
+  const order = Object.keys(NAMES).filter((n) => models[n] || n === "second_reader");
+  const m = model === "second_reader" ? { profile } : (models[model]?.[profile] ?? models[model]?.starter);
 
   return (
     <div>
@@ -340,8 +514,8 @@ export default function LabPage() {
         <div className="grid gap-4 xl:grid-cols-[300px_1fr]">
           <Card className="h-fit p-2">
             {order.map((n) => {
-              const [k, v] = headline(n, models[n][profile] ?? models[n].starter);
-              const ms = models[n][profile]?.export?.cpu_ms_per_image ?? models[n].starter?.export?.cpu_ms_per_image;
+              const [k, v] = n === "second_reader" ? ["sens / spec / FPR / FNR", ""] : headline(n, models[n][profile] ?? models[n].starter);
+              const ms = models[n]?.[profile]?.export?.cpu_ms_per_image ?? models[n]?.starter?.export?.cpu_ms_per_image;
               return (
                 <button
                   key={n}
@@ -352,7 +526,7 @@ export default function LabPage() {
                     <div className={cn("truncate text-[13px]", model === n ? "text-fg" : "text-muted")}>{NAMES[n]}</div>
                     <div className="num text-[11px] text-subtle">{k} {v}{ms ? ` · ${ms} ms CPU` : ""}</div>
                   </div>
-                  {models[n].full && <Badge tone="violet">full</Badge>}
+                  {models[n]?.full && <Badge tone="violet">full</Badge>}
                 </button>
               );
             })}
@@ -365,6 +539,8 @@ export default function LabPage() {
             </div>
             {!m ? (
               <Card><EmptyState icon={<FlaskConical />} title="No metrics for this profile" /></Card>
+            ) : model === "second_reader" ? (
+              <SecondReader models={models} profile={profile} />
             ) : model === "chest_ensemble" ? (
               <ChestSection m={m} />
             ) : (

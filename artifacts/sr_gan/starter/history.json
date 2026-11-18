@@ -1,0 +1,56 @@
+[
+  {
+    "epoch": 1,
+    "stage": "l1_pretrain",
+    "train_loss": 0.008877632308751344,
+    "d_loss": null,
+    "val_psnr": 37.72346115112305,
+    "val_psnr_bicubic": 37.044891357421875,
+    "seconds": 271.9
+  },
+  {
+    "epoch": 2,
+    "stage": "l1_pretrain",
+    "train_loss": 0.007331404400368531,
+    "d_loss": null,
+    "val_psnr": 38.205482482910156,
+    "val_psnr_bicubic": 37.044891357421875,
+    "seconds": 548.5
+  },
+  {
+    "epoch": 3,
+    "stage": "adversarial",
+    "train_loss": 0.007959285578380028,
+    "d_loss": 0.2426469434897105,
+    "val_psnr": 38.35432434082031,
+    "val_psnr_bicubic": 37.044891357421875,
+    "seconds": 941.4
+  },
+  {
+    "epoch": 4,
+    "stage": "adversarial",
+    "train_loss": 0.008753564798583587,
+    "d_loss": 0.19479033211867014,
+    "val_psnr": 37.71829605102539,
+    "val_psnr_bicubic": 37.044891357421875,
+    "seconds": 1262.1
+  },
+  {
+    "epoch": 5,
+    "stage": "adversarial",
+    "train_loss": 0.009442703527708849,
+    "d_loss": 0.16436114279429118,
+    "val_psnr": 37.536258697509766,
+    "val_psnr_bicubic": 37.044891357421875,
+    "seconds": 1623.0
+  },
+  {
+    "epoch": 6,
+    "stage": "adversarial",
+    "train_loss": 0.009327819608151912,
+    "d_loss": 0.19674024589856465,
+    "val_psnr": 37.878944396972656,
+    "val_psnr_bicubic": 37.044891357421875,
+    "seconds": 2015.9
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "task": "binary",
+  "label_name": "Malignant nodule",
+  "dataset": "nodule3d",
+  "model": {
+    "arch": "cnn3d",
+    "width": 16,
+    "dropout": 0.3
+  },
+  "loss": {
+    "type": "weighted_bce"
+  },
+  "optim": {
+    "lr": 0.001,
+    "weight_decay": 0.0001
+  },
+  "train": {
+    "patience": 5,
+    "warmup_epochs": 1,
+    "num_workers": 0,
+    "monitor": "val_auroc",
+    "epochs": 8,
+    "batch_size": 16
+  },
+  "img_size": 64,
+  "name": "nodule3d",
+  "profile": "starter"
+}

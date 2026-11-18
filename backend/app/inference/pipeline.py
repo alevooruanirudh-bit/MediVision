@@ -12,13 +12,16 @@ from datetime import UTC, datetime
 from typing import Any
 
 import numpy as np
-from sqlmodel import Session, delete, select
+from sqlmodel import Session, select
 
 from app.config import get_settings
 from app.inference import measurements as M
+from app.inference import modalities as MOD
+from app.inference import radiomics as RAD
 from app.inference import triage, xai
 from app.inference.chest import analyze_chest
 from app.inference.other import analyze_brain, analyze_fracture
+from app.inference.rationale import reasons as rationale
 from app.inference.registry import registry
 from app.inference.router import route
 from app.models import Finding, Study
@@ -48,6 +51,10 @@ def cam_handle_and_index(pipeline: str, key: str) -> tuple[Any, int, str]:
         return registry.get("fracture_cls"), 0, "sigmoid"
     if pipeline == "brain":
         return registry.get("brain_cls"), BRAIN_CLASSES.index(key), "softmax"
+    if pipeline in ("head_ct", "breast_us"):
+        return registry.get(MOD.PIPELINE_MODEL[pipeline]), 0, "sigmoid"
+    if pipeline == "fundus":
+        return registry.get("retina_dr"), 2, "softmax"  # moderate NPDR = referable threshold
     return None, 0, "sigmoid"
 
 
@@ -64,7 +71,8 @@ def explain(
     h, idx, act = cam_handle_and_index(pipe or "", key)
     if h is None:
         raise ValueError("no explainable model for this study")
-    img = img if img is not None else storage.load_image(study.image_path)
+    if img is None:
+        img = storage.load_image(study.image_path, gray=pipe != "fundus")
     heat = (
         xai.occlusion(h, img, idx, activation=act)
         if method == "occlusion"
@@ -86,6 +94,12 @@ def explain(
         zone = _brain_region(hot["peak"])
     elif pipe == "fracture":
         zone = _bone_region(hot["peak"])
+    elif pipe == "head_ct":
+        zone = _brain_region(hot["peak"])
+    elif pipe == "breast_us":
+        zone = "lesion region (image coordinates)"
+    elif pipe == "fundus":
+        zone = _fundus_region(hot["peak"])
     return {
         "finding": key,
         "method": method,
@@ -111,6 +125,17 @@ def _brain_region(peak: list[float]) -> str:
     return f"{side} {ap} region"
 
 
+def _fundus_region(peak: list[float]) -> str:
+    x, y = peak
+    r = ((x - 0.5) ** 2 + (y - 0.5) ** 2) ** 0.5
+    if r < 0.12:
+        return "central (macular / optic-disc) region"
+    v = "superior" if y < 0.5 else "inferior"
+    return (
+        f"{v} {'temporal/nasal (image left)' if x < 0.5 else 'temporal/nasal (image right)'} retina"
+    )
+
+
 def _bone_region(peak: list[float]) -> str:
     x, y = peak
     v = "proximal" if y < 0.33 else "distal" if y > 0.66 else "mid"
@@ -129,8 +154,24 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
     deid = json.loads(study.deid_json or "{}")
     if deid.get("ms") is not None:
         T.stages["deidentify"] = deid["ms"]
+    vol_path = storage.study_dir(study.id) / "volume.npy"
+    volume = np.load(vol_path) if vol_path.exists() else None
     with T.stage("router_ood"):
-        modality = route(img, study.modality_hint)
+        if volume is not None:
+            modality = {
+                "label": "chest_ct_volume",
+                "probs": {},
+                "confidence": None,
+                "pipeline": "ct_volume",
+                "ood": False,
+                "warning": (
+                    None
+                    if volume.shape == (64, 64, 64)
+                    else f"Volume {tuple(volume.shape)} was resampled to 64³ for the nodule model."
+                ),
+            }
+        else:
+            modality = route(img, study.modality_hint)
     pipeline = modality["pipeline"]
     if force and pipeline is None:
         hint = {"chest": "chest", "bone": "fracture", "fracture": "fracture", "brain": "brain"}
@@ -170,6 +211,18 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
             br = analyze_brain(gray)
             findings = br["findings"]
             extra["brain"] = {k: br.get(k) for k in ("class_probs", "predicted", "no_tumour_prob")}
+        elif pipeline == "head_ct":
+            findings = MOD.analyze_head_ct(gray, settings.mc_dropout_samples)["findings"]
+        elif pipeline == "breast_us":
+            findings = MOD.analyze_breast_us(gray, settings.mc_dropout_samples)["findings"]
+        elif pipeline == "fundus":
+            fu = MOD.analyze_fundus(img)
+            findings = fu["findings"]
+            extra["fundus"] = {k: fu.get(k) for k in ("grade_probs", "predicted_grade")}
+        elif pipeline == "ct_volume" and volume is not None:
+            sp = json.loads(study.deid_json or "{}").get("voxel_spacing_mm")
+            cv = MOD.analyze_volume(volume, tuple(sp) if sp else None)
+            findings = cv["findings"]
     with T.stage("measurements"):
         if pipeline == "chest":
             lung = M.lung_measurements(gray, study.pixel_spacing_mm)
@@ -194,12 +247,92 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
                 no_tumour = (extra.get("brain") or {}).get("predicted") == "No tumour"
                 tm["consistent_with_classifier"] = bool(tm["tumour_area_px"] > 0) != no_tumour
             meas = tm
+        elif pipeline == "ct_volume" and volume is not None:
+            meas = cv["volumetrics"]
+            v8, mask = cv["volume"], cv["mask"]
+            np.save(storage.study_dir(study.id) / "volume64.npy", v8)
+            np.save(storage.study_dir(study.id) / "mask64.npy", mask.astype(np.uint8))
+            mpr = {}
+            for plane, sl in MOD.mpr_slices(v8).items():
+                rgb = np.stack([sl] * 3, -1)
+                big = np.kron(rgb, np.ones((4, 4, 1), np.uint8))
+                mpr[plane] = storage.url(
+                    storage.save_rgba(
+                        study.id,
+                        f"mpr_{plane}",
+                        np.dstack([big, np.full(big.shape[:2], 255, np.uint8)]),
+                    )
+                )
+            frames = []
+            for i, fr in enumerate(MOD.mip_frames(v8, mask)):
+                big = np.kron(fr, np.ones((4, 4, 1), np.uint8))
+                frames.append(
+                    storage.url(
+                        storage.save_rgba(
+                            study.id,
+                            f"mip_{i:02d}",
+                            np.dstack([big, np.full(big.shape[:2], 255, np.uint8)]),
+                        )
+                    )
+                )
+            overlays["volume"] = {"mpr": mpr, "mip_frames": frames, "shape": list(v8.shape)}
+            overlays["tumour_mask"] = storage.url(
+                storage.save_rgba(
+                    study.id,
+                    "tumour_mask",
+                    M.mask_overlay(
+                        np.kron(mask[32].astype(np.uint8), np.ones((16, 16), np.uint8)),
+                        (167, 139, 250),
+                    ),
+                )
+            )
+    with T.stage("radiomics"):
+        radiomics: dict[str, Any] | None = None
+        try:
+            if pipeline == "ct_volume" and volume is not None:
+                radiomics = RAD.features_3d(
+                    cv["volume"], cv["mask"], tuple(meas.get("spacing_mm") or (1.0, 1.0, 1.0))
+                )
+            elif pipeline == "chest" and lung is not None and "mask" in lung:
+                radiomics = RAD.features(
+                    gray, lung["mask"] > 0, "both lungs", study.pixel_spacing_mm
+                )
+            elif pipeline == "brain":
+                tmask = M.tumour_measurements(gray, study.pixel_spacing_mm).get("mask")
+                radiomics = RAD.features(
+                    gray,
+                    tmask > 0 if tmask is not None and tmask.any() else None,
+                    "tumour (Attention U-Net mask)",
+                    study.pixel_spacing_mm,
+                )
+            elif pipeline is not None:
+                radiomics = RAD.features(
+                    gray, None, pipeline.replace("_", " "), study.pixel_spacing_mm
+                )
+        except Exception as exc:  # pragma: no cover
+            log.warning("radiomics failed: %s", exc)
     with T.stage("xai"):
         targets = [f for f in findings if f.get("positive")][:3] or findings[:1]
+        if pipeline == "ct_volume":
+            targets = []
+            if volume is not None and cv.get("cam") is not None and findings:
+                cam_sl = cv["cam"][32]
+                big = np.kron(cam_sl, np.ones((16, 16), np.float32))
+                url = storage.url(storage.save_rgba(study.id, "heat_nodule", xai.overlay(big)))
+                overlays["heatmaps"][findings[0]["key"]] = {"gradcam": url}
+                hot = xai.hottest(big)
+                findings[0].update(
+                    zone="axial mid-slice", heat_peak=hot["peak"], heat_box=hot["box"]
+                )
         for f in targets:
             try:
                 ex = explain(
-                    study_with(study, pipeline), f["key"], "gradcam", "inferno", lung, gray
+                    study_with(study, pipeline),
+                    f["key"],
+                    "gradcam",
+                    "inferno",
+                    lung,
+                    img if pipeline == "fundus" else gray,
                 )
                 overlays["heatmaps"][f["key"]] = {"gradcam": ex["url"]}
                 f["zone"] = ex["zone"]
@@ -209,6 +342,26 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
                 log.warning("xai failed for %s: %s", f["key"], exc)
     with T.stage("triage"):
         tri = triage.score(findings, ood=bool(modality.get("ood") or modality.get("energy_ood")))
+    for f in findings:
+        f["rationale"] = rationale(f, pipeline, meas, {"modality": modality})
+    used = _models_used(pipeline)
+    versions = [h.version_info() for n in used if (h := registry.get(n)) is not None]
+    vmap = {v["name"]: v for v in versions}
+    diag = MODELS_FOR.get(pipeline or "", [None])[0]
+    if pipeline == "chest":
+        members = [vmap[m]["version"] for m in MODELS_FOR["chest"][:3] if m in vmap]
+        import hashlib
+
+        diag = "chest_ensemble"
+        vmap[diag] = {"version": hashlib.sha256("|".join(members).encode()).hexdigest()[:12]}
+    for f in findings:
+        mname = f.get("model") or diag
+        f["provenance"] = {
+            "source": "ai",
+            "model": mname,
+            "model_version": (vmap.get(mname) or {}).get("version"),
+        }
+    autonomy = _autonomy(settings, tri, findings, modality)
     profiles = {h.name: h.profile for h in registry.handles.values()}
     active_profile = "full" if any(p == "full" for p in profiles.values()) else "starter"
     results = {
@@ -227,10 +380,24 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
         },
         "model_profile": active_profile,
         "model_profiles": profiles,
+        "model_versions": versions,
+        "radiomics": radiomics,
+        "autonomy": autonomy,
         "backend": settings.inference_backend,
     }
     # persist findings (keep prior reviews only if labels are unchanged)
-    session.exec(delete(Finding).where(Finding.study_id == study.id))  # type: ignore[arg-type]
+    # Findings a human already reviewed are kept (the reviews reference them — audit history) but
+    # marked superseded; unreviewed findings of the previous run are replaced.
+    from app.models import Review
+
+    reviewed = set(session.exec(select(Review.finding_id).where(Review.study_id == study.id)).all())
+    for old in session.exec(select(Finding).where(Finding.study_id == study.id)).all():
+        if old.id in reviewed:
+            old.status, old.positive, old.rank = "superseded", False, -1
+            session.add(old)
+        else:
+            session.delete(old)
+    session.flush()
     for i, f in enumerate(findings):
         row = Finding(
             study_id=study.id,
@@ -244,6 +411,9 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
             zone=f.get("zone"),
             box_json=json.dumps(f.get("box")) if f.get("box") else None,
             rank=i,
+            source="ai",
+            model_name=f["provenance"]["model"],
+            model_version=f["provenance"]["model_version"],
         )
         session.add(row)
         f["id"] = row.id
@@ -265,6 +435,61 @@ def analyze(session: Session, study: Study, force: bool = False) -> dict[str, An
     session.commit()
     session.refresh(study)
     return results
+
+
+MODELS_FOR = {
+    "chest": ["chest_densenet121", "chest_efficientnet_b2", "chest_convnext_tiny", "lung_unet"],
+    "fracture": ["fracture_cls", "fracture_det"],
+    "brain": ["brain_cls", "brain_seg"],
+    "head_ct": ["head_ct_cls"],
+    "breast_us": ["breast_us"],
+    "fundus": ["retina_dr"],
+    "ct_volume": ["nodule3d"],
+}
+
+
+def _models_used(pipeline: str | None) -> list[str]:
+    return ["router"] * (pipeline != "ct_volume") + MODELS_FOR.get(pipeline or "", [])
+
+
+def _autonomy(
+    settings: Any, tri: dict[str, Any], findings: list[dict[str, Any]], modality: dict[str, Any]
+) -> dict[str, Any]:
+    """Autonomous mode (C10) for two well-defined tasks; a human must always confirm."""
+    if not settings.autonomous_triage:
+        return {"enabled": False}
+    ood = bool(modality.get("ood") or modality.get("energy_ood"))
+    max_unc = max((float(f.get("uncertainty") or 0) for f in findings), default=0.0)
+    # Pre-clear only CLEAR negatives: every output far below its threshold (<= 40 %) AND every model
+    # produced a real uncertainty estimate (uncertainty 0.0 = "not estimated", never "certain").
+    clear = all(
+        float(f["probability"]) <= 0.4 * max(float(f.get("threshold", 0.5)), 0.2)
+        and float(f.get("uncertainty") or 0) > 0
+        for f in findings
+    )
+    if (
+        tri["level"] == "NORMAL"
+        and not ood
+        and findings
+        and clear
+        and max_unc <= settings.autonomous_max_uncertainty
+    ):
+        return {
+            "enabled": True,
+            "action": "pre_cleared_normal",
+            "text": "AI pre-cleared as normal (no finding above threshold, low uncertainty). "
+            "Moved to the confirm-normal queue — a radiologist must still confirm.",
+            "requires_human_confirmation": True,
+        }
+    if tri["level"] == "CRITICAL":
+        return {
+            "enabled": True,
+            "action": "critical_alert",
+            "text": "Critical-finding alert raised automatically; the study is pinned to the top "
+            "of the worklist until a radiologist acknowledges it.",
+            "requires_human_confirmation": True,
+        }
+    return {"enabled": True, "action": "none", "requires_human_confirmation": True}
 
 
 def study_with(study: Study, pipeline: str | None) -> Study:

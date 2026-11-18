@@ -1,4 +1,5 @@
-import type { ChatAnswer, Explain, Health, Report, Study, StudySummary } from "./types";
+import { useSettings } from "./store";
+import type { ChatAnswer, Explain, Health, Me, Report, Study, StudySummary, Timeline } from "./types";
 
 export const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
 
@@ -15,10 +16,24 @@ export class ApiError extends Error {
   }
 }
 
+/** Identity headers: bearer token when signed in, else the demo role (AUTH_ENABLED=false only). */
+export function authHeaders(): Record<string, string> {
+  try {
+    const { token, demoRole } = useSettings.getState();
+    return token ? { Authorization: `Bearer ${token}` } : { "X-Demo-Role": demoRole };
+  } catch {
+    return {};
+  }
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
     ...init,
-    headers: init?.body instanceof FormData ? init?.headers : { "Content-Type": "application/json", ...init?.headers },
+    headers: {
+      ...authHeaders(),
+      ...(init?.body instanceof FormData ? {} : { "Content-Type": "application/json" }),
+      ...init?.headers,
+    },
   });
   if (!res.ok) {
     let code = "http_error";
@@ -50,7 +65,7 @@ export const api = {
     request<Explain>(
       `/api/studies/${id}/explain?finding=${encodeURIComponent(finding)}&method=${method}&cmap=${cmap}`,
     ),
-  worklist: (params: { level?: string; q?: string; modality?: string } = {}) => {
+  worklist: (params: { level?: string; q?: string; modality?: string; queue?: string } = {}) => {
     const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v) as [string, string][]);
     return request<{ items: StudySummary[]; counts: Record<string, number> }>(`/api/triage/worklist?${qs}`);
   },
@@ -61,7 +76,19 @@ export const api = {
     request<Report>(`/api/reports/${id}`, { method: "PUT", body: JSON.stringify({ sections }) }),
   rewriteReport: (id: string, style: string, section?: string) =>
     request<Report>(`/api/reports/${id}/rewrite`, json({ style, section })),
-  signReport: (id: string, signed_by: string) => request<Report>(`/api/reports/${id}/sign`, json({ signed_by })),
+  signReport: (id: string, signed_by: string, attest_reviewed = true) =>
+    request<Report>(`/api/reports/${id}/sign`, json({ signed_by, attest_reviewed })),
+  /** authenticated file download (PDF / DICOM) -> object URL */
+  download: async (path: string, filename: string) => {
+    const res = await fetch(`${API_URL}${path}`, { headers: authHeaders() });
+    if (!res.ok) throw new ApiError(res.status, "download_failed", "Download failed");
+    const url = URL.createObjectURL(await res.blob());
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  },
   fhir: (id: string) => request<Record<string, unknown>>(`/api/reports/${id}/fhir`),
   pdfUrl: (id: string) => `${API_URL}/api/reports/${id}/pdf`,
   review: (findingId: string, action: string, new_label?: string, comment?: string) =>
@@ -81,7 +108,38 @@ export const api = {
     ),
   loadDemo: () => request<{ created: number; skipped: number }>("/api/demo/load", { method: "POST" }),
   federatedLast: () => request<Record<string, unknown>>("/api/federated/last"),
+  alerts: () => request<{ count: number; items: AlertItem[] }>("/api/alerts"),
+  ackAlert: (id: string) => request<Study>(`/api/studies/${id}/alert/ack`, { method: "POST" }),
+  timeline: (patientId: string) => request<Timeline>(`/api/patients/${patientId}/timeline`),
+  auditVerify: () =>
+    request<{ valid: boolean; checked: number; legacy_unchained: number; message: string; broken_at?: number }>(
+      "/api/audit/verify",
+    ),
+  fusion: (base_id: string, overlay_id: string, alpha = 0.5, register = true) =>
+    request<FusionResult>("/api/fusion", json({ base_id, overlay_id, alpha, register })),
+  me: () => request<Me>("/api/auth/me"),
+  login: (username: string, password: string) =>
+    request<{ token: string; user: { username: string; role: string; name: string } }>(
+      "/api/auth/login",
+      json({ username, password }),
+    ),
+  logout: () => request<{ ok: boolean }>("/api/auth/logout", { method: "POST" }),
 };
+
+export interface AlertItem {
+  study_id: string;
+  score: number | null;
+  drivers: string[];
+  modality: string | null;
+  analyzed_at: string | null;
+}
+
+export interface FusionResult {
+  image: string;
+  shift_px: number[];
+  correlation_after: number;
+  method: string;
+}
 
 /** Upload with progress (XHR gives upload progress events; fetch does not). */
 export function uploadStudy(
@@ -95,6 +153,7 @@ export function uploadStudy(
     Object.entries(fields).forEach(([k, v]) => v && fd.append(k, v));
     const xhr = new XMLHttpRequest();
     xhr.open("POST", `${API_URL}/api/studies`);
+    Object.entries(authHeaders()).forEach(([k, v]) => xhr.setRequestHeader(k, v));
     xhr.upload.onprogress = (e) => e.lengthComputable && onProgress(e.loaded / e.total);
     xhr.onload = () => {
       try {
@@ -119,7 +178,7 @@ export async function streamSSE(
 ): Promise<void> {
   const res = await fetch(`${API_URL}${path}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
+    headers: { ...authHeaders(), "Content-Type": "application/json", Accept: "text/event-stream" },
     body: JSON.stringify(body),
     signal,
   });
@@ -172,6 +231,8 @@ export interface AuditEntry {
   id: number;
   ts: string;
   actor: string;
+  role?: string | null;
+  hash?: string | null;
   action: string;
   entity: string;
   entity_id: string | null;
@@ -196,6 +257,8 @@ export interface EnhanceResult {
   metrics: { psnr: number; ssim: number; psnr_noisy?: number; ssim_noisy?: number };
   steps: string[];
   denoiser_model: boolean;
+  superres_model?: boolean;
+  size?: number[];
   ms: number;
 }
 
@@ -217,4 +280,5 @@ export interface ModelCard {
   energy_threshold: number | null;
   chest_profile: string | null;
   headline: Record<string, AnyJson>;
+  model_versions?: { name: string; profile: string; version: string; trained_at: string | null; backend: string }[];
 }

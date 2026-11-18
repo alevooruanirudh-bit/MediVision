@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AlertTriangle, Brain, Bone, Cpu, ImageOff, ScanLine, ShieldAlert } from "lucide-react";
+import { AlertTriangle, Bone, Box, Brain, Cpu, Eye, ImageOff, ScanLine, ShieldAlert, Waves } from "lucide-react";
 import * as React from "react";
 
 import { Badge } from "@/components/ui/primitives";
@@ -63,6 +63,9 @@ export function ModalityIcon({ modality, className }: { modality: string | null;
   const c = cn("size-4", className);
   if (modality === "brain_mri") return <Brain className={c} />;
   if (modality === "bone_xray") return <Bone className={c} />;
+  if (modality === "head_ct" || modality === "chest_ct_volume") return <Box className={c} />;
+  if (modality === "fundus") return <Eye className={c} />;
+  if (modality === "breast_us") return <Waves className={c} />;
   if (modality === "not_medical" || modality === "other_medical") return <ImageOff className={c} />;
   return <ScanLine className={c} />;
 }

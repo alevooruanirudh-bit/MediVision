@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Activity,
+  BellRing,
+  UserRound,
   BookOpenText,
   FlaskConical,
   GitCompareArrows,
@@ -31,6 +33,46 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Badge, Button, Kbd, Tip } from "@/components/ui/primitives";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
+
+/** Life-threatening findings must be impossible to miss (M13): a red bar on every page until a
+ * radiologist acknowledges each alert. */
+function CriticalAlertBar() {
+  const alerts = useQuery({ queryKey: ["alerts"], queryFn: api.alerts, refetchInterval: 15_000 });
+  const items = alerts.data?.items ?? [];
+  if (!items.length) return null;
+  const top = items[0];
+  return (
+    <div role="alert" className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-red/40 bg-red/15 px-4 py-2 text-[13px] text-fg md:px-6">
+      <BellRing className="size-4 shrink-0 animate-pulse text-red" />
+      <span className="font-semibold text-red">
+        {items.length} critical finding alert{items.length > 1 ? "s" : ""} awaiting acknowledgement
+      </span>
+      <span className="text-muted">
+        Top: {top.drivers.join(", ") || "critical study"} (score {Math.round(top.score ?? 0)})
+      </span>
+      <Link href={`/studies/${top.study_id}`} className="ml-auto rounded-lg border border-red/40 px-2.5 py-0.5 text-xs font-medium text-red hover:bg-red/10">
+        Open study
+      </Link>
+      <Link href="/worklist?queue=alerts" className="text-xs text-muted underline-offset-2 hover:text-fg hover:underline">
+        All alerts
+      </Link>
+    </div>
+  );
+}
+
+function UserChip() {
+  const me = useQuery({ queryKey: ["me"], queryFn: api.me, refetchInterval: 60_000 });
+  if (!me.data) return null;
+  return (
+    <Tip content={me.data.auth_enabled ? "Signed-in user" : "Demo mode: acting role (change in Settings)"}>
+      <Link href="/settings" className="hidden items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-xs text-muted hover:text-fg sm:inline-flex">
+        <UserRound className="size-3.5" />
+        <span className="max-w-[10rem] truncate">{me.data.name}</span>
+        <span className="rounded bg-surface-2 px-1 text-[10px] uppercase tracking-wide text-subtle">{me.data.role}</span>
+      </Link>
+    </Tip>
+  );
+}
 
 export const NAV = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, key: "d" },
@@ -196,6 +238,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <span>Fully local inference · self-trained models</span>
           </div>
           <div className="ml-auto flex items-center gap-2">
+            <UserChip />
             <ModelBadge profile={health.data?.active_profile} />
             <Badge tone="teal" className="hidden sm:inline-flex">
               <Sparkles className="size-3" /> Copilot: built-in engine
@@ -208,6 +251,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <ThemeToggle />
           </div>
         </header>
+        <div className="sticky top-[85px] z-20">
+          <CriticalAlertBar />
+        </div>
         <AnimatePresence mode="wait">
           <motion.main
             key={path}

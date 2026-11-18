@@ -56,7 +56,7 @@ function BeforeAfter({ before, after }: { before: string; after: string }) {
 
 export default function EnhancePage() {
   const studies = useQuery({ queryKey: ["studies"], queryFn: api.studies });
-  const xrays = (studies.data ?? []).filter((s) => s.pipeline === "chest" || s.pipeline === "fracture");
+  const xrays = (studies.data ?? []).filter((s) => s.pipeline && s.pipeline !== "ct_volume" && s.pipeline !== "fundus");
   const [sid, setSid] = React.useState<string>("");
   React.useEffect(() => {
     if (!sid && xrays.length) setSid(xrays[0].id);
@@ -68,12 +68,14 @@ export default function EnhancePage() {
   const [clip, setClip] = React.useState(2);
   const [unsharp, setUnsharp] = React.useState(0);
   const [gamma, setGamma] = React.useState(1);
+  const [superres, setSuperres] = React.useState(false);
   const ops = {
     ...(lowDose ? { simulate_low_dose: { photons } } : {}),
     ...(denoise ? { denoise: true } : {}),
     ...(clahe ? { clahe: { clip } } : {}),
     ...(unsharp > 0 ? { unsharp: { amount: unsharp } } : {}),
     ...(gamma !== 1 ? { gamma } : {}),
+    ...(superres ? { superres: true } : {}),
   };
   const res = useQuery({
     queryKey: ["enhance", sid, ops],
@@ -115,6 +117,11 @@ export default function EnhancePage() {
                 <span className="num text-[11px] text-subtle">{photons} photons/pixel (lower = noisier)</span>
               </Row>
               <Row label="DnCNN denoiser (ours)" on={denoise} set={setDenoise} />
+              <Row label="Super-resolution ×2 (SR-GAN, ours · experimental)" on={superres} set={setSuperres}>
+                <span className="text-[11px] leading-snug text-subtle">
+                  Low-resolution enhancement. GAN texture can be invented — never diagnose from super-resolved pixels.
+                </span>
+              </Row>
               <Row label="CLAHE" on={clahe} set={setClahe}>
                 <Slider value={[clip]} min={0.5} max={6} step={0.5} onValueChange={([v]) => setClip(v)} disabled={!clahe} aria-label="CLAHE clip" />
                 <span className="num text-[11px] text-subtle">clip limit {clip}</span>
@@ -142,9 +149,66 @@ export default function EnhancePage() {
               </div>
             </Card>
           </div>
+          <FusionCard studies={(studies.data ?? []).filter((s) => s.pipeline && s.pipeline !== "ct_volume")} />
         </div>
       )}
     </div>
+  );
+}
+
+/** Multimodal-style fusion (C7): rigid phase-correlation registration + false-colour overlay. */
+function FusionCard({ studies }: { studies: { id: string; filename: string; patient: { pseudonym: string } | null }[] }) {
+  const [a, setA] = React.useState("");
+  const [b, setB] = React.useState("");
+  const [alpha, setAlpha] = React.useState(0.5);
+  React.useEffect(() => {
+    if (!a && studies.length > 1) {
+      setA(studies[0].id);
+      setB(studies[1].id);
+    }
+  }, [a, studies]);
+  const f = useQuery({
+    queryKey: ["fusion", a, b, alpha],
+    queryFn: () => api.fusion(a, b, alpha),
+    enabled: !!a && !!b && a !== b,
+    placeholderData: (p) => p,
+  });
+  return (
+    <Card className="p-4 xl:col-span-2" data-testid="fusion-card">
+      <CardHeader
+        title="Image fusion (experimental)"
+        subtitle="Two co-located images registered by rigid phase correlation; base in gray, overlay in magenta. A stand-in for PET-CT-style fusion — no PET data is used."
+      />
+      <div className="grid gap-4 px-1 pb-1 md:grid-cols-[1fr_300px]">
+        <div className="mx-auto aspect-square w-full max-w-[460px] overflow-hidden rounded-2xl bg-black">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {f.data ? <img src={f.data.image} alt="Fused image" className="h-full w-full object-contain" /> : <Skeleton className="h-full" />}
+        </div>
+        <div className="space-y-3 text-xs">
+          {[
+            ["Base", a, setA],
+            ["Overlay", b, setB],
+          ].map(([l, v, set]) => (
+            <div key={l as string}>
+              <Label>{l as string}</Label>
+              <NativeSelect value={v as string} onChange={(e) => (set as (x: string) => void)(e.target.value)} className="mt-1 w-full" aria-label={`${l} study`}>
+                {studies.map((s) => <option key={s.id} value={s.id}>{s.patient?.pseudonym} · {s.filename}</option>)}
+              </NativeSelect>
+            </div>
+          ))}
+          <div>
+            <Label>Overlay weight · {fmt(alpha, 2)}</Label>
+            <Slider className="mt-2" value={[alpha]} min={0} max={1} step={0.05} onValueChange={([x]) => setAlpha(x)} aria-label="Overlay weight" />
+          </div>
+          {f.data && (
+            <div className="num space-y-0.5 text-muted">
+              <div>shift {f.data.shift_px.map((x) => x.toFixed(1)).join(", ")} px</div>
+              <div>correlation after registration {fmt(f.data.correlation_after, 3)}</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </Card>
   );
 }
 

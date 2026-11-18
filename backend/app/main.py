@@ -18,7 +18,7 @@ from fastapi.responses import JSONResponse  # noqa: E402
 from fastapi.staticfiles import StaticFiles  # noqa: E402
 from starlette.exceptions import HTTPException as StarletteHTTPException  # noqa: E402
 
-from app.api import copilot, misc, reports, studies  # noqa: E402
+from app.api import auth, copilot, misc, reports, studies  # noqa: E402
 from app.config import APP_VERSION, DISCLAIMER, get_settings  # noqa: E402
 from app.db import init_db  # noqa: E402
 from app.inference.registry import registry  # noqa: E402
@@ -36,6 +36,13 @@ for noisy in ("httpx", "httpx2", "httpcore", "multipart"):
 @asynccontextmanager
 async def lifespan(_: FastAPI):  # type: ignore[no-untyped-def]
     init_db()
+    from sqlmodel import Session
+
+    from app.db import get_engine
+    from app.services.auth import seed_users
+
+    with Session(get_engine()) as s:
+        seed_users(s)
     registry.load()
     yield
 
@@ -88,7 +95,7 @@ async def validation_error(_: Request, exc: RequestValidationError) -> JSONRespo
     )
 
 
-for r in (studies.router, reports.router, copilot.router, misc.router):
+for r in (studies.router, reports.router, copilot.router, misc.router, auth.router):
     app.include_router(r)
 
 settings.storage_dir.mkdir(parents=True, exist_ok=True)

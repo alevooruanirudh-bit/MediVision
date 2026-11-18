@@ -1,7 +1,8 @@
 "use client";
 
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Building2, Hospital, Loader2, Play, Server } from "lucide-react";
+import { Building2, Hospital, Loader2, Play, Server, ShieldCheck } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -90,6 +91,7 @@ function Diagram({ hospitals, active, round }: { hospitals: HospitalInfo[]; acti
 }
 
 export default function FederatedPage() {
+  const qc = useQueryClient();
   const [rounds, setRounds] = React.useState(10);
   const [running, setRunning] = React.useState(false);
   const [hospitals, setHospitals] = React.useState<HospitalInfo[]>([]);
@@ -125,7 +127,10 @@ export default function FederatedPage() {
         }
         if (event === "baseline" && d.name === "centralized") setCentral(d.curve as { accuracy: number; auroc: number }[]);
         if (event === "baseline" && d.name === "local_only") setLocal(d.results as Record<string, { accuracy: number; auroc: number }>);
-        if (event === "done") toast.success("Federated run complete");
+        if (event === "done") {
+          toast.success("Federated run complete");
+          qc.invalidateQueries({ queryKey: ["federated-last"] });
+        }
       });
     } catch (e) {
       toast.error((e as Error).message);
@@ -207,6 +212,12 @@ export default function FederatedPage() {
             <li>The rural clinic has few pneumonia cases and a noisy, low-contrast scanner — alone it learns a poor model{localMean != null ? ` (mean local-only AUROC ${fmt(localMean, 3)})` : ""}.</li>
             <li>FedAvg approaches centralised performance without moving a single image.</li>
           </ul>
+          <div className="mt-3 rounded-xl border border-teal/30 bg-teal/10 p-3 text-xs text-teal">
+            <div className="mb-1 flex items-center gap-1.5 font-medium"><ShieldCheck className="size-3.5" /> Privacy &amp; compliance</div>
+            Only model weights leave each hospital — never images or labels. This simulation has no secure aggregation or
+            differential privacy (weights can leak information); a real deployment would add both, and HIPAA (US) / GDPR (EU)
+            duties — lawful basis, data-processing agreements, minimisation, audit — still apply.
+          </div>
           <div className="mt-3 flex flex-wrap gap-2">
             <Badge tone="cyan">McMahan et al. 2017</Badge>
             <Badge tone="violet">non-IID</Badge>
@@ -214,6 +225,54 @@ export default function FederatedPage() {
           </div>
         </Card>
       </div>
+      <PerSiteCard />
     </div>
   );
 }
+
+/** Generalisation & site bias (S4): every model evaluated on each hospital's own scanner style. */
+function PerSiteCard() {
+  const q = useQuery({ queryKey: ["federated-last"], queryFn: api.federatedLast });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ps = (q.data as any)?.per_site as
+    | { auroc: Record<string, Record<string, number>>; summary: Record<string, { worst_site_auroc: number; site_gap: number }> }
+    | undefined;
+  if (!ps) return null;
+  const sites = Object.keys(Object.values(ps.auroc)[0] ?? {});
+  const best = Math.max(...Object.values(ps.summary).map((v) => v.worst_site_auroc));
+  return (
+    <Card className="mt-4 overflow-hidden" data-testid="per-site">
+      <CardHeader
+        title="Generalisation across hospitals"
+        subtitle="Test AUROC on each hospital's scanner style. Worst-site AUROC and the best–worst gap show how fair a model is to every site."
+      />
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[720px] text-sm">
+          <thead>
+            <tr className="border-y border-border text-left text-[11px] uppercase tracking-wider text-subtle">
+              <th className="px-5 py-2 font-medium">Model</th>
+              {sites.map((s) => <th key={s} className="px-3 py-2 text-right font-medium">{s}</th>)}
+              <th className="px-3 py-2 text-right font-medium">Worst site</th>
+              <th className="px-5 py-2 text-right font-medium">Gap</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries(ps.auroc).map(([m, row]) => (
+              <tr key={m} className="border-b border-border/60">
+                <td className="px-5 py-2 text-fg">{m}</td>
+                {sites.map((s) => <td key={s} className="num px-3 py-2 text-right text-muted">{fmt(row[s], 3)}</td>)}
+                <td className={`num px-3 py-2 text-right ${ps.summary[m].worst_site_auroc === best ? "font-semibold text-teal" : "text-fg"}`}>{fmt(ps.summary[m].worst_site_auroc, 3)}</td>
+                <td className="num px-5 py-2 text-right text-fg">{fmt(ps.summary[m].site_gap, 3)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="px-5 py-3 text-xs text-muted">
+        The rural clinic&apos;s own model is weakest everywhere; FedAvg lifts the worst site without pooling any images — training on
+        diverse sites improves generalisation and narrows the gap between hospitals.
+      </p>
+    </Card>
+  );
+}
+

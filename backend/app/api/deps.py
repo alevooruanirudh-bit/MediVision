@@ -38,7 +38,16 @@ def study_out(session: Session, s: Study, full: bool = True) -> dict[str, Any]:
         select(Finding).where(Finding.study_id == s.id).order_by(Finding.rank)
     ).all()  # type: ignore[arg-type]
     status = {
-        f.id: {"status": f.status, "edited_label": f.edited_label, "note": f.note} for f in rows
+        f.id: {
+            "status": f.status,
+            "edited_label": f.edited_label,
+            "note": f.note,
+            "reviewed_by": f.reviewed_by,
+            "reviewed_role": f.reviewed_role,
+            "reviewed_at": f.reviewed_at.isoformat() if f.reviewed_at else None,
+            "source": f.source or "ai",
+        }
+        for f in rows
     }
     findings = res.get("findings", [])
     for f in findings:
@@ -80,6 +89,16 @@ def study_out(session: Session, s: Study, full: bool = True) -> dict[str, Any]:
         "n_positive": sum(1 for f in findings if f.get("positive")),
         "pipeline": res.get("pipeline"),
         "warning": (res.get("modality") or {}).get("warning"),
+        "autonomy": res.get("autonomy"),
+        "alert": {
+            "active": s.urgency_level == "CRITICAL" and s.alert_ack_at is None,
+            "acknowledged_by": s.alert_ack_by,
+            "acknowledged_at": s.alert_ack_at.isoformat() if s.alert_ack_at else None,
+        },
+        "consent_basis": s.consent_basis,
+        "uploaded_by": s.uploaded_by,
+        "input_sha256": s.input_sha256,
+        "patient_id": s.patient_id,
     }
     if full:
         out["results"] = res
@@ -113,7 +132,10 @@ def report_out(r: Report) -> dict[str, Any]:
         "sections": r.sections,
         "status": r.status,
         "signed_by": r.signed_by,
+        "signed_role": r.signed_role,
         "signed_at": r.signed_at.isoformat() if r.signed_at else None,
+        "drafted_by": r.drafted_by,
+        "edited_by": r.edited_by,
         "version": r.version,
         "created_at": r.created_at.isoformat(),
         "updated_at": r.updated_at.isoformat(),

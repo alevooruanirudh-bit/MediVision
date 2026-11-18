@@ -71,6 +71,8 @@ class Ingested:
     view: str | None = None
     removed_tags: list[str] = field(default_factory=list)
     deid_dataset: Any = None
+    volume: np.ndarray | None = None  # (D,H,W) for CT volumes (.npy/.npz or multi-frame DICOM)
+    voxel_spacing_mm: list[float] | None = None
 
 
 def pseudonymize(identifier: str, salt: str) -> str:
@@ -121,8 +123,25 @@ def dicom_to_uint8(ds: Any) -> np.ndarray:
     return arr.astype(np.uint8)
 
 
+def load_volume_array(data: bytes, name: str) -> np.ndarray:
+    """.npy / .npz (first array) -> 3-D array. Pickles are refused (allow_pickle=False)."""
+    obj = np.load(io.BytesIO(data), allow_pickle=False)
+    arr = obj[obj.files[0]] if name.endswith(".npz") else obj
+    arr = np.squeeze(np.asarray(arr))
+    if arr.ndim != 3 or min(arr.shape) < 8 or max(arr.shape) > 512:
+        raise ValueError(f"expected a 3-D volume (8..512 per axis), got shape {arr.shape}")
+    return arr
+
+
 def ingest(data: bytes, filename: str, salt: str, patient_ref: str | None = None) -> Ingested:
     name = filename.lower()
+    if name.endswith((".npy", ".npz")):
+        vol = load_volume_array(data, name)
+        mid = vol[vol.shape[0] // 2].astype(np.float32)
+        lo, hi = float(mid.min()), float(mid.max())
+        px = ((mid - lo) / max(hi - lo, 1e-6) * 255).astype(np.uint8)
+        ident = patient_ref or hashlib.sha256(data[:65536]).hexdigest()
+        return Ingested(px, "npy", pseudonymize(ident, salt), modality_tag="CT", volume=vol)
     is_dicom = name.endswith((".dcm", ".dicom")) or data[128:132] == b"DICM"
     if is_dicom:
         import pydicom
@@ -138,6 +157,15 @@ def ingest(data: bytes, filename: str, salt: str, patient_ref: str | None = None
         sex = str(getattr(ds, "PatientSex", "") or "") or None
         spacing = getattr(ds, "PixelSpacing", None) or getattr(ds, "ImagerPixelSpacing", None)
         px = dicom_to_uint8(ds)
+        vol, vsp = None, None
+        raw = ds.pixel_array
+        if raw.ndim == 3 and raw.shape[-1] not in (3, 4) and raw.shape[0] >= 8:
+            slope = float(getattr(ds, "RescaleSlope", 1) or 1)
+            inter = float(getattr(ds, "RescaleIntercept", 0) or 0)
+            vol = raw.astype(np.float32) * slope + inter
+            thk = float(getattr(ds, "SliceThickness", 0) or 0) or None
+            if spacing and thk:
+                vsp = [thk, float(spacing[0]), float(spacing[1])]
         removed = deidentify_dicom(ds)
         return Ingested(
             px,
@@ -150,6 +178,8 @@ def ingest(data: bytes, filename: str, salt: str, patient_ref: str | None = None
             str(getattr(ds, "ViewPosition", "") or "") or None,
             removed,
             ds,
+            vol,
+            vsp,
         )
     img = Image.open(io.BytesIO(data))
     img = ImageOps.exif_transpose(img)  # also drops EXIF metadata on re-save

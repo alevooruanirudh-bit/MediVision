@@ -3,7 +3,11 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowLeft,
+  BellRing,
   Bot,
+  Download,
+  Fingerprint,
+  ShieldCheck,
   Boxes,
   FileText,
   Flame,
@@ -22,9 +26,23 @@ import { toast } from "sonner";
 
 import { ModalityTag, ModelBadge, OODBanner, UrgencyPill } from "@/components/common";
 import { CopilotChat } from "@/components/copilot/chat";
-import { Badge, Button, Card, NativeSelect, Skeleton, Slider, Switch, Tabs, TabsContent, TabsList, TabsTrigger, Tip } from "@/components/ui/primitives";
+import {
+  Badge,
+  Button,
+  Card,
+  NativeSelect,
+  Skeleton,
+  Slider,
+  Switch,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Tip,
+} from "@/components/ui/primitives";
 import { FindingsPanel, MeasurementsPanel } from "@/components/viewer/panels";
 import { type Box, ImageViewer, type Line } from "@/components/viewer/image-viewer";
+import { VolumeViewer } from "@/components/viewer/volume-viewer";
 import { api } from "@/lib/api";
 import { type HeatMethod, useViewer } from "@/lib/store";
 import type { ChatAction } from "@/lib/types";
@@ -80,7 +98,8 @@ export default function StudyPage() {
   }, [v]);
 
   const onAction = (a: ChatAction) => {
-    if (a.type === "show_heatmap") v.set({ selected: a.finding ?? v.selected, method: (a.method as HeatMethod) ?? "gradcam", heatmap: true });
+    if (a.type === "show_heatmap")
+      v.set({ selected: a.finding ?? v.selected, method: (a.method as HeatMethod) ?? "gradcam", heatmap: true });
     else if (a.type === "open_tab") v.set({ tab: a.tab ?? "findings" });
     else if (a.type === "toggle_overlay") v.toggle("mask");
     else if (a.type === "open_compare") router.push(`/compare?a=${a.a}&b=${a.b}`);
@@ -90,6 +109,28 @@ export default function StudyPage() {
         toast.success(`Report ${a.section ?? ""} rewritten (${a.style})`);
         router.push(`/studies/${id}/report`);
       });
+  };
+
+  const ack = async () => {
+    try {
+      await api.ackAlert(id);
+      await qc.invalidateQueries({ queryKey: ["study", id] });
+      qc.invalidateQueries({ queryKey: ["alerts"] });
+      toast.success("Critical alert acknowledged (logged with your name and role)");
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  };
+  const exportSC = async () => {
+    try {
+      await api.download(
+        `/api/studies/${id}/dicom-sc${v.selected ? `?finding=${encodeURIComponent(v.selected)}` : ""}`,
+        `medivision_${id}_sc.dcm`,
+      );
+      toast.success("DICOM Secondary Capture exported (pseudonymised, AI overlay burned in)");
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
   };
 
   const reanalyse = async (force = false) => {
@@ -117,15 +158,23 @@ export default function StudyPage() {
   const sel = res.findings.find((f) => f.key === v.selected);
   const boxes: Box[] = [];
   if (v.boxes) {
-    res.detections?.forEach((d) => boxes.push({ box: d.box, label: `${d.label} ${d.score.toFixed(2)}`, color: "#f59e0b", labelBottom: true }));
-    if (sel?.heat_box && v.heatmap) boxes.push({ box: sel.heat_box, label: `${sel.label}${sel.zone ? ` · ${sel.zone}` : ""}`, dashed: true });
-    if (res.pipeline === "brain" && res.measurements?.box) boxes.push({ box: res.measurements.box, label: "segmented lesion", color: "#a78bfa", labelBottom: true });
+    res.detections?.forEach((d) =>
+      boxes.push({ box: d.box, label: `${d.label} ${d.score.toFixed(2)}`, color: "#f59e0b", labelBottom: true }),
+    );
+    if (sel?.heat_box && v.heatmap)
+      boxes.push({ box: sel.heat_box, label: `${sel.label}${sel.zone ? ` · ${sel.zone}` : ""}`, dashed: true });
+    if (res.pipeline === "brain" && res.measurements?.box)
+      boxes.push({ box: res.measurements.box, label: "segmented lesion", color: "#a78bfa", labelBottom: true });
   }
   const lines: Line[] =
     v.lines && res.measurements?.lines
       ? [
           { points: res.measurements.lines.thorax, label: "thorax", color: "#22D3EE" },
-          { points: res.measurements.lines.heart, label: `heart · CTR ${res.measurements.ctr?.toFixed(2)}`, color: "#f59e0b" },
+          {
+            points: res.measurements.lines.heart,
+            label: `heart · CTR ${res.measurements.ctr?.toFixed(2)}`,
+            color: "#f59e0b",
+          },
         ]
       : [];
   const mask = v.mask ? (res.overlays.lung_mask ?? res.overlays.tumour_mask) : null;
@@ -136,31 +185,51 @@ export default function StudyPage() {
       {/* top bar */}
       <div className="flex flex-wrap items-center gap-3">
         <Button variant="ghost" size="icon" asChild aria-label="Back to worklist">
-          <Link href="/worklist"><ArrowLeft /></Link>
+          <Link href="/worklist">
+            <ArrowLeft />
+          </Link>
         </Button>
         <div>
           <div className="flex items-center gap-2">
             <h1 className="num text-lg font-semibold text-fg">{study.patient?.pseudonym}</h1>
             <UrgencyPill level={study.urgency_level} score={study.urgency_score} />
             <ModelBadge profile={res.model_profile} />
-            {study.format === "dcm" && <Badge tone="teal">DICOM de-identified · {study.deid?.removed_tags?.length ?? 0} PHI tags removed</Badge>}
+            {study.format === "dcm" && (
+              <Badge tone="teal">DICOM de-identified · {study.deid?.removed_tags?.length ?? 0} PHI tags removed</Badge>
+            )}
           </div>
           <div className="mt-0.5 flex flex-wrap items-center gap-x-3 text-xs text-muted">
             <ModalityTag modality={study.modality} />
             {res.modality.confidence != null && <span className="num">router {pct(res.modality.confidence)}</span>}
-            {study.patient?.sex && <span>{study.patient.sex}{study.patient.age ? ` · ${study.patient.age}y` : ""}</span>}
+            {study.patient?.sex && (
+              <span>
+                {study.patient.sex}
+                {study.patient.age ? ` · ${study.patient.age}y` : ""}
+              </span>
+            )}
             {study.indication && <span className="hidden md:inline">Indication: {study.indication}</span>}
           </div>
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {study.other_studies.length > 0 && (
             <Button variant="secondary" size="sm" asChild>
-              <Link href={`/compare?a=${study.other_studies[0].id}&b=${study.id}`}><GitCompareArrows /> Compare with prior</Link>
+              <Link href={`/compare?a=${study.other_studies[0].id}&b=${study.id}`}>
+                <GitCompareArrows /> Compare with prior
+              </Link>
             </Button>
           )}
           <Button variant="secondary" size="sm" asChild>
-            <Link href={`/studies/${id}/report`}><FileText /> Report editor</Link>
+            <Link href={`/studies/${id}/report`}>
+              <FileText /> Report editor
+            </Link>
           </Button>
+          {res.pipeline && (
+            <Tip content="DICOM Secondary Capture with the AI overlay, for PACS">
+              <Button variant="ghost" size="sm" onClick={exportSC}>
+                <Download /> DICOM
+              </Button>
+            </Tip>
+          )}
           <Tip content="Re-run the full pipeline">
             <Button variant="ghost" size="icon" onClick={() => reanalyse()} aria-label="Re-analyse">
               {reanalysing ? <Loader2 className="animate-spin" /> : <RefreshCcw />}
@@ -168,11 +237,47 @@ export default function StudyPage() {
           </Tip>
         </div>
       </div>
+      {study.alert?.active && (
+        <div
+          role="alert"
+          className="flex flex-wrap items-center gap-3 rounded-xl border border-red/40 bg-red/10 px-4 py-3 text-sm"
+        >
+          <BellRing className="size-5 animate-pulse text-red" />
+          <div className="flex-1">
+            <div className="font-semibold text-red">Critical finding alert</div>
+            <div className="text-muted">
+              {res.triage.drivers
+                .slice(0, 3)
+                .map((d) => d.label)
+                .join(", ")}{" "}
+              — review now. The alert stays on every page until acknowledged.
+            </div>
+          </div>
+          <Button variant="danger" size="sm" onClick={ack} data-testid="ack-alert">
+            Acknowledge
+          </Button>
+        </div>
+      )}
+      {study.alert?.acknowledged_by && (
+        <div className="text-xs text-muted">
+          <BellRing className="mr-1 inline size-3.5 text-subtle" />
+          Critical alert acknowledged by {study.alert.acknowledged_by} ·{" "}
+          {study.alert.acknowledged_at && new Date(study.alert.acknowledged_at).toLocaleString()}
+        </div>
+      )}
+      {res.autonomy?.action === "pre_cleared_normal" && (
+        <div className="flex items-start gap-2 rounded-xl border border-teal/35 bg-teal/10 px-3.5 py-2.5 text-sm text-teal">
+          <ShieldCheck className="mt-0.5 size-4 shrink-0" />
+          <span>{res.autonomy.text}</span>
+        </div>
+      )}
       <OODBanner message={res.modality.warning} />
       {res.pipeline == null && (
         <Card className="flex flex-wrap items-center justify-between gap-3 p-4 text-sm text-muted">
           The modality router did not send this image to any pipeline, so no findings were produced.
-          <Button variant="outline" size="sm" onClick={() => reanalyse(true)}>Analyse anyway (not recommended)</Button>
+          <Button variant="outline" size="sm" onClick={() => reanalyse(true)}>
+            Analyse anyway (not recommended)
+          </Button>
         </Card>
       )}
 
@@ -180,47 +285,88 @@ export default function StudyPage() {
         {/* viewer */}
         <Card className="flex flex-col overflow-hidden p-2">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-2 pb-2 pt-1 text-xs text-muted">
-            <label className="flex items-center gap-2"><Switch checked={v.heatmap} onCheckedChange={() => v.toggle("heatmap")} aria-label="Heatmap" /><Flame className="size-3.5" /> Heatmap</label>
+            <label className="flex items-center gap-2">
+              <Switch checked={v.heatmap} onCheckedChange={() => v.toggle("heatmap")} aria-label="Heatmap" />
+              <Flame className="size-3.5" /> Heatmap
+            </label>
             <div className="flex w-28 items-center gap-2">
-              <Slider value={[v.opacity * 100]} onValueChange={([x]) => v.set({ opacity: x / 100 })} max={100} step={1} aria-label="Heatmap opacity" />
+              <Slider
+                value={[v.opacity * 100]}
+                onValueChange={([x]) => v.set({ opacity: x / 100 })}
+                max={100}
+                step={1}
+                aria-label="Heatmap opacity"
+              />
             </div>
-            <NativeSelect value={v.method} onChange={(e) => v.set({ method: e.target.value as HeatMethod })} className="h-7 text-xs" aria-label="Explanation method">
+            <NativeSelect
+              value={v.method}
+              onChange={(e) => v.set({ method: e.target.value as HeatMethod })}
+              className="h-7 text-xs"
+              aria-label="Explanation method"
+            >
               <option value="gradcam">Grad-CAM</option>
               <option value="gradcampp">Grad-CAM++</option>
               <option value="occlusion">Occlusion</option>
             </NativeSelect>
-            <NativeSelect value={v.cmap} onChange={(e) => v.set({ cmap: e.target.value })} className="h-7 text-xs" aria-label="Colormap">
-              {["inferno", "jet", "turbo", "viridis", "magma"].map((c) => <option key={c}>{c}</option>)}
+            <NativeSelect
+              value={v.cmap}
+              onChange={(e) => v.set({ cmap: e.target.value })}
+              className="h-7 text-xs"
+              aria-label="Colormap"
+            >
+              {["inferno", "jet", "turbo", "viridis", "magma"].map((c) => (
+                <option key={c}>{c}</option>
+              ))}
             </NativeSelect>
-            <label className="flex items-center gap-2"><Switch checked={v.mask} onCheckedChange={() => v.toggle("mask")} aria-label="Segmentation mask" /><Layers className="size-3.5" /> {res.pipeline === "brain" ? "Tumour mask" : "Lung masks"}</label>
-            <label className="flex items-center gap-2"><Switch checked={v.boxes} onCheckedChange={() => v.toggle("boxes")} aria-label="Boxes" /><Boxes className="size-3.5" /> Boxes</label>
+            <label className="flex items-center gap-2">
+              <Switch checked={v.mask} onCheckedChange={() => v.toggle("mask")} aria-label="Segmentation mask" />
+              <Layers className="size-3.5" />{" "}
+              {res.pipeline === "brain" ? "Tumour mask" : res.pipeline === "chest" ? "Lung masks" : "Mask"}
+            </label>
+            <label className="flex items-center gap-2">
+              <Switch checked={v.boxes} onCheckedChange={() => v.toggle("boxes")} aria-label="Boxes" />
+              <Boxes className="size-3.5" /> Boxes
+            </label>
             {res.measurements?.lines && (
-              <label className="flex items-center gap-2"><Switch checked={v.lines} onCheckedChange={() => v.toggle("lines")} aria-label="CTR lines" /><Ruler className="size-3.5" /> CTR lines</label>
+              <label className="flex items-center gap-2">
+                <Switch checked={v.lines} onCheckedChange={() => v.toggle("lines")} aria-label="CTR lines" />
+                <Ruler className="size-3.5" /> CTR lines
+              </label>
             )}
-            {heat.isFetching && <span className="flex items-center gap-1 text-cyan"><Loader2 className="size-3.5 animate-spin" /> computing {v.method}…</span>}
+            {heat.isFetching && (
+              <span className="flex items-center gap-1 text-cyan">
+                <Loader2 className="size-3.5 animate-spin" /> computing {v.method}…
+              </span>
+            )}
           </div>
           <div className="relative h-[62vh] min-h-[380px] xl:h-[calc(100dvh-260px)]">
-            <ImageViewer
-              src={study.image_url ?? ""}
-              width={study.width}
-              height={study.height}
-              heatmap={res.pipeline ? heatUrl : null}
-              heatOpacity={v.opacity}
-              mask={mask}
-              boxes={boxes}
-              lines={lines}
-              invert={v.invert}
-              onToggleInvert={() => v.toggle("invert")}
-              scanning={reanalysing || heat.isFetching}
-              label={`${study.modality} image of ${study.patient?.pseudonym}`}
-            />
+            {res.pipeline === "ct_volume" && res.overlays.volume ? (
+              <VolumeViewer mpr={res.overlays.volume.mpr} frames={res.overlays.volume.mip_frames} />
+            ) : (
+              <ImageViewer
+                src={study.image_url ?? ""}
+                width={study.width}
+                height={study.height}
+                heatmap={res.pipeline ? heatUrl : null}
+                heatOpacity={v.opacity}
+                mask={mask}
+                boxes={boxes}
+                lines={lines}
+                invert={v.invert}
+                onToggleInvert={() => v.toggle("invert")}
+                scanning={reanalysing || heat.isFetching}
+                label={`${study.modality} image of ${study.patient?.pseudonym}`}
+              />
+            )}
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 px-2 pt-2 text-[11px] text-subtle">
             <Timer className="size-3.5" />
             {Object.entries(t)
               .filter(([k]) => k !== "total")
               .map(([k, val]) => (
-                <span key={k} className="num">{k} {ms(val)}</span>
+                <span key={k} className="num">
+                  {k} {ms(val)}
+                </span>
               ))}
             <span className="num ml-auto text-muted">total {ms(t.total)}</span>
           </div>
@@ -231,10 +377,18 @@ export default function StudyPage() {
           <Tabs value={v.tab} onValueChange={(tab) => v.set({ tab })} className="flex min-h-0 flex-1 flex-col">
             <div className="border-b border-border p-3">
               <TabsList className="w-full justify-between">
-                <TabsTrigger value="findings" className="flex-1"><ListChecks /> Findings</TabsTrigger>
-                <TabsTrigger value="measurements" className="flex-1"><Ruler /> Measure</TabsTrigger>
-                <TabsTrigger value="report" className="flex-1"><FileText /> Report</TabsTrigger>
-                <TabsTrigger value="copilot" className="flex-1" data-testid="tab-copilot"><Bot /> Copilot</TabsTrigger>
+                <TabsTrigger value="findings" className="flex-1">
+                  <ListChecks /> Findings
+                </TabsTrigger>
+                <TabsTrigger value="measurements" className="flex-1">
+                  <Ruler /> Measure
+                </TabsTrigger>
+                <TabsTrigger value="report" className="flex-1">
+                  <FileText /> Report
+                </TabsTrigger>
+                <TabsTrigger value="copilot" className="flex-1" data-testid="tab-copilot">
+                  <Bot /> Copilot
+                </TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="findings" className="scrollbar-thin min-h-0 flex-1 overflow-y-auto p-3">
@@ -245,13 +399,41 @@ export default function StudyPage() {
                 onReviewed={() => qc.invalidateQueries({ queryKey: ["study", id] })}
               />
               <div className="mt-4 rounded-xl border border-border bg-surface-2 p-3 text-xs text-muted">
-                <div className="mb-1 font-medium text-fg">Triage · {res.triage.level} ({Math.round(res.triage.score)}/100)</div>
-                {res.triage.drivers.length ? res.triage.drivers.map((d) => (
-                  <div key={d.label} className="num flex justify-between"><span>{d.label}</span><span>+{d.contribution}</span></div>
-                )) : "No finding above threshold."}
+                <div className="mb-1 font-medium text-fg">
+                  Triage · {res.triage.level} ({Math.round(res.triage.score)}/100)
+                </div>
+                {res.triage.drivers.length
+                  ? res.triage.drivers.map((d) => (
+                      <div key={d.label} className="num flex justify-between">
+                        <span>{d.label}</span>
+                        <span>+{d.contribution}</span>
+                      </div>
+                    ))
+                  : "No finding above threshold."}
+                {res.model_versions?.length ? (
+                  <div className="mt-2 border-t border-border pt-2 text-[11px]">
+                    <div className="mb-0.5 flex items-center gap-1 text-fg">
+                      <Fingerprint className="size-3" /> Model versions (weights hash)
+                    </div>
+                    {res.model_versions.map((mv) => (
+                      <div key={mv.name} className="num flex justify-between">
+                        <span>
+                          {mv.name} · {mv.profile}
+                        </span>
+                        <span>{mv.version}</span>
+                      </div>
+                    ))}
+                    {study.input_sha256 && (
+                      <div className="num mt-1 truncate text-subtle">
+                        input sha256 {study.input_sha256.slice(0, 16)}…
+                      </div>
+                    )}
+                  </div>
+                ) : null}
                 {res.extra?.chest && (
                   <div className="num mt-2 border-t border-border pt-2 text-[11px]">
-                    OOD energy {res.extra.chest.energy.toFixed(2)} (cut-off {res.extra.chest.energy_threshold?.toFixed(2)}) · {res.extra.chest.members.length} ensemble members
+                    OOD energy {res.extra.chest.energy.toFixed(2)} (cut-off{" "}
+                    {res.extra.chest.energy_threshold?.toFixed(2)}) · {res.extra.chest.members.length} ensemble members
                   </div>
                 )}
               </div>
@@ -281,21 +463,32 @@ function ReportPreview({ studyId }: { studyId: string }) {
     <div className="space-y-4 text-[13px] leading-relaxed">
       <div className="flex items-center gap-2">
         <Badge tone={q.data.status === "signed" ? "teal" : "amber"}>{q.data.status}</Badge>
-        <Badge tone={q.data.engine === "experimental" ? "violet" : "cyan"}>{q.data.engine === "experimental" ? "Experimental engine" : "Rule-based engine"}</Badge>
+        <Badge tone={q.data.engine === "experimental" ? "violet" : "cyan"}>
+          {q.data.engine === "experimental" ? "Experimental engine" : "Rule-based engine"}
+        </Badge>
         <span className="num text-[11px] text-subtle">v{q.data.version}</span>
       </div>
       <div>
         <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-subtle">Findings</div>
         {Object.entries(s.findings ?? {}).map(([k, val]) => (
-          <p key={k} className="text-fg"><span className="text-muted">{k}: </span>{val}</p>
+          <p key={k} className="text-fg">
+            <span className="text-muted">{k}: </span>
+            {val}
+          </p>
         ))}
       </div>
       <div>
         <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-subtle">Impression</div>
-        {s.impression?.map((x) => <p key={x} className="font-medium text-fg">{x}</p>)}
+        {s.impression?.map((x) => (
+          <p key={x} className="font-medium text-fg">
+            {x}
+          </p>
+        ))}
       </div>
       <Button asChild variant="primary" className="w-full">
-        <Link href={`/studies/${studyId}/report`}><FileText /> Open report editor</Link>
+        <Link href={`/studies/${studyId}/report`}>
+          <FileText /> Open report editor
+        </Link>
       </Button>
     </div>
   );

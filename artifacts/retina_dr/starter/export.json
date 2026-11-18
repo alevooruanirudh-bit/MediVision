@@ -1,0 +1,8 @@
+{
+  "model": "retina_dr",
+  "profile": "starter",
+  "img_size": 128,
+  "onnx": true,
+  "max_abs_diff": 0.009973526000976562,
+  "cpu_ms_per_image": 2.9
+}

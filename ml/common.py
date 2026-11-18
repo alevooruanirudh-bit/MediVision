@@ -33,7 +33,31 @@ NIH_LABELS: list[str] = [
     "Hernia",
 ]
 BRAIN_CLASSES: list[str] = ["glioma", "meningioma", "notumor", "pituitary"]
-ROUTER_CLASSES: list[str] = ["chest_xray", "bone_xray", "brain_mri", "other_medical", "not_medical"]
+ROUTER_CLASSES: list[str] = [
+    "chest_xray",
+    "bone_xray",
+    "brain_mri",
+    "head_ct",
+    "breast_us",
+    "fundus",
+    "other_medical",
+    "not_medical",
+]
+# Previous 5-class router (artifacts trained before D-21 carry their own label list).
+ROUTER_CLASSES_V1: list[str] = [
+    "chest_xray",
+    "bone_xray",
+    "brain_mri",
+    "other_medical",
+    "not_medical",
+]
+RETINA_GRADES: list[str] = [
+    "No DR",
+    "Mild NPDR",
+    "Moderate NPDR",
+    "Severe NPDR",
+    "Proliferative DR",
+]
 
 
 def pretrained_backbone() -> bool:

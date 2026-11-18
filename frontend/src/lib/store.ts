@@ -35,16 +35,29 @@ export const useViewer = create<ViewerState>((set) => ({
   toggle: (k) => set((s) => ({ [k]: !s[k] }) as Partial<ViewerState>),
 }));
 
+export type Role = "admin" | "radiologist" | "resident" | "viewer";
+
 interface SettingsState {
   reviewer: string;
   showProbabilities: boolean;
   chatDelay: number;
+  /** demo mode (AUTH_ENABLED=false): acting role sent as X-Demo-Role */
+  demoRole: Role;
+  /** auth mode: bearer token from /api/auth/login */
+  token: string | null;
   set: (p: Partial<SettingsState>) => void;
 }
 
 export const useSettings = create<SettingsState>()(
   persist(
-    (set) => ({ reviewer: "Reviewing radiologist", showProbabilities: true, chatDelay: 18, set: (p) => set(p) }),
+    (set) => ({
+      reviewer: "Reviewing radiologist",
+      showProbabilities: true,
+      chatDelay: 18,
+      demoRole: "radiologist",
+      token: null,
+      set: (p) => set(p),
+    }),
     { name: "medivision-settings" },
   ),
 );

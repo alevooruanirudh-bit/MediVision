@@ -18,6 +18,7 @@ from app.db import get_session
 from app.models import Patient, Report
 from app.services import storage
 from app.services.audit import audit
+from app.services.auth import Principal, current_user, require
 from app.services.exports import report_fhir, report_pdf
 
 router = APIRouter(prefix="/api/reports", tags=["reports"])
@@ -28,7 +29,8 @@ class ReportUpdate(BaseModel):
 
 
 class SignRequest(BaseModel):
-    signed_by: str = "Reviewing radiologist"
+    signed_by: str | None = None  # display name; defaults to the signed-in user
+    attest_reviewed: bool = True  # "I have reviewed the images and every AI finding"
 
 
 class RewriteRequest(BaseModel):
@@ -42,6 +44,7 @@ def generate(
     engine: str = Query("rules", pattern="^(rules|experimental)$"),
     style: str = Query("standard"),
     session: Session = Depends(get_session),
+    user: Principal = Depends(require("report.edit")),
 ) -> dict[str, Any]:
     s = get_study(session, study_id)
     if s.status != "analyzed":
@@ -58,11 +61,27 @@ def generate(
         sections = write_report(s.results, s)
     if style != "standard":
         sections = rewrite(sections, style)
-    rep = Report(study_id=s.id, engine=engine, style=style, sections_json=json.dumps(sections))
+    rep = Report(
+        study_id=s.id,
+        engine=engine,
+        style=style,
+        sections_json=json.dumps(sections),
+        drafted_by=f"ai:{'report-generator' if engine == 'experimental' else 'copilot-rules'}",
+    )
     session.add(rep)
     session.commit()
     session.refresh(rep)
-    audit(session, "report.generate", "report", rep.id, actor="ai", engine=engine, style=style)
+    audit(
+        session,
+        "report.generate",
+        "report",
+        rep.id,
+        actor="ai",
+        role="ai",
+        requested_by=user.username,
+        engine=engine,
+        style=style,
+    )
     return report_out(rep)
 
 
@@ -83,7 +102,10 @@ def get(report_id: str, session: Session = Depends(get_session)) -> dict[str, An
 
 @router.put("/{report_id}", summary="Edit report sections")
 def update(
-    report_id: str, body: ReportUpdate, session: Session = Depends(get_session)
+    report_id: str,
+    body: ReportUpdate,
+    session: Session = Depends(get_session),
+    user: Principal = Depends(require("report.edit")),
 ) -> dict[str, Any]:
     rep = get_report(session, report_id)
     if rep.status == "signed":
@@ -91,16 +113,28 @@ def update(
     rep.sections_json = json.dumps(body.sections)
     rep.version += 1
     rep.updated_at = datetime.now(UTC)
+    rep.edited_by = user.username
     session.add(rep)
     session.commit()
     session.refresh(rep)
-    audit(session, "report.edit", "report", rep.id, version=rep.version)
+    audit(
+        session,
+        "report.edit",
+        "report",
+        rep.id,
+        actor=user.username,
+        role=user.role,
+        version=rep.version,
+    )
     return report_out(rep)
 
 
 @router.post("/{report_id}/rewrite", summary="Rewrite (concise / detailed / patient-friendly)")
 def rewrite_report(
-    report_id: str, body: RewriteRequest, session: Session = Depends(get_session)
+    report_id: str,
+    body: RewriteRequest,
+    session: Session = Depends(get_session),
+    user: Principal = Depends(require("report.edit")),
 ) -> dict[str, Any]:
     rep = get_report(session, report_id)
     if body.style not in STYLES:
@@ -121,22 +155,49 @@ def rewrite_report(
     session.add(rep)
     session.commit()
     session.refresh(rep)
-    audit(session, "report.rewrite", "report", rep.id, style=body.style, section=body.section)
+    audit(
+        session,
+        "report.rewrite",
+        "report",
+        rep.id,
+        actor=user.username,
+        role=user.role,
+        style=body.style,
+        section=body.section,
+    )
     return report_out(rep)
 
 
 @router.post("/{report_id}/sign", summary="Sign off a report")
 def sign(
-    report_id: str, body: SignRequest, session: Session = Depends(get_session)
+    report_id: str,
+    body: SignRequest,
+    session: Session = Depends(get_session),
+    user: Principal = Depends(require("report.sign")),
 ) -> dict[str, Any]:
     rep = get_report(session, report_id)
+    if rep.status == "signed":
+        raise APIError(409, "signed", "Report is already signed")
+    if not body.attest_reviewed:
+        raise APIError(422, "attestation_required", "Confirm you reviewed the images and findings")
     rep.status = "signed"
-    rep.signed_by = body.signed_by
+    rep.signed_by = body.signed_by or user.display_name or user.username
+    rep.signed_role = user.role
     rep.signed_at = datetime.now(UTC)
     session.add(rep)
     session.commit()
     session.refresh(rep)
-    audit(session, "report.sign", "report", rep.id, actor=body.signed_by)
+    audit(
+        session,
+        "report.sign",
+        "report",
+        rep.id,
+        actor=user.username,
+        role=user.role,
+        display_name=rep.signed_by,
+        version=rep.version,
+        drafted_by=rep.drafted_by,
+    )
     return report_out(rep)
 
 
@@ -149,9 +210,13 @@ def _ctx(session: Session, report_id: str) -> tuple[Report, Any, Patient]:
 
 
 @router.get("/{report_id}/pdf", summary="Export PDF")
-def pdf(report_id: str, session: Session = Depends(get_session)) -> Response:
+def pdf(
+    report_id: str,
+    session: Session = Depends(get_session),
+    user: Principal = Depends(current_user),
+) -> Response:
     rep, s, p = _ctx(session, report_id)
-    audit(session, "report.export_pdf", "report", rep.id)
+    audit(session, "report.export_pdf", "report", rep.id, actor=user.username, role=user.role)
     return Response(
         report_pdf(rep, s, p),
         media_type="application/pdf",
@@ -160,7 +225,29 @@ def pdf(report_id: str, session: Session = Depends(get_session)) -> Response:
 
 
 @router.get("/{report_id}/fhir", summary="Export FHIR R4 DiagnosticReport JSON")
-def fhir(report_id: str, session: Session = Depends(get_session)) -> dict[str, Any]:
+def fhir(
+    report_id: str,
+    session: Session = Depends(get_session),
+    user: Principal = Depends(current_user),
+) -> dict[str, Any]:
     rep, s, p = _ctx(session, report_id)
-    audit(session, "report.export_fhir", "report", rep.id)
-    return report_fhir(rep, s, p)
+    audit(session, "report.export_fhir", "report", rep.id, actor=user.username, role=user.role)
+    return report_fhir(rep, s, p, session)
+
+
+@router.get("/{report_id}/dicom", summary="Export the report as a DICOM Encapsulated PDF")
+def dicom_pdf(
+    report_id: str,
+    session: Session = Depends(get_session),
+    user: Principal = Depends(current_user),
+) -> Response:
+    from app.services.dicom_export import encapsulated_pdf
+
+    rep, s, p = _ctx(session, report_id)
+    data = encapsulated_pdf(report_pdf(rep, s, p), rep, s, p)
+    audit(session, "report.export_dicom", "report", rep.id, actor=user.username, role=user.role)
+    return Response(
+        data,
+        media_type="application/dicom",
+        headers={"Content-Disposition": f'attachment; filename="medivision_{s.id}_report.dcm"'},
+    )

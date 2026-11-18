@@ -24,7 +24,8 @@ from app.db import get_session
 from app.inference.registry import registry
 from app.models import AuditLog, Finding, Review, Study
 from app.services import storage
-from app.services.audit import audit
+from app.services.audit import audit, verify_chain
+from app.services.auth import Principal, require
 
 router = APIRouter(tags=["workflow"])
 START = time.time()
@@ -37,9 +38,14 @@ def worklist(
     level: str | None = None,
     q: str | None = None,
     modality: str | None = None,
+    queue: str | None = None,
     session: Session = Depends(get_session),
 ) -> dict[str, Any]:
     rows = [study_out(session, s, full=False) for s in session.exec(select(Study)).all()]
+    if queue == "confirm_normal":
+        rows = [r for r in rows if (r.get("autonomy") or {}).get("action") == "pre_cleared_normal"]
+    elif queue == "alerts":
+        rows = [r for r in rows if r.get("alert", {}).get("active")]
     if level:
         rows = [r for r in rows if (r["urgency_level"] or "") == level.upper()]
     if modality:
@@ -48,6 +54,7 @@ def worklist(
         rows = [r for r in rows if q.lower() in json.dumps(r).lower()]
     rows.sort(
         key=lambda r: (
+            0 if r.get("alert", {}).get("active") else 1,  # unacknowledged critical alerts pinned
             LEVEL_ORDER.get(r["urgency_level"], 4),
             -(r["urgency_score"] or 0),
             r["created_at"],
@@ -62,12 +69,15 @@ class ReviewRequest(BaseModel):
     action: str  # accept | reject | edit
     new_label: str | None = None
     comment: str | None = None
-    reviewer: str = "radiologist"
+    reviewer: str | None = None  # display name; defaults to the signed-in user
 
 
 @router.post("/api/findings/{finding_id}/review", summary="Accept / reject / edit a finding")
 def review(
-    finding_id: str, body: ReviewRequest, session: Session = Depends(get_session)
+    finding_id: str,
+    body: ReviewRequest,
+    session: Session = Depends(get_session),
+    user: Principal = Depends(require("finding.review")),
 ) -> dict[str, Any]:
     f = session.get(Finding, finding_id)
     if f is None:
@@ -76,11 +86,13 @@ def review(
         raise APIError(422, "bad_action", "action must be accept, reject or edit")
     if body.action == "edit" and not body.new_label:
         raise APIError(422, "missing_label", "edit requires new_label")
+    reviewer = body.reviewer or user.display_name or user.username
     r = Review(
         finding_id=f.id,
         study_id=f.study_id,
         action=body.action,
-        reviewer=body.reviewer,
+        reviewer=reviewer,
+        reviewer_role=user.role,
         original_label=f.label,
         new_label=body.new_label,
         comment=body.comment,
@@ -89,6 +101,8 @@ def review(
     f.status = {"accept": "accepted", "reject": "rejected", "edit": "edited"}[body.action]
     f.edited_label = body.new_label
     f.note = body.comment
+    f.reviewed_by, f.reviewed_role, f.reviewed_at = reviewer, user.role, datetime.now(UTC)
+    f.source = "ai+radiologist" if body.action == "edit" else "ai"
     session.add(r)
     session.add(f)
     session.commit()
@@ -97,11 +111,21 @@ def review(
         f"finding.{body.action}",
         "finding",
         f.id,
-        actor=body.reviewer,
+        actor=user.username,
+        role=user.role,
+        display_name=reviewer,
         label=f.label,
         new_label=body.new_label,
+        model_probability=f.probability,
+        model_version=f.model_version,
     )
-    return {"finding_id": f.id, "status": f.status, "review_id": r.id}
+    return {
+        "finding_id": f.id,
+        "status": f.status,
+        "review_id": r.id,
+        "reviewed_by": reviewer,
+        "reviewed_role": user.role,
+    }
 
 
 @router.get("/api/findings/reviews", summary="All human reviews (AI–radiologist agreement)")
@@ -191,6 +215,66 @@ def compare(body: CompareRequest, session: Session = Depends(get_session)) -> di
     out["prior_study"] = study_out(session, a, full=False)
     out["current_study"] = study_out(session, b, full=False)
     audit(session, "study.compare", "study", b.id, prior=a.id)
+    return out
+
+
+# ----------------------------------------------------------------------------- progression
+@router.get(
+    "/api/patients/{patient_id}/timeline",
+    summary="All analysed studies of a patient over time, per-finding trends and a progression call",
+)
+def timeline(patient_id: str, session: Session = Depends(get_session)) -> dict[str, Any]:
+    from app.inference.compare import progression
+
+    rows = session.exec(select(Study).where(Study.patient_id == patient_id)).all()
+    studies = [s for s in rows if s.status == "analyzed"]
+    if not studies:
+        raise APIError(404, "no_studies", "No analysed studies for this patient")
+    return progression(studies)
+
+
+# ----------------------------------------------------------------------------- alerts
+@router.get("/api/alerts", summary="Unacknowledged critical-finding alerts")
+def alerts(session: Session = Depends(get_session)) -> dict[str, Any]:
+    rows = session.exec(select(Study).where(Study.urgency_level == "CRITICAL")).all()
+    items = []
+    for s in rows:
+        if s.alert_ack_at is not None:
+            continue
+        res = s.results
+        items.append(
+            {
+                "study_id": s.id,
+                "score": s.urgency_score,
+                "drivers": [d["label"] for d in res.get("triage", {}).get("drivers", [])[:3]],
+                "modality": s.modality,
+                "analyzed_at": s.analyzed_at.isoformat() if s.analyzed_at else None,
+            }
+        )
+    items.sort(key=lambda x: -(x["score"] or 0))
+    return {"count": len(items), "items": items}
+
+
+# ----------------------------------------------------------------------------- fusion
+class FusionRequest(BaseModel):
+    base_id: str
+    overlay_id: str
+    alpha: float = 0.5
+    register: bool = True
+
+
+@router.post("/api/fusion", summary="Fuse two images (rigid phase-correlation registration)")
+def fusion(body: FusionRequest, session: Session = Depends(get_session)) -> dict[str, Any]:
+    from app.inference.enhance import fuse
+
+    a, b = get_study(session, body.base_id), get_study(session, body.overlay_id)
+    out = fuse(
+        storage.load_image(a.image_path),
+        storage.load_image(b.image_path),
+        max(0.0, min(body.alpha, 1.0)),
+        body.register,
+    )
+    audit(session, "study.fusion", "study", a.id, overlay=b.id)
     return out
 
 
@@ -317,6 +401,11 @@ def _dataset_sizes() -> dict[str, Any]:
 
 
 # ----------------------------------------------------------------------------- audit + dashboard
+@router.get("/api/audit/verify", summary="Verify the audit hash chain (tamper evidence)")
+def audit_verify(session: Session = Depends(get_session)) -> dict[str, Any]:
+    return verify_chain(session)
+
+
 @router.get("/api/audit", summary="Audit log")
 def audit_log(
     limit: int = 300, action: str | None = None, session: Session = Depends(get_session)
@@ -328,7 +417,9 @@ def audit_log(
             "id": r.id,
             "ts": r.ts.isoformat(),
             "actor": r.actor,
+            "role": r.role,
             "action": r.action,
+            "hash": r.hash,
             "entity": r.entity,
             "entity_id": r.entity_id,
             "details": json.loads(r.details_json) if r.details_json else {},
@@ -416,6 +507,9 @@ def health() -> dict[str, Any]:
             "mc_dropout_samples": get_settings().mc_dropout_samples,
             "max_upload_mb": get_settings().max_upload_mb,
             "model_profile": get_settings().model_profile,
+            "auth_enabled": get_settings().auth_enabled,
+            "require_consent": get_settings().require_consent,
+            "autonomous_triage": get_settings().autonomous_triage,
         },
     }
 
@@ -462,4 +556,5 @@ def model_card() -> dict[str, Any]:
         "energy_threshold": cal.get("energy_threshold"),
         "chest_profile": registry.extra.get("chest_profile"),
         "headline": headline,
+        "model_versions": [h.version_info() for h in registry.handles.values()],
     }

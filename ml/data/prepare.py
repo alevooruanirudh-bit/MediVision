@@ -421,6 +421,30 @@ def prepare_rsna(size: int = 512, limit: int | None = None) -> None:
     print(f"[prepare] rsna: {len(df)} patients, {int(df.positive.sum())} with boxes")
 
 
+# ----------------------------------------------------------------------------- Head CT hemorrhage
+def prepare_head_ct(size: int = 256) -> None:
+    """200 axial head-CT slices (brain window, PNG). One image per patient, so a stratified random
+    split is patient-disjoint by construction (D-21)."""
+    zf = _zip("head_ct")
+    lab = pd.read_csv(zf.open("labels.csv"))
+    lab.columns = [c.strip() for c in lab.columns]
+    names = {Path(n).stem: n for n in zf.namelist() if n.lower().endswith(".png")}
+    rows, imgs = [], []
+    for _, r in lab.iterrows():
+        key = f"{int(r['id']):03d}"
+        if key not in names:
+            continue
+        imgs.append(_sq(_read_img(zf, names[key]), size))
+        rows.append({"id": f"headct_{key}", "label": int(r["hemorrhage"])})
+    df = pd.DataFrame(rows)
+    df["split"] = stratified_split(df["label"].to_numpy(), (0.6, 0.2, 0.2), 42)
+    out = _out("head_ct")
+    np.save(out / f"images_{size}.npy", np.stack(imgs).astype(np.uint8))
+    df.to_csv(out / "metadata.csv", index=False)
+    save_split(df[["id", "label", "split"]], SPLITS / "head_ct.csv")
+    print(f"[prepare] head_ct: {len(df)} images {df['split'].value_counts().to_dict()}")
+
+
 PREPARERS: dict[str, Callable[[], None]] = {
     "nih_meta": prepare_nih_meta,
     "nih_sample": prepare_nih_sample,
@@ -430,6 +454,7 @@ PREPARERS: dict[str, Callable[[], None]] = {
     "lgg": prepare_lgg,
     "iu_xray": prepare_iu_xray,
     "rsna": prepare_rsna,
+    "head_ct": prepare_head_ct,
 }
 
 
@@ -440,7 +465,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--delete-raw", action="store_true", help="delete raw archives after success")
     args = ap.parse_args(argv)
     keys = list(PREPARERS) if args.all else (args.only or [])
-    status = {}
+    rep = PROCESSED / "prepare_report.json"
+    status = json.loads(rep.read_text()) if rep.exists() else {}
     for k in keys:
         try:
             PREPARERS[k]()
@@ -451,7 +477,7 @@ def main(argv: list[str] | None = None) -> int:
         except FileNotFoundError as exc:
             status[k] = f"skipped: {exc}"
             print(f"[prepare] {k}: skipped ({exc})")
-    (PROCESSED / "prepare_report.json").write_text(json.dumps(status, indent=2))
+    rep.write_text(json.dumps(status, indent=2))
     return 0
 
 

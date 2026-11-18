@@ -16,5 +16,10 @@ Test-split images only (never used for training). Used by `app/seed.py` and the 
 | brain_meningioma.png | Brain Tumor MRI Dataset (Nickparvar), Testing | meningioma_Te-aug-me_101 | CC BY 4.0 | meningioma |
 | brain_notumor.png | Brain Tumor MRI Dataset (Nickparvar), Testing | notumor_Te-no_101 | CC BY 4.0 | notumor |
 | not_medical_photo.png | CIFAR-10 test set (upscaled) | test[13] (horse) | CIFAR-10 terms (Krizhevsky 2009) | not a medical image |
+| headct_hemorrhage.png | Head CT - hemorrhage (Kitamura, Kaggle), test split | headct_001 | see Kaggle page (research use) | hemorrhage |
+| headct_normal.png | Head CT - hemorrhage (Kitamura, Kaggle), test split | headct_106 | see Kaggle page (research use) | no hemorrhage |
+| breast_us_malignant.png | BreastMNIST+ (BUSI, Al-Dhabyani 2020), test split | test[0] | CC BY 4.0 | malignant |
+| fundus_dr.png | RetinaMNIST+ (DeepDRiD), test split | test[0] | CC BY 4.0 | ICDR grade 2 |
+| ct_nodule_volume.npy | NoduleMNIST3D (LIDC-IDRI), test split — 64³ chest-CT patch | test[7] | CC BY 4.0 | malignant nodule |
 
 Citations: Wang X. et al. CVPR 2017 (NIH ChestX-ray14); Abedeen I. et al. Sci Data 2023 (FracAtlas); Nickparvar M. Kaggle 2021 (Brain Tumor MRI); Krizhevsky A. 2009 (CIFAR-10).

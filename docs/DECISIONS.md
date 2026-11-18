@@ -87,3 +87,98 @@ is reported next to it; the model is experimental).
 
 **D-20 — Federated demo speed.** The CNN averages 64 px inputs down to 32 px first; 10 rounds + both baselines
 now run in ~26 s on CPU (was 228 s).
+
+## Requirements audit against the source paper (JECIR 2023) — D-21 … D-32
+
+**D-21 — New modalities from small free datasets.** The paper names CT, ultrasound, hemorrhage and lung-nodule
+detection, which the first build did not cover. Added, all trained by us with the same trainer / evaluator / ONNX
+export:
+- head-CT hemorrhage on the Kitamura 200-slice set. Each image is a different patient, so a stratified random
+  split is patient-disjoint. RSNA ICH is the full profile; it needs the competition rules to be accepted.
+- a 3-D CNN for chest-CT nodule malignancy on NoduleMNIST3D (LIDC-IDRI patches, official split).
+- breast-ultrasound malignancy on BreastMNIST+.
+- diabetic-retinopathy grading on RetinaMNIST+ colour fundus photos.
+
+Nodule *detection* on whole CT scans (LUNA16, ~120 GB) is out of reach at zero cost. We characterise a supplied
+nodule patch instead, and the docs say so.
+
+**D-22 — Router v2 (8 classes) and the colour guard.** The router now has three extra classes: head CT,
+breast US and fundus. Fundus photographs are colourful by nature, so the colour guard (D-18 era) exempts the
+fundus class only. Every other colourful image is still treated as not medical. Older 5-class router artefacts
+keep working, because the class list is read from their config.
+
+**D-23 — CT volumes.** `.npy` / `.npz` volumes (loaded with `allow_pickle=False`) and multi-frame CT DICOM are
+accepted. Any volume is windowed to the lung window and resampled to 64³. The nodule is segmented classically
+(Otsu thresholding, keeping the connected component nearest the centre), and volume / equivalent diameter /
+sphericity are computed from that mask. A rotating MIP and three MPR slices provide the "3-D view". This is
+not AR/VR, and voxel spacing is assumed to be 1 mm when the file does not carry it (flagged in the UI).
+
+**D-24 — Plain-language rationale.** Each finding carries 2–5 extracted reasons:
+- its probability vs. the operating threshold;
+- ensemble / MC-dropout agreement;
+- the heatmap zone;
+- whether an independent measurement supports or contradicts it (CTR, lung asymmetry, tumour mask, detector
+  box, nodule volume).
+
+This summarises evidence; it is not a causal explanation of the network.
+
+**D-25 — Radiomics.** An IBSI-style subset (shape, first-order, GLCM with 32 levels and 4 directions) is computed
+with scikit-image inside the lung / tumour / nodule mask, or over the whole image when no mask exists. It is
+labelled descriptive. We chose this over pyradiomics to avoid a heavy C-extension dependency.
+
+**D-26 — Provenance, versioning, liability.**
+- Every result stores each model's weights hash (SHA-256, 12 hex characters), its profile and its training
+  date.
+- Findings record `source`, `model_version`, `reviewed_by`, `reviewed_role` and `reviewed_at`.
+- Reports record `drafted_by` (AI engine), `edited_by` and `signed_by` / `signed_role`.
+- PDF, FHIR (`resultsInterpreter`, Observation `device` / `performer`) and DICOM outputs carry the same
+  information.
+
+**D-27 — Access control and consent.**
+- Local users with four roles (admin / radiologist / resident / viewer) and PBKDF2 password hashes. Bearer
+  tokens are stored only as SHA-256 hashes.
+- `AUTH_ENABLED=false` by default, so the single-user demo keeps working. In that mode the UI sends
+  `X-Demo-Role` so the permission checks can be tried out. Enable auth for any shared deployment.
+- Uploads must state a consent / lawful basis (`REQUIRE_CONSENT=true`, recorded per study and in the audit
+  log).
+
+**D-28 — Hash-chained audit log.** This is the "blockchain-style traceability" the paper asks for, without a
+blockchain. Each entry stores `prev_hash` and `sha256(prev_hash | canonical entry)`, and `GET /api/audit/verify`
+detects edits or deletions. Rows written before the chain existed are reported as legacy and are not chained.
+
+**D-29 — Critical alerts and autonomous mode.**
+- CRITICAL studies raise an alert. It shows as a red bar on every page and pins the study to the top of the
+  worklist until someone with the `alert.ack` permission acknowledges it (audited).
+- `AUTONOMOUS_TRIAGE=true` pre-clears a NORMAL study into a "confirm normal" queue only when every output is
+  ≤ 40 % of its threshold AND every model produced a real uncertainty estimate ≤ 0.08. Verification showed
+  the first rule (uncertainty only) pre-cleared a head CT at p 0.905 vs threshold 0.915, and single models
+  that have no uncertainty estimate (reported as 0.0); both are now excluded.
+  Every such study still needs human confirmation, and no report is ever finalised automatically.
+
+**D-30 — DICOM outputs.** We export a Secondary Capture (the image with the AI overlay and findings burned in)
+and the report as an Encapsulated PDF. A full DICOM-SR TID 1500 encoding was judged too large for the benefit;
+FHIR DiagnosticReport remains the structured output.
+
+**D-31 — Progression and generative enhancement.**
+- `/api/patients/{id}/timeline` fits a linear trend per finding (probability per 30 days) over all of a
+  patient's studies and makes a rule-based progression call. It is labelled descriptive and is not a
+  prognostic model.
+- A small SRGAN-style ×2 super-resolution generator: a residual network over bicubic upsampling, trained with
+  L1 plus an LSGAN PatchGAN term weighted 0.003. It is labelled experimental, with the warning that GAN
+  texture can be invented.
+- A diffusion model was rejected for CPU cost.
+
+**D-32 — Radiogenomics and the federated site analysis.**
+- Radiogenomics uses expert-mask radiomics of the 110 LGG patients against TCGA clusters. Repeated stratified
+  5-fold logistic regression is compared with a 10-shuffle label-permutation baseline, and associations are
+  reported only as "above chance".
+- Brain-segmentation Dice is broken down by sex / age / race codes. This is the only dataset in the project
+  with race.
+- FedAvg is now also evaluated per hospital scanner style. Worst-site AUROC and the site gap are reported to
+  test the paper's claim that diverse training improves generalisation and reduces bias.
+
+**Skipped, with reasons.**
+- C3: stroke LVO and PE on CT angiography — no small free dataset; RSNA PE is ~900 GB.
+- C7: PET-CT fusion and fMRI — no free paired data. A registered false-colour fusion tool is provided as a
+  stand-in.
+- C8: wearables — outside imaging.

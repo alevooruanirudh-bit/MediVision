@@ -6,6 +6,7 @@ the app: the pipeline degrades gracefully and the UI shows what is active.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import threading
@@ -34,6 +35,11 @@ MODELS = [
     "report_gen",
     "copilot_intent",
     "pneumonia_det",
+    "head_ct_cls",
+    "breast_us",
+    "retina_dr",
+    "nodule3d",
+    "sr_gan",
 ]
 CHEST_MEMBERS = MODELS[:3]
 
@@ -56,6 +62,37 @@ class ModelHandle:
     head: dict[str, np.ndarray] | None = None
     _torch: Any = None
     lock: threading.Lock = field(default_factory=threading.Lock)
+
+    _version: str | None = None
+
+    @property
+    def version(self) -> str:
+        """Content hash of the weights file (12 hex) — pins exactly which model produced a result."""
+        if self._version is None:
+            f = next(
+                (
+                    self.path / n
+                    for n in ("model.onnx", "model.pt", "model.joblib")
+                    if (self.path / n).exists()
+                ),
+                None,
+            )
+            h = hashlib.sha256()
+            if f is not None:
+                with f.open("rb") as fh:
+                    for chunk in iter(lambda: fh.read(1 << 20), b""):
+                        h.update(chunk)
+            self._version = h.hexdigest()[:12]
+        return self._version
+
+    def version_info(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "profile": self.profile,
+            "version": self.version,
+            "trained_at": self.metrics.get("generated_at"),
+            "backend": self.backend,
+        }
 
     @property
     def img_size(self) -> int:
@@ -183,6 +220,8 @@ class Registry:
                     "profile": h.profile,
                     "backend": h.backend,
                     "img_size": h.cfg.get("img_size"),
+                    "version": h.version,
+                    "trained_at": h.metrics.get("generated_at"),
                 }
                 if h
                 else {"loaded": False}

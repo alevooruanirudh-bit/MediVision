@@ -126,5 +126,50 @@
     "modality": "none",
     "ground_truth": "not a medical image",
     "patient_ref": "PHOTO-1"
+  },
+  {
+    "file": "headct_hemorrhage.png",
+    "source": "Head CT - hemorrhage (Kitamura, Kaggle), test split",
+    "original": "headct_001",
+    "license": "see Kaggle page (research use)",
+    "modality": "head_ct",
+    "ground_truth": "hemorrhage",
+    "patient_ref": "HCT-headct_001"
+  },
+  {
+    "file": "headct_normal.png",
+    "source": "Head CT - hemorrhage (Kitamura, Kaggle), test split",
+    "original": "headct_106",
+    "license": "see Kaggle page (research use)",
+    "modality": "head_ct",
+    "ground_truth": "no hemorrhage",
+    "patient_ref": "HCT-headct_106"
+  },
+  {
+    "file": "breast_us_malignant.png",
+    "source": "BreastMNIST+ (BUSI, Al-Dhabyani 2020), test split",
+    "original": "test[0]",
+    "license": "CC BY 4.0",
+    "modality": "breast_us",
+    "ground_truth": "malignant",
+    "patient_ref": "BUS-0"
+  },
+  {
+    "file": "fundus_dr.png",
+    "source": "RetinaMNIST+ (DeepDRiD), test split",
+    "original": "test[0]",
+    "license": "CC BY 4.0",
+    "modality": "fundus",
+    "ground_truth": "ICDR grade 2",
+    "patient_ref": "RET-0"
+  },
+  {
+    "file": "ct_nodule_volume.npy",
+    "source": "NoduleMNIST3D (LIDC-IDRI), test split \u2014 64\u00b3 chest-CT patch",
+    "original": "test[7]",
+    "license": "CC BY 4.0",
+    "modality": "ct_volume",
+    "ground_truth": "malignant nodule",
+    "patient_ref": "LIDC-7"
   }
 ]

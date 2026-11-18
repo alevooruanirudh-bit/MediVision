@@ -6,14 +6,26 @@ from typing import Any
 
 import torch.nn as nn
 
-from ml.common import BRAIN_CLASSES, NIH_LABELS, ROUTER_CLASSES
+from ml.common import (
+    BRAIN_CLASSES,
+    NIH_LABELS,
+    RETINA_GRADES,
+    ROUTER_CLASSES,
+    ROUTER_CLASSES_V1,
+)
 
-LABEL_SETS = {"nih14": NIH_LABELS, "brain4": BRAIN_CLASSES, "router5": ROUTER_CLASSES}
+LABEL_SETS = {
+    "nih14": NIH_LABELS,
+    "brain4": BRAIN_CLASSES,
+    "router5": ROUTER_CLASSES_V1,
+    "router8": ROUTER_CLASSES,
+    "retina5": RETINA_GRADES,
+}
 
 
 def labels_for(cfg: dict[str, Any]) -> list[str]:
     if cfg["task"] == "binary":
-        return ["Fracture"]
+        return [cfg.get("label_name", "Fracture")]
     return LABEL_SETS.get(cfg.get("labels", ""), [])
 
 
@@ -27,6 +39,14 @@ def build_model(cfg: dict[str, Any], pretrained: bool | None = None) -> nn.Modul
         return ClassifierNet(
             m["backbone"], n, m.get("dropout", 0.3), m.get("hidden", 512), pretrained
         )
+    if arch == "cnn3d":
+        from ml.models.cnn3d import SmallCNN3D
+
+        return SmallCNN3D(len(labels_for(cfg)) or 1, m.get("width", 16), m.get("dropout", 0.3))
+    if arch == "srgan":
+        from ml.models.srgan import SRGenerator
+
+        return SRGenerator(m.get("width", 48), m.get("blocks", 6), m.get("scale", 2))
     if arch == "smallcnn":
         from ml.models.classifier import SmallCNN
 

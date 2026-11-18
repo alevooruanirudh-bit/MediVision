@@ -1,0 +1,30 @@
+{
+  "task": "multiclass",
+  "labels": "retina5",
+  "dataset": "retina",
+  "model": {
+    "arch": "classifier",
+    "backbone": "efficientnet_b0",
+    "dropout": 0.4,
+    "hidden": 128
+  },
+  "loss": {
+    "type": "ce",
+    "label_smoothing": 0.1
+  },
+  "optim": {
+    "lr": 0.0003,
+    "weight_decay": 0.001
+  },
+  "train": {
+    "patience": 6,
+    "warmup_epochs": 1,
+    "num_workers": 0,
+    "monitor": "val_macro_f1",
+    "epochs": 20,
+    "batch_size": 32
+  },
+  "img_size": 128,
+  "name": "retina_dr",
+  "profile": "starter"
+}

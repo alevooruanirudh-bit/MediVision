@@ -1,15 +1,108 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Cpu, Loader2, Moon, PlugZap, RefreshCcw, Sun, UserRound } from "lucide-react";
+import { Cpu, KeyRound, Loader2, LogOut, Moon, PlugZap, RefreshCcw, Sun, UserRound } from "lucide-react";
 import { useTheme } from "next-themes";
 import * as React from "react";
 import { toast } from "sonner";
 
 import { PageHeader } from "@/components/common";
-import { Badge, Button, Card, CardHeader, Input, Label, Skeleton, Slider, Switch } from "@/components/ui/primitives";
+import { Badge, Button, Card, CardHeader, Input, Label, NativeSelect, Skeleton, Slider, Switch } from "@/components/ui/primitives";
 import { API_URL, api } from "@/lib/api";
-import { useSettings } from "@/lib/store";
+import { type Role, useSettings } from "@/lib/store";
+
+const PERMS: Record<string, string> = {
+  "study.write": "upload / analyse",
+  "study.delete": "delete studies",
+  "finding.review": "review findings",
+  "report.edit": "edit reports",
+  "report.sign": "sign reports",
+  "alert.ack": "acknowledge alerts",
+  "users.manage": "manage users",
+};
+
+function AccessCard() {
+  const qc = useQueryClient();
+  const s = useSettings();
+  const me = useQuery({ queryKey: ["me", s.token, s.demoRole], queryFn: api.me });
+  const [u, setU] = React.useState("dr.lee");
+  const [pw, setPw] = React.useState("");
+  const refresh = () => qc.invalidateQueries({ queryKey: ["me"] });
+  const login = async () => {
+    try {
+      const r = await api.login(u, pw);
+      s.set({ token: r.token, reviewer: r.user.name });
+      toast.success(`Signed in as ${r.user.name} (${r.user.role})`);
+      refresh();
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  };
+  const m = me.data;
+  return (
+    <Card className="md:col-span-2" data-testid="access-card">
+      <CardHeader
+        icon={<KeyRound />}
+        title="Access control"
+        subtitle={
+          m?.auth_enabled
+            ? "AUTH_ENABLED=true — sign in with a local account; roles are enforced on every write."
+            : "Demo mode (AUTH_ENABLED=false): choose the acting role to try the permission checks. Enable auth for any shared deployment."
+        }
+      />
+      <div className="grid gap-4 px-5 pb-5 md:grid-cols-2">
+        <div className="space-y-2 text-sm">
+          <div className="text-muted">
+            Acting as <span className="text-fg">{m?.name}</span> <Badge>{m?.role}</Badge>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {Object.entries(PERMS).map(([p, l]) => (
+              <Badge key={p} tone={m?.permissions.includes(p) ? "teal" : "neutral"} className={m?.permissions.includes(p) ? "" : "line-through opacity-60"}>{l}</Badge>
+            ))}
+          </div>
+        </div>
+        {m?.auth_enabled ? (
+          s.token ? (
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                await api.logout().catch(() => undefined);
+                s.set({ token: null });
+                refresh();
+              }}
+            >
+              <LogOut /> Sign out
+            </Button>
+          ) : (
+            <form className="flex flex-wrap gap-2" onSubmit={(e) => (e.preventDefault(), login())}>
+              <Input value={u} onChange={(e) => setU(e.target.value)} placeholder="username" aria-label="Username" className="w-36" />
+              <Input value={pw} onChange={(e) => setPw(e.target.value)} type="password" placeholder="password" aria-label="Password" className="w-40" />
+              <Button type="submit" variant="primary">Sign in</Button>
+            </form>
+          )
+        ) : (
+          <div>
+            <Label>Demo role</Label>
+            <NativeSelect
+              value={s.demoRole}
+              onChange={(e) => {
+                s.set({ demoRole: e.target.value as Role });
+                refresh();
+              }}
+              className="mt-1 w-full"
+              aria-label="Demo role"
+            >
+              <option value="radiologist">Radiologist (sign, review, upload)</option>
+              <option value="resident">Resident (review, draft — cannot sign)</option>
+              <option value="viewer">Viewer (read-only)</option>
+              <option value="admin">Admin</option>
+            </NativeSelect>
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+}
 
 export default function SettingsPage() {
   const qc = useQueryClient();
@@ -42,6 +135,14 @@ export default function SettingsPage() {
           <div className="flex items-center gap-4 px-5 pb-5">
             <Slider value={[s.chatDelay]} min={0} max={80} step={2} onValueChange={([v]) => s.set({ chatDelay: v })} aria-label="Streaming delay" />
             <span className="num w-14 text-right text-sm text-fg">{s.chatDelay} ms</span>
+          </div>
+        </Card>
+        <AccessCard />
+        <Card>
+          <CardHeader title="Autonomous triage (well-defined tasks)" subtitle="AUTONOMOUS_TRIAGE — AI pre-clears confident normals and raises critical alerts; a human always confirms" />
+          <div className="flex items-center justify-between px-5 pb-5 text-sm">
+            <span className="text-muted">Status</span>
+            <Badge tone={h?.settings?.autonomous_triage ? "teal" : "neutral"}>{h?.settings?.autonomous_triage ? "on" : "off"}</Badge>
           </div>
         </Card>
         <Card>

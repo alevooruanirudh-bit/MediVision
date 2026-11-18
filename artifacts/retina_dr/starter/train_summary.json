@@ -1,0 +1,9 @@
+{
+  "model": "retina_dr",
+  "profile": "starter",
+  "best": {
+    "val_macro_f1": 0.6404196041466527
+  },
+  "epochs_run": 12,
+  "pretrained_backbone": true
+}

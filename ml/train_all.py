@@ -24,8 +24,14 @@ ORDER = [
     "chest_densenet121",
     "chest_efficientnet_b2",
     "chest_convnext_tiny",
+    "head_ct_cls",
+    "breast_us",
+    "retina_dr",
+    "nodule3d",
     "router",
     "denoiser",
+    "sr_gan",
+    "radiogenomics",
     "report_gen",
     "copilot_intent",
 ]
@@ -48,13 +54,20 @@ def main(argv: list[str] | None = None) -> int:
         t0 = time.time()
         try:
             done = (ARTIFACTS / name / args.profile / "model.pt").exists()
+            if name == "radiogenomics":
+                from ml.radiogenomics import main as radiogenomics
+
+                radiogenomics(["--profile", args.profile])
+                status[name] = f"ok ({time.time() - t0:.0f}s)"
+                print(f"[train_all] {name}: {status[name]}", flush=True)
+                continue
             if name == "copilot_intent":
                 train_intent(args.profile)
             elif not (args.skip_existing and done):
                 train(name, args.profile)
             if name.startswith("chest_") and name != "chest_convnext_tiny":
                 pass  # members are evaluated jointly as the ensemble
-            elif name not in ("copilot_intent", "report_gen"):
+            elif name not in ("copilot_intent", "report_gen", "sr_gan"):
                 target = EVAL_AFTER.get(name, name)
                 evaluate_model(target, args.profile)
                 write_card(target, args.profile)

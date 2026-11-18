@@ -43,6 +43,52 @@ def denoise(img01: np.ndarray, tile: int = 512) -> np.ndarray:
     return np.clip(out, 0, 1)
 
 
+def super_resolve(img01: np.ndarray, max_side: int = 768) -> tuple[np.ndarray, str]:
+    """x2 super-resolution with our SR-GAN generator (bicubic fallback). Input is first reduced so
+    the output stays <= 2*max_side."""
+    h, w = img01.shape
+    s = min(1.0, max_side / max(h, w))
+    if s < 1:
+        img01 = cv2.resize(img01, (round(w * s), round(h * s)), interpolation=cv2.INTER_AREA)
+    gen = registry.get("sr_gan")
+    if gen is None:
+        up = cv2.resize(img01, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
+        return np.clip(up, 0, 1), "bicubic x2 (SR-GAN not trained)"
+    out = gen.run(img01[None, None].astype(np.float32))[0][0, 0]
+    return np.clip(out, 0, 1), "SR-GAN x2 (ours, experimental)"
+
+
+def fuse(
+    base: np.ndarray, over: np.ndarray, alpha: float = 0.5, register: bool = True
+) -> dict[str, Any]:
+    """Multimodal-style fusion of two co-located images: rigid translation by phase correlation,
+    then a false-colour overlay (base = gray, overlay = magenta/green)."""
+    from skimage.registration import phase_cross_correlation
+
+    b = cv2.resize(base, (512, 512), interpolation=cv2.INTER_AREA).astype(np.float32) / 255
+    o = cv2.resize(over, (512, 512), interpolation=cv2.INTER_AREA).astype(np.float32) / 255
+    shift = [0.0, 0.0]
+    if register:
+        sh, err, _ = phase_cross_correlation(b, o, upsample_factor=4)
+        shift = [float(sh[0]), float(sh[1])]
+        m = np.float32([[1, 0, shift[1]], [0, 1, shift[0]]])
+        o = cv2.warpAffine(o, m, (512, 512), borderMode=cv2.BORDER_CONSTANT)
+    rgb = np.stack([b, b, b], -1) * (1 - alpha)
+    rgb[..., 0] += alpha * o
+    rgb[..., 2] += alpha * o
+    rgb[..., 1] += alpha * b * 0.0
+    ncc = float(np.corrcoef(b.ravel(), o.ravel())[0, 1])
+    ok, buf = cv2.imencode(
+        ".png", cv2.cvtColor((np.clip(rgb, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2BGR)
+    )
+    return {
+        "image": "data:image/png;base64," + base64.b64encode(buf.tobytes()).decode(),
+        "shift_px": shift,
+        "correlation_after": round(ncc, 3),
+        "method": "rigid phase correlation + false-colour fusion (gray base, magenta overlay)",
+    }
+
+
 def apply_ops(img: np.ndarray, ops: dict[str, Any]) -> dict[str, Any]:
     g = img if img.ndim == 2 else cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     clean = g.astype(np.float32) / 255.0
@@ -71,6 +117,11 @@ def apply_ops(img: np.ndarray, ops: dict[str, Any]) -> dict[str, Any]:
     if ops.get("gamma"):
         x = np.clip(x, 0, 1) ** (1.0 / float(ops["gamma"]))
         steps.append(f"gamma {ops['gamma']}")
+    if ops.get("superres"):
+        x, how = super_resolve(x)
+        steps.append(how)
+        clean = cv2.resize(clean, (x.shape[1], x.shape[0]), interpolation=cv2.INTER_CUBIC)
+        noisy = cv2.resize(noisy, (x.shape[1], x.shape[0]), interpolation=cv2.INTER_CUBIC)
     metrics = {"psnr": round(psnr(clean, x), 2), "ssim": round(ssim(clean, x), 4)}
     if ld:
         metrics.update(
@@ -82,6 +133,8 @@ def apply_ops(img: np.ndarray, ops: dict[str, Any]) -> dict[str, Any]:
         "metrics": metrics,
         "steps": steps,
         "denoiser_model": registry.get("denoiser") is not None,
+        "superres_model": registry.get("sr_gan") is not None,
+        "size": [int(x.shape[1]), int(x.shape[0])],
     }
 
 

@@ -1,0 +1,27 @@
+{
+  "task": "superres",
+  "dataset": "chestmnist",
+  "model": {
+    "arch": "srgan",
+    "width": 48,
+    "blocks": 6,
+    "scale": 2
+  },
+  "loss": {
+    "l1": 1.0,
+    "adv": 0.003
+  },
+  "optim": {
+    "lr": 0.0002
+  },
+  "img_size": 64,
+  "train": {
+    "epochs": 4,
+    "batch_size": 32,
+    "limit_train": 12000,
+    "limit_val": 400,
+    "pretrain_epochs": 2
+  },
+  "name": "sr_gan",
+  "profile": "starter"
+}

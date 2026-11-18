@@ -62,6 +62,62 @@
       "scanner": "low contrast, noisy"
     }
   ],
+  "per_site": {
+    "auroc": {
+      "federated": {
+        "St. Aurora (urban referral)": 0.4984,
+        "Riverside General": 0.502,
+        "Hillcrest Rural Clinic": 0.5546
+      },
+      "centralized": {
+        "St. Aurora (urban referral)": 0.7758,
+        "Riverside General": 0.752,
+        "Hillcrest Rural Clinic": 0.7253
+      },
+      "local: St. Aurora (urban referral)": {
+        "St. Aurora (urban referral)": 0.6593,
+        "Riverside General": 0.6348,
+        "Hillcrest Rural Clinic": 0.6324
+      },
+      "local: Riverside General": {
+        "St. Aurora (urban referral)": 0.7508,
+        "Riverside General": 0.7653,
+        "Hillcrest Rural Clinic": 0.7535
+      },
+      "local: Hillcrest Rural Clinic": {
+        "St. Aurora (urban referral)": 0.861,
+        "Riverside General": 0.8416,
+        "Hillcrest Rural Clinic": 0.7718
+      }
+    },
+    "summary": {
+      "federated": {
+        "worst_site_auroc": 0.4984,
+        "site_gap": 0.0562
+      },
+      "centralized": {
+        "worst_site_auroc": 0.7253,
+        "site_gap": 0.0505
+      },
+      "local: St. Aurora (urban referral)": {
+        "worst_site_auroc": 0.6324,
+        "site_gap": 0.0269
+      },
+      "local: Riverside General": {
+        "worst_site_auroc": 0.7508,
+        "site_gap": 0.0145
+      },
+      "local: Hillcrest Rural Clinic": {
+        "worst_site_auroc": 0.7718,
+        "site_gap": 0.0892
+      }
+    }
+  },
+  "privacy": {
+    "shared": "model weights only (FedAvg); no images or labels leave a hospital",
+    "not_included": "secure aggregation, differential privacy \u2014 needed for a real deployment, because weights can leak information",
+    "regulation": "HIPAA (US) / GDPR (EU) still require a lawful basis, data-processing agreements, minimisation and audit; federation reduces, not removes, these duties"
+  },
   "rounds": 2,
-  "seconds": 4.8
+  "seconds": 7.4
 }

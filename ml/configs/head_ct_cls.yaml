@@ -1,0 +1,18 @@
+# Head-CT intracranial hemorrhage classifier (ours). Starter: Kitamura 200-slice set. Full: RSNA ICH.
+common:
+  task: binary
+  label_name: Hemorrhage
+  dataset: head_ct
+  model: {arch: classifier, backbone: efficientnet_b0, dropout: 0.4, hidden: 128}
+  loss: {type: weighted_bce}
+  optim: {lr: 3.0e-4, weight_decay: 1.0e-3}
+  augment: {scale: [0.75, 1.0], rotate: 15, brightness: 0.15, contrast: 0.2, clahe_p: 0.2, hflip: true}
+  train: {patience: 6, warmup_epochs: 1, num_workers: 0, monitor: val_auroc}
+starter:
+  img_size: 192
+  train: {epochs: 20, batch_size: 16}
+full:
+  img_size: 384
+  dataset_note: "RSNA Intracranial Hemorrhage Detection (competition rules must be accepted)"
+  train: {epochs: 12, batch_size: 32, num_workers: 4}
+  kaggle: {dataset_sources: [felipekitamura/head-ct-hemorrhage], gpu_hours: 0.3}

@@ -100,6 +100,30 @@ def make_datasets(cfg: dict[str, Any], tokenizer: Any = None) -> tuple[Dataset, 
             D.BrainMRIDataset("val", size, aug_ev),
             D.BrainMRIDataset("test", size, aug_ev),
         )
+    if name == "head_ct":
+        return (
+            D.HeadCTDataset("train", size, aug_tr),
+            D.HeadCTDataset("val", size, aug_ev),
+            D.HeadCTDataset("test", size, aug_ev),
+        )
+    if name == "breast_us":
+        return (
+            D.BreastUSDataset("train", size, aug_tr),
+            D.BreastUSDataset("val", size, aug_ev),
+            D.BreastUSDataset("test", size, aug_ev),
+        )
+    if name == "retina":
+        return (
+            D.RetinaDataset("train", size, True),
+            D.RetinaDataset("val", size),
+            D.RetinaDataset("test", size),
+        )
+    if name == "nodule3d":
+        return (
+            D.Nodule3DDataset("train", size, True),
+            D.Nodule3DDataset("val", size),
+            D.Nodule3DDataset("test", size),
+        )
     if name == "router":
         pc = cfg.get("per_class", 1500)
         return (
@@ -235,6 +259,10 @@ def train(
         from ml.train_report import train_report
 
         return train_report(cfg, resume)
+    if task == "superres":
+        from ml.train_sr import train_sr
+
+        return train_sr(cfg)
 
     t = cfg["train"]
     device = get_device(t.get("device", "auto"))

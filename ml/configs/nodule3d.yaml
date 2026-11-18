@@ -1,0 +1,17 @@
+# Chest-CT lung-nodule malignancy (ours, 3-D CNN from scratch) on NoduleMNIST3D 64^3 (LIDC-IDRI).
+common:
+  task: binary
+  label_name: Malignant nodule
+  dataset: nodule3d
+  model: {arch: cnn3d, width: 16, dropout: 0.3}
+  loss: {type: weighted_bce}
+  optim: {lr: 1.0e-3, weight_decay: 1.0e-4}
+  train: {patience: 5, warmup_epochs: 1, num_workers: 0, monitor: val_auroc}
+starter:
+  img_size: 64
+  train: {epochs: 8, batch_size: 16}
+full:
+  img_size: 64
+  model: {width: 32}
+  train: {epochs: 40, batch_size: 32, num_workers: 4}
+  kaggle: {dataset_sources: [], gpu_hours: 0.3}

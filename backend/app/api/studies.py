@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import time
+from datetime import UTC, datetime
 from typing import Any
 
+import numpy as np
 from fastapi import APIRouter, Depends, File, Form, Query, UploadFile
 from sqlmodel import Session, col, select
 
@@ -16,10 +19,12 @@ from app.inference.pipeline import analyze, explain
 from app.models import ChatMessage, Finding, Patient, Report, Review, Study
 from app.services import storage
 from app.services.audit import audit
+from app.services.auth import Principal, current_user, require
 from app.services.deid import ingest
 
 router = APIRouter(prefix="/api/studies", tags=["studies"])
-ALLOWED = (".png", ".jpg", ".jpeg", ".dcm", ".dicom")
+ALLOWED = (".png", ".jpg", ".jpeg", ".dcm", ".dicom", ".npy", ".npz")
+CONSENT_BASES = ("uploader_attested", "public_research_dataset", "waived_ethics_approval")
 
 
 def create_study(
@@ -34,6 +39,8 @@ def create_study(
     age: int | None = None,
     sex: str | None = None,
     description: str | None = None,
+    consent_basis: str | None = None,
+    user: Principal | None = None,
 ) -> Study:
     settings = get_settings()
     t0 = time.perf_counter()
@@ -56,6 +63,9 @@ def create_study(
         indication=indication,
         study_date=study_date,
         description=description,
+        consent_basis=consent_basis,
+        uploaded_by=user.username if user else "system",
+        input_sha256=hashlib.sha256(data).hexdigest(),
     )
     relp, w, h, scale = storage.save_image(study.id, ing.pixels)
     study.image_path, study.width, study.height = relp, w, h
@@ -69,9 +79,13 @@ def create_study(
             "ms": deid_ms,
             "dicom_modality": ing.modality_tag,
             "view": ing.view,
-            "exif_stripped": ing.fmt != "dcm",
+            "exif_stripped": ing.fmt not in ("dcm", "npy"),
+            "volume_shape": list(ing.volume.shape) if ing.volume is not None else None,
+            "voxel_spacing_mm": ing.voxel_spacing_mm,
         }
     )
+    if ing.volume is not None:
+        np.save(storage.study_dir(study.id) / "volume.npy", ing.volume)
     if ing.deid_dataset is not None:
         ing.deid_dataset.save_as(str(storage.study_dir(study.id) / "deidentified.dcm"))
     session.add(study)
@@ -82,9 +96,13 @@ def create_study(
         "study.upload",
         "study",
         study.id,
+        actor=user.username if user else "system",
+        role=user.role if user else None,
         format=ing.fmt,
         phi_tags_removed=len(ing.removed_tags),
         pseudonym=ing.pseudonym,
+        input_sha256=study.input_sha256,
+        consent_basis=consent_basis,
     )
     return study
 
@@ -93,17 +111,34 @@ def create_study(
 async def upload(
     file: UploadFile = File(...),
     patient_ref: str | None = Form(None, description="Free-text patient reference (hashed)"),
-    modality_hint: str | None = Form(None, description="chest | bone | brain"),
+    modality_hint: str | None = Form(
+        None, description="chest | bone | brain | head_ct | breast | fundus"
+    ),
     indication: str | None = Form(None),
     study_date: str | None = Form(None),
     age: int | None = Form(None),
     sex: str | None = Form(None),
     analyze_now: bool = Form(True),
+    consent_basis: str | None = Form(
+        None,
+        description="Lawful basis for research use: uploader_attested | public_research_dataset "
+        "| waived_ethics_approval (required when REQUIRE_CONSENT=true)",
+    ),
     session: Session = Depends(get_session),
+    user: Principal = Depends(require("study.write")),
 ) -> dict[str, Any]:
     name = (file.filename or "upload").lower()
     if not name.endswith(ALLOWED):
         raise APIError(415, "unsupported_type", f"Allowed: {', '.join(ALLOWED)}")
+    if consent_basis is not None and consent_basis not in CONSENT_BASES:
+        raise APIError(422, "bad_consent", f"consent_basis must be one of {CONSENT_BASES}")
+    if get_settings().require_consent and not consent_basis:
+        raise APIError(
+            428,
+            "consent_required",
+            "Confirm that you may use this image for research (consent / lawful basis) and that "
+            "it contains no identifiable data beyond what de-identification removes.",
+        )
     limit = get_settings().max_upload_mb * 1024 * 1024
     data = await file.read(limit + 1)
     if len(data) > limit:
@@ -118,6 +153,8 @@ async def upload(
         study_date=study_date,
         age=age,
         sex=sex,
+        consent_basis=consent_basis,
+        user=user,
     )
     if analyze_now:
         run_analysis(session, study)
@@ -145,9 +182,30 @@ def run_analysis(session: Session, study: Study, force: bool = False) -> dict[st
         "study",
         study.id,
         actor="ai",
+        role="ai",
+        input_sha256=study.input_sha256,
+        pipeline=results.get("pipeline"),
+        models={v["name"]: v["version"] for v in results.get("model_versions", [])},
+        outputs={
+            f["label"]: round(float(f["probability"]), 4)
+            for f in results.get("findings", [])
+            if f.get("positive")
+        },
         urgency=study.urgency_level,
+        score=study.urgency_score,
+        autonomy=(results.get("autonomy") or {}).get("action"),
         ms=results["timings_ms"].get("total"),
     )
+    if (results.get("autonomy") or {}).get("action") == "critical_alert":
+        audit(
+            session,
+            "alert.raised",
+            "study",
+            study.id,
+            actor="ai",
+            role="ai",
+            drivers=[d["label"] for d in results["triage"]["drivers"][:3]],
+        )
     return results
 
 
@@ -174,7 +232,11 @@ def get_one(study_id: str, session: Session = Depends(get_session)) -> dict[str,
 
 
 @router.delete("/{study_id}", summary="Delete a study and its files")
-def delete(study_id: str, session: Session = Depends(get_session)) -> dict[str, Any]:
+def delete(
+    study_id: str,
+    session: Session = Depends(get_session),
+    user: Principal = Depends(require("study.delete")),
+) -> dict[str, Any]:
     s = get_study(session, study_id)
     for model in (Finding, Review, Report, ChatMessage):
         for row in session.exec(select(model).where(model.study_id == study_id)).all():  # type: ignore[attr-defined]
@@ -182,7 +244,7 @@ def delete(study_id: str, session: Session = Depends(get_session)) -> dict[str, 
     session.delete(s)
     session.commit()
     storage.delete_study_files(study_id)
-    audit(session, "study.delete", "study", study_id)
+    audit(session, "study.delete", "study", study_id, actor=user.username, role=user.role)
     return {"deleted": study_id}
 
 
@@ -191,10 +253,52 @@ def analyze_study(
     study_id: str,
     force: bool = Query(False, description="analyse even if OOD"),
     session: Session = Depends(get_session),
+    user: Principal = Depends(require("study.write")),
 ) -> dict[str, Any]:
     s = get_study(session, study_id)
+    s.alert_ack_by, s.alert_ack_at = None, None
     run_analysis(session, s, force)
+    audit(
+        session, "study.reanalyze", "study", s.id, actor=user.username, role=user.role, force=force
+    )
     return study_out(session, s)
+
+
+@router.post("/{study_id}/alert/ack", summary="Acknowledge a critical-finding alert")
+def ack_alert(
+    study_id: str,
+    session: Session = Depends(get_session),
+    user: Principal = Depends(require("alert.ack")),
+) -> dict[str, Any]:
+    s = get_study(session, study_id)
+    s.alert_ack_by, s.alert_ack_at = user.username, datetime.now(UTC)
+    session.add(s)
+    session.commit()
+    audit(session, "alert.ack", "study", s.id, actor=user.username, role=user.role)
+    return study_out(session, s)
+
+
+@router.get("/{study_id}/dicom-sc", summary="Export image + AI overlay as DICOM Secondary Capture")
+def dicom_sc(
+    study_id: str,
+    finding: str | None = None,
+    session: Session = Depends(get_session),
+    user: Principal = Depends(current_user),
+):  # type: ignore[no-untyped-def]
+    from fastapi.responses import Response
+
+    from app.services.dicom_export import secondary_capture
+
+    s = get_study(session, study_id)
+    if s.status != "analyzed":
+        raise APIError(409, "not_analyzed", "Analyse the study first")
+    data = secondary_capture(session, s, finding)
+    audit(session, "export.dicom_sc", "study", s.id, actor=user.username, role=user.role)
+    return Response(
+        data,
+        media_type="application/dicom",
+        headers={"Content-Disposition": f'attachment; filename="medivision_{s.id}_sc.dcm"'},
+    )
 
 
 @router.get("/{study_id}/explain", summary="Explainability overlay for one finding")

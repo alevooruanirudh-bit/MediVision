@@ -1,0 +1,9 @@
+{
+  "model": "head_ct_cls",
+  "profile": "starter",
+  "best": {
+    "val_auroc": 1.0
+  },
+  "epochs_run": 16,
+  "pretrained_backbone": true
+}

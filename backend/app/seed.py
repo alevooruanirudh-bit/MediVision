@@ -29,8 +29,22 @@ INDICATIONS = {
     "brain_meningioma": "Chronic headaches; incidental finding work-up.",
     "brain_notumor": "Dizziness; rule out structural lesion.",
     "not_medical_photo": "Uploaded by mistake (demonstrates the OOD guard).",
+    "headct_hemorrhage": "Sudden severe headache; reduced consciousness.",
+    "headct_normal": "Minor head injury; GCS 15.",
+    "breast_us_malignant": "Palpable breast lump.",
+    "fundus_dr": "Type 2 diabetes; annual retinal screening.",
+    "ct_nodule_volume": "Incidental lung nodule on staging CT; characterise.",
 }
-HINT = {"chest": "chest", "bone": "bone", "brain": "brain", "none": None}
+HINT = {
+    "chest": "chest",
+    "bone": "bone",
+    "brain": "brain",
+    "head_ct": "head_ct",
+    "breast_us": "breast",
+    "fundus": "fundus",
+    "ct_volume": None,
+    "none": None,
+}
 
 
 def seed(session: Session, reset: bool = False) -> dict[str, Any]:
@@ -57,6 +71,7 @@ def seed(session: Session, reset: bool = False) -> dict[str, Any]:
             age=m.get("age"),
             sex=m.get("sex"),
             description=f"Demo: {m['source']} — ground truth: {m['ground_truth']}",
+            consent_basis="public_research_dataset",
         )
         s.created_at = date
         session.add(s)
@@ -84,6 +99,7 @@ def _demo_reviews(session: Session) -> None:
                 study_id=f.study_id,
                 action=action,
                 reviewer="demo radiologist",
+                reviewer_role="radiologist",
                 original_label=f.label,
                 comment="Demo review (seed data)",
                 model_probability=f.probability,

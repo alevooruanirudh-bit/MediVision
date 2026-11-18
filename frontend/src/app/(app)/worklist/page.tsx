@@ -2,9 +2,9 @@
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle2, Database, FileUp, Loader2, Search, Trash2, UploadCloud, XCircle } from "lucide-react";
+import { BellRing, CheckCircle2, Database, FileUp, Loader2, Search, ShieldCheck, Trash2, UploadCloud, XCircle } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
 import { toast } from "sonner";
 
@@ -27,17 +27,22 @@ interface UploadItem {
 function Uploader({ onDone }: { onDone: () => void }) {
   const [drag, setDrag] = React.useState(false);
   const [hint, setHint] = React.useState("");
+  const [consent, setConsent] = React.useState(false);
   const [items, setItems] = React.useState<UploadItem[]>([]);
   const input = React.useRef<HTMLInputElement>(null);
 
   const upload = async (files: FileList | File[]) => {
+    if (!consent) {
+      toast.error("Please confirm the research-use / consent statement below before uploading.");
+      return;
+    }
     const list = Array.from(files);
     for (const f of list) {
       const id = `${f.name}-${Math.random().toString(36).slice(2, 7)}`;
       setItems((s) => [{ id, name: f.name, progress: 0, state: "uploading" } as UploadItem, ...s].slice(0, 8));
       const set = (p: Partial<UploadItem>) => setItems((s) => s.map((x) => (x.id === id ? { ...x, ...p } : x)));
       try {
-        const study = await uploadStudy(f, { modality_hint: hint || undefined }, (p) => {
+        const study = await uploadStudy(f, { modality_hint: hint || undefined, consent_basis: "uploader_attested" }, (p) => {
           set({ progress: p, state: p >= 1 ? "analysing" : "uploading" });
         });
         set({ state: "done", progress: 1, studyId: study.id });
@@ -73,13 +78,13 @@ function Uploader({ onDone }: { onDone: () => void }) {
       >
         {drag && <div className="scan-line" />}
         <UploadCloud className={cn("size-8 transition", drag ? "text-cyan" : "text-subtle")} />
-        <div className="text-sm font-medium text-fg">Drop chest X-rays, bone X-rays or brain MRI here</div>
-        <div className="text-xs text-muted">PNG · JPG · DICOM ≤ 20 MB · multiple files · DICOM is de-identified on arrival</div>
+        <div className="text-sm font-medium text-fg">Drop X-rays, brain MRI, head CT, breast ultrasound, fundus photos or CT volumes here</div>
+        <div className="text-xs text-muted">PNG · JPG · DICOM · .npy CT volume ≤ 20 MB · multiple files · DICOM is de-identified on arrival</div>
         <input
           ref={input}
           type="file"
           multiple
-          accept=".png,.jpg,.jpeg,.dcm,.dicom"
+          accept=".png,.jpg,.jpeg,.dcm,.dicom,.npy,.npz"
           className="hidden"
           data-testid="file-input"
           onChange={(e) => e.target.files && upload(e.target.files)}
@@ -92,8 +97,24 @@ function Uploader({ onDone }: { onDone: () => void }) {
           <option value="chest">Chest X-ray</option>
           <option value="bone">Bone X-ray</option>
           <option value="brain">Brain MRI</option>
+          <option value="head_ct">Head CT</option>
+          <option value="breast">Breast ultrasound</option>
+          <option value="fundus">Fundus photo</option>
         </NativeSelect>
       </div>
+      <label className="mt-3 flex cursor-pointer items-start gap-2 rounded-xl border border-border bg-surface-2 p-2.5 text-[11px] leading-snug text-muted">
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          className="mt-0.5 accent-[var(--cyan)]"
+          data-testid="consent-checkbox"
+        />
+        <span>
+          I confirm I may use these images for research / education (consent or another lawful basis) and that they are
+          de-identified or will be by this system. Uploads are recorded in the audit log with my role.
+        </span>
+      </label>
       <AnimatePresence initial={false}>
         {items.map((it) => (
           <motion.div
@@ -134,14 +155,30 @@ function Uploader({ onDone }: { onDone: () => void }) {
 }
 
 export default function WorklistPage() {
+  return (
+    <React.Suspense fallback={null}>
+      <WorklistInner />
+    </React.Suspense>
+  );
+}
+
+function WorklistInner() {
   const qc = useQueryClient();
   const router = useRouter();
   const [level, setLevel] = React.useState<(typeof LEVELS)[number]>("ALL");
   const [q, setQ] = React.useState("");
   const [modality, setModality] = React.useState("");
+  const params = useSearchParams();
+  const [queue, setQueue] = React.useState<string>(params.get("queue") ?? "");
   const wl = useQuery({
-    queryKey: ["worklist", level, q, modality],
-    queryFn: () => api.worklist({ level: level === "ALL" ? undefined : level, q: q || undefined, modality: modality || undefined }),
+    queryKey: ["worklist", level, q, modality, queue],
+    queryFn: () =>
+      api.worklist({
+        level: level === "ALL" ? undefined : level,
+        q: q || undefined,
+        modality: modality || undefined,
+        queue: queue || undefined,
+      }),
     refetchInterval: 15_000,
   });
   const refresh = () => {
@@ -159,9 +196,13 @@ export default function WorklistPage() {
     }
   };
   const del = async (id: string) => {
-    await api.deleteStudy(id);
-    toast.success("Study deleted");
-    refresh();
+    try {
+      await api.deleteStudy(id);
+      toast.success("Study deleted");
+      refresh();
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
   };
   const counts = wl.data?.counts ?? {};
 
@@ -203,7 +244,16 @@ export default function WorklistPage() {
                 <option value="chest">Chest X-ray</option>
                 <option value="bone">Bone X-ray</option>
                 <option value="brain">Brain MRI</option>
+                <option value="head_ct">Head CT</option>
+                <option value="breast_us">Breast ultrasound</option>
+                <option value="fundus">Fundus</option>
+                <option value="chest_ct">CT volume</option>
                 <option value="not">Not medical</option>
+              </NativeSelect>
+              <NativeSelect value={queue} onChange={(e) => setQueue(e.target.value)} className="h-9 text-xs" aria-label="Queue">
+                <option value="">All queues</option>
+                <option value="alerts">Unacknowledged alerts</option>
+                <option value="confirm_normal">AI pre-cleared (confirm normal)</option>
               </NativeSelect>
               <div className="relative w-full max-w-xs">
                 <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-subtle" />
@@ -244,7 +294,19 @@ export default function WorklistPage() {
                     data-testid="worklist-row"
                   >
                     <td className="px-4 py-2.5">
-                      <UrgencyPill level={s.urgency_level} score={s.urgency_score} />
+                      <div className="flex items-center gap-1.5">
+                        <UrgencyPill level={s.urgency_level} score={s.urgency_score} />
+                        {s.alert?.active && (
+                          <span title="Critical alert not yet acknowledged" className="text-red">
+                            <BellRing className="size-3.5 animate-pulse" />
+                          </span>
+                        )}
+                      </div>
+                      {s.autonomy?.action === "pre_cleared_normal" && (
+                        <Badge tone="teal" className="mt-1">
+                          <ShieldCheck className="size-3" /> AI pre-cleared · confirm
+                        </Badge>
+                      )}
                     </td>
                     <td className="px-4 py-2.5">
                       <div className="flex items-center gap-3">

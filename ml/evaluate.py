@@ -49,7 +49,7 @@ from ml.metrics import (  # noqa: E402
     ssim,
     youden_threshold,
 )
-from ml.models import build_model  # noqa: E402
+from ml.models import build_model, labels_for  # noqa: E402
 
 CHEST_MEMBERS = ["chest_densenet121", "chest_efficientnet_b2", "chest_convnext_tiny"]
 PLOT_STYLE = {
@@ -72,6 +72,44 @@ def load_trained(
     model = build_model(cfg, pretrained=False)
     model.load_state_dict(ck["state_dict"])
     return model.to(device).eval(), cfg
+
+
+def second_reader(y: np.ndarray, p: np.ndarray, thr: float) -> dict[str, Any]:
+    """Second-reader operating point: confusion counts, FPR / FNR, PPV / NPV at `thr`."""
+    y = np.asarray(y).astype(int)
+    pred = np.asarray(p) >= thr
+    tp = int(np.sum(pred & (y == 1)))
+    fp = int(np.sum(pred & (y == 0)))
+    fn = int(np.sum(~pred & (y == 1)))
+    tn = int(np.sum(~pred & (y == 0)))
+    return {
+        "tp": tp,
+        "fp": fp,
+        "fn": fn,
+        "tn": tn,
+        "fpr": fp / max(fp + tn, 1),
+        "fnr": fn / max(fn + tp, 1),
+        "ppv": tp / max(tp + fp, 1),
+        "npv": tn / max(tn + fn, 1),
+    }
+
+
+def per_class_reader(cm: list[list[int]], classes: list[str]) -> dict[str, dict[str, float]]:
+    """One-vs-rest sensitivity / specificity / FPR / FNR from a confusion matrix."""
+    m = np.asarray(cm, dtype=float)
+    out = {}
+    for k, c in enumerate(classes[: len(m)]):
+        tp = m[k, k]
+        fn = m[k].sum() - tp
+        fp = m[:, k].sum() - tp
+        tn = m.sum() - tp - fn - fp
+        out[c] = {
+            "sensitivity": float(tp / max(tp + fn, 1)),
+            "specificity": float(tn / max(tn + fp, 1)),
+            "fpr": float(fp / max(fp + tn, 1)),
+            "fnr": float(fn / max(fn + tp, 1)),
+        }
+    return out
 
 
 def _now() -> str:
@@ -259,6 +297,7 @@ def evaluate_chest_ensemble(profile: str) -> dict[str, Any]:
             "threshold": thresholds[k],
             "sensitivity": se,
             "specificity": sp,
+            **second_reader(y_test[:, k], p_test[:, k], thresholds[k]),
             "prevalence": float(y_test[:, k].mean()),
             "roc": roc_points(y_test[:, k], p_test[:, k], 40),
         }
@@ -424,8 +463,8 @@ def evaluate_model(name: str, profile: str) -> dict[str, Any]:
         return evaluate_chest_ensemble(profile)
     if name == "report_gen":
         return _evaluate_report(profile)
-    if name == "copilot_intent":
-        p = ARTIFACTS / "copilot_intent" / profile / "metrics.json"
+    if name in ("copilot_intent", "sr_gan"):
+        p = ARTIFACTS / name / profile / "metrics.json"
         return json.loads(p.read_text()) if p.exists() else {}
     device = "cpu" if load_config(name, profile)["task"] == "detection" else get_device()
     model, cfg = load_trained(name, profile, device)
@@ -474,22 +513,40 @@ def evaluate_model(name: str, profile: str) -> dict[str, Any]:
                 "threshold": thr,
                 "sensitivity": se,
                 "specificity": sp,
+                **second_reader(yt[:, 0], pt, thr),
                 "f1": float(f1),
                 "temperature": t,
                 "roc": roc,
                 "reliability": rel,
             }
-            plot_roc({"fracture": roc}, {"fracture": auc}, plots / "roc.png", f"{name} ROC")
+            lab = labels_for(cfg)[0]
+            plot_roc({lab: roc}, {lab: auc}, plots / "roc.png", f"{name} ROC")
             plot_reliability(rel, plots / "reliability.png", name)
         else:
-            classes = BRAIN_CLASSES if cfg["dataset"] == "brain_mri" else ROUTER_CLASSES
+            classes = labels_for(cfg) or (
+                BRAIN_CLASSES if cfg["dataset"] == "brain_mri" else ROUTER_CLASSES
+            )
             t = fit_temperature_multiclass(lv, yv)
             rep = classification_report(yt, lt / t, classes)
             rep["temperature"] = t
+            rep["per_class_reader"] = per_class_reader(rep["confusion_matrix"], classes)
             z = lt / t
             prob = np.exp(z - z.max(1, keepdims=True))
             prob /= prob.sum(1, keepdims=True)
             rep["reliability"] = reliability((prob.argmax(1) == yt).astype(float), prob.max(1))
+            if cfg["dataset"] == "retina":  # referable DR = ICDR grade >= 2
+                from sklearn.metrics import cohen_kappa_score
+
+                yr, pr = (yt >= 2).astype(int), prob[:, 2:].sum(1)
+                rep["referable_auroc"] = safe_auroc(yr, pr)
+                rep["referable"] = {
+                    "sensitivity": sens_spec(yr, pr, 0.5)[0],
+                    "specificity": sens_spec(yr, pr, 0.5)[1],
+                    **second_reader(yr, pr, 0.5),
+                }
+                rep["quadratic_kappa"] = float(
+                    cohen_kappa_score(yt, prob.argmax(1), weights="quadratic")
+                )
             res["test"] = rep
             if hasattr(test_ds, "counts"):
                 res["class_counts_test"] = test_ds.counts

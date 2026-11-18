@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Pencil, Ruler, X } from "lucide-react";
+import { Check, Fingerprint, Lightbulb, Pencil, Ruler, UserCheck, X } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
 
@@ -106,6 +106,32 @@ export function FindingsPanel({
               <span className="num w-12 text-right text-[11px] text-subtle">±{fmt(f.uncertainty)}</span>
             </div>
             <ProbabilityBar f={f} delay={i * 0.04} />
+            {(selected === f.key || f.positive) && f.rationale && (
+              <div className="mt-2 rounded-lg border border-border/70 bg-bg/40 px-2.5 py-2 text-[11px] leading-relaxed text-muted" data-testid="finding-rationale">
+                <div className="mb-0.5 flex items-center gap-1 font-medium text-fg">
+                  <Lightbulb className="size-3 text-amber" /> {f.positive ? "Why the AI flagged this" : "Why it is not flagged"}
+                </div>
+                <ul className="list-disc space-y-0.5 pl-4">
+                  {f.rationale.reasons.map((r) => (
+                    <li key={r.text}>{r.text}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {(selected === f.key || f.positive) && (f.provenance || f.review?.reviewed_by) && (
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-subtle">
+                {f.provenance && (
+                  <span className="inline-flex items-center gap-1">
+                    <Fingerprint className="size-3" /> AI · {f.provenance.model} <span className="num">{f.provenance.model_version}</span>
+                  </span>
+                )}
+                {f.review?.reviewed_by && (
+                  <span className="inline-flex items-center gap-1 text-teal">
+                    <UserCheck className="size-3" /> {f.review.status} by {f.review.reviewed_by} ({f.review.reviewed_role})
+                  </span>
+                )}
+              </div>
+            )}
             {(selected === f.key || f.positive) && (f.zone || f.member_probs) && (
               <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted">
                 {f.zone && <span>📍 {f.zone}</span>}
@@ -180,9 +206,61 @@ function Gauge({ value, max = 1, flag = 0.5, label }: { value: number; max?: num
   );
 }
 
+export function RadiomicsPanel({ results }: { results: Results }) {
+  const r = results.radiomics;
+  if (!r) return null;
+  const groups: [string, Record<string, number> | undefined][] = [
+    ["Shape", r.shape],
+    ["First-order intensity", r.first_order],
+    ["Texture (GLCM)", r.texture_glcm],
+  ];
+  return (
+    <div className="space-y-3 p-1" data-testid="radiomics-panel">
+      <SectionTitle>Imaging biomarkers · radiomics</SectionTitle>
+      <p className="text-[11px] text-muted">
+        Region: <span className="text-fg">{r.roi}</span>. IBSI-style features computed locally; descriptive, not validated biomarkers.
+      </p>
+      {groups.map(([title, vals]) =>
+        vals && Object.keys(vals).length ? (
+          <div key={title}>
+            <div className="mb-1 text-[11px] font-medium text-fg">{title}</div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-[11px]">
+              {Object.entries(vals).map(([k, v]) => (
+                <div key={k} className="flex justify-between border-b border-border/50 py-0.5">
+                  <span className="text-muted">{k.replace(/_/g, " ")}</span>
+                  <span className="num text-fg">{typeof v === "number" ? (Math.abs(v) >= 100 ? v.toLocaleString() : v) : String(v)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null,
+      )}
+    </div>
+  );
+}
+
 export function MeasurementsPanel({ results }: { results: Results }) {
   const m = results.measurements;
-  if (!m?.available) return <p className="p-4 text-sm text-muted">No automatic measurements for this modality.</p>;
+  if (results.pipeline === "ct_volume" && m?.available)
+    return (
+      <div className="space-y-4 p-1">
+        <SectionTitle>Nodule volumetrics (3-D)</SectionTitle>
+        <div className="grid grid-cols-2 gap-3">
+          <Metric label="Volume" value={`${(m.volume_mm3 ?? 0).toLocaleString()} mm³`} hint={m.spacing_assumed ? "1 mm voxel spacing assumed" : "from DICOM spacing"} />
+          <Metric label="Equivalent diameter" value={`${m.equivalent_diameter_mm ?? "—"} mm`} hint="sphere of equal volume" />
+          <Metric label="Slices with nodule" value={m.slices_with_nodule ?? "—"} />
+          <Metric label="Voxels" value={(m.voxels ?? 0).toLocaleString()} />
+        </div>
+        <p className="text-[11px] text-subtle">Classical 3-D segmentation (Otsu + central component) — replaces manual calliper measurement; verify on the MPR views.</p>
+        <RadiomicsPanel results={results} />
+      </div>
+    );
+  if (!m?.available)
+    return results.radiomics ? (
+      <RadiomicsPanel results={results} />
+    ) : (
+      <p className="p-4 text-sm text-muted">No automatic measurements for this modality.</p>
+    );
   if (results.pipeline === "brain")
     return (
       <div className="space-y-4 p-1">
@@ -192,6 +270,7 @@ export function MeasurementsPanel({ results }: { results: Results }) {
           <Metric label="Slice fraction" value={pct(m.tumour_fraction, 2)} />
           <Metric label="Consistent with classifier" value={m.consistent_with_classifier ? "Yes" : "No"} hint="mask present ↔ tumour class" />
         </div>
+        <RadiomicsPanel results={results} />
       </div>
     );
   return (
@@ -214,6 +293,7 @@ export function MeasurementsPanel({ results }: { results: Results }) {
         <Ruler className="mt-0.5 size-3.5 shrink-0" />
         From our lung U-Net masks. Heart width = widest gap between medial lung borders (lower half). AP films magnify the heart; treat as an estimate.
       </p>
+      <RadiomicsPanel results={results} />
     </div>
   );
 }

@@ -15,6 +15,10 @@ LOINC_BY_PIPE = {
     "chest": ("36643-5", "XR Chest 2V"),
     "fracture": ("37637-5", "XR Bone"),
     "brain": ("24590-2", "MR Brain"),
+    "head_ct": ("24725-4", "CT Head"),
+    "breast_us": ("24601-7", "US Breast"),
+    "fundus": ("71490-5", "Retinal fundus imaging"),
+    "ct_volume": ("24627-2", "CT Chest"),
 }
 
 
@@ -61,6 +65,14 @@ def report_pdf(report: Report, study: Study, patient: Patient) -> bytes:
             f"{report.engine} / {report.style}",
         ],
     ]
+    info.append(
+        [
+            "Drafted by",
+            report.drafted_by.replace("ai:", "AI · "),
+            "Edited by",
+            report.edited_by or "—",
+        ]
+    )
     t = Table(info, colWidths=[35 * mm, 50 * mm, 25 * mm, 50 * mm])
     t.setStyle(
         TableStyle(
@@ -91,6 +103,13 @@ def report_pdf(report: Report, study: Study, patient: Patient) -> bytes:
                 els.append(Paragraph(str(val), body))
         else:
             els.append(Paragraph(str(v), body))
+    prov = provenance_rows(study)
+    if prov:
+        els.append(Paragraph("Finding provenance (who produced / approved each finding)", h))
+        els.append(Paragraph("<br/>".join(prov), body))
+    vers = ", ".join(f"{v['name']} {v['version']}" for v in study.results.get("model_versions", []))
+    if vers:
+        els.append(Paragraph(f"Model versions (weights SHA-256/12): {vers}", warn))
     els += [
         Spacer(1, 5 * mm),
         Paragraph(sec.get("disclaimer", DISCLAIMER), warn),
@@ -104,8 +123,44 @@ def report_pdf(report: Report, study: Study, patient: Patient) -> bytes:
     return buf.getvalue()
 
 
-def report_fhir(report: Report, study: Study, patient: Patient) -> dict[str, Any]:
+def provenance_rows(study: Study, session: Any = None) -> list[str]:
+    from sqlmodel import Session, col, select
+
+    from app.db import get_engine
+    from app.models import Finding
+
+    def rows(s: Any) -> list[str]:
+        out = []
+        q = select(Finding).where(Finding.study_id == study.id, col(Finding.positive).is_(True))
+        for f in s.exec(q).all():
+            who = f"AI ({f.model_name or 'model'} {f.model_version or ''})".strip()
+            if f.reviewed_by:
+                who += f"; {f.status} by {f.reviewed_by} ({f.reviewed_role or 'reviewer'})"
+            else:
+                who += "; not yet reviewed"
+            lab = f.edited_label or f.label
+            out.append(f"{lab}: {who}")
+        return out
+
+    if session is not None:
+        return rows(session)
+    with Session(get_engine()) as s:
+        return rows(s)
+
+
+def report_fhir(
+    report: Report, study: Study, patient: Patient, session: Any = None
+) -> dict[str, Any]:
+    from sqlmodel import select
+
+    from app.models import Finding
+
     res = study.results
+    rows = (
+        {f.id: f for f in session.exec(select(Finding).where(Finding.study_id == study.id)).all()}
+        if session is not None
+        else {}
+    )
     pipe = res.get("pipeline") or "chest"
     code, display = LOINC_BY_PIPE.get(pipe, ("18748-4", "Diagnostic imaging study"))
     observations = []
@@ -125,8 +180,17 @@ def report_fhir(report: Report, study: Study, patient: Patient) -> dict[str, Any
                     }
                 ],
                 "method": {"text": "MediVision self-trained model (AI-generated, requires review)"},
+                "device": {
+                    "display": f"{(f.get('provenance') or {}).get('model')} "
+                    f"{(f.get('provenance') or {}).get('model_version')}"
+                },
             }
         )
+        row = rows.get(f.get("id"))
+        if row is not None and row.reviewed_by:
+            observations[-1]["performer"] = [
+                {"display": f"{row.reviewed_by} ({row.reviewed_role or 'reviewer'}): {row.status}"}
+            ]
     sec = report.sections
     return {
         "resourceType": "DiagnosticReport",
@@ -149,6 +213,11 @@ def report_fhir(report: Report, study: Study, patient: Patient) -> dict[str, Any
         "effectiveDateTime": (study.study_date or study.created_at.isoformat()),
         "issued": report.updated_at.isoformat(),
         "performer": [{"display": report.signed_by or "MediVision AI (unsigned draft)"}],
+        "resultsInterpreter": (
+            [{"display": f"{report.signed_by} ({report.signed_role or 'radiologist'})"}]
+            if report.signed_by
+            else []
+        ),
         "imagingStudy": [{"reference": f"ImagingStudy/{study.id}"}],
         "contained": observations,
         "result": [{"reference": f"#{o['id']}"} for o in observations],
@@ -159,6 +228,13 @@ def report_fhir(report: Report, study: Study, patient: Patient) -> dict[str, Any
                 "valueString": f"{study.urgency_level} ({study.urgency_score})",
             },
             {"url": "urn:medivision:model-profile", "valueString": res.get("model_profile", "")},
+            {"url": "urn:medivision:drafted-by", "valueString": report.drafted_by},
+            {
+                "url": "urn:medivision:model-versions",
+                "valueString": ", ".join(
+                    f"{v['name']}@{v['version']}" for v in res.get("model_versions", [])
+                ),
+            },
             {"url": "urn:medivision:disclaimer", "valueString": DISCLAIMER},
         ],
     }

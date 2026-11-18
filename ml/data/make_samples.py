@@ -26,6 +26,88 @@ CHEST = [  # (NIH image, role)
 ]
 
 
+def new_modalities() -> list[dict[str, object]]:
+    """First test-split example of each new modality (D-21) — not cherry-picked by model output."""
+    from ml.data.datasets import load_medmnist
+
+    out: list[dict[str, object]] = []
+    d = PROCESSED / "head_ct"
+    if (d / "metadata.csv").exists():
+        meta = pd.read_csv(d / "metadata.csv")
+        cache = np.load(d / "images_256.npy")
+        for lab, role in ((1, "headct_hemorrhage"), (0, "headct_normal")):
+            i = int(meta[(meta.split == "test") & (meta.label == lab)].index[0])
+            img = cv2.resize(cache[i], (512, 512), interpolation=cv2.INTER_CUBIC)
+            cv2.imwrite(str(OUT / f"{role}.png"), img)
+            out.append(
+                {
+                    "file": f"{role}.png",
+                    "source": "Head CT - hemorrhage (Kitamura, Kaggle), test split",
+                    "original": meta.loc[i, "id"],
+                    "license": "see Kaggle page (research use)",
+                    "modality": "head_ct",
+                    "ground_truth": "hemorrhage" if lab else "no hemorrhage",
+                    "patient_ref": f"HCT-{meta.loc[i, 'id']}",
+                }
+            )
+    try:
+        x, y = load_medmnist("breastmnist", 128, "test")
+        i = int(np.where(y[:, 0] == 0)[0][0])
+        cv2.imwrite(
+            str(OUT / "breast_us_malignant.png"),
+            cv2.resize(x[i], (384, 384), interpolation=cv2.INTER_CUBIC),
+        )
+        out.append(
+            {
+                "file": "breast_us_malignant.png",
+                "source": "BreastMNIST+ (BUSI, Al-Dhabyani 2020), test split",
+                "original": f"test[{i}]",
+                "license": "CC BY 4.0",
+                "modality": "breast_us",
+                "ground_truth": "malignant",
+                "patient_ref": f"BUS-{i}",
+            }
+        )
+    except FileNotFoundError:
+        pass
+    try:
+        x, y = load_medmnist("retinamnist", 128, "test")
+        i = int(np.where(y[:, 0] >= 2)[0][0])
+        img = cv2.resize(x[i], (384, 384), interpolation=cv2.INTER_CUBIC)
+        cv2.imwrite(str(OUT / "fundus_dr.png"), cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
+        out.append(
+            {
+                "file": "fundus_dr.png",
+                "source": "RetinaMNIST+ (DeepDRiD), test split",
+                "original": f"test[{i}]",
+                "license": "CC BY 4.0",
+                "modality": "fundus",
+                "ground_truth": f"ICDR grade {int(y[i, 0])}",
+                "patient_ref": f"RET-{i}",
+            }
+        )
+    except FileNotFoundError:
+        pass
+    try:
+        x, y = load_medmnist("nodulemnist3d", 64, "test")
+        i = int(np.where(y[:, 0] == 1)[0][0])
+        np.save(OUT / "ct_nodule_volume.npy", x[i])
+        out.append(
+            {
+                "file": "ct_nodule_volume.npy",
+                "source": "NoduleMNIST3D (LIDC-IDRI), test split — 64³ chest-CT patch",
+                "original": f"test[{i}]",
+                "license": "CC BY 4.0",
+                "modality": "ct_volume",
+                "ground_truth": "malignant nodule",
+                "patient_ref": f"LIDC-{i}",
+            }
+        )
+    except FileNotFoundError:
+        pass
+    return out
+
+
 def main() -> None:
     OUT.mkdir(exist_ok=True)
     manifest = []
@@ -103,6 +185,7 @@ def main() -> None:
             "patient_ref": "PHOTO-1",
         }
     )
+    manifest += new_modalities()
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2))
     lines = [
         "# Sample data sources",

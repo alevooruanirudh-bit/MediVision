@@ -29,6 +29,14 @@ class Settings(BaseSettings):
     copilot_local_llm: bool = False
     ollama_url: str = "http://localhost:11434"
     ollama_model: str = "llama3.2:3b"
+    # access control (M31): off for the single-user local demo; on for any shared deployment
+    auth_enabled: bool = False
+    demo_password: str = "medivision-demo"
+    require_consent: bool = True  # uploads must attest a lawful basis / consent for research use
+    # autonomous mode (C10): AI pre-clears confident NORMAL studies and raises CRITICAL alerts;
+    # every pre-cleared study still needs human confirmation before a report is final
+    autonomous_triage: bool = True
+    autonomous_max_uncertainty: float = 0.08
 
     @field_validator("storage_dir", "artifacts_dir", mode="before")
     @classmethod

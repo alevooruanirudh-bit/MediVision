@@ -8,7 +8,7 @@ STARTER_MODELS := chest_densenet121 chest_efficientnet_b2 chest_convnext_tiny lu
 	fracture_cls fracture_det brain_cls brain_seg router denoiser report_gen
 FULL_MODELS := $(STARTER_MODELS) pneumonia_det
 
-.PHONY: help setup data-starter prepare train-starter train evaluate export seed dev backend frontend \
+.PHONY: help setup data-starter prepare train-starter train evaluate export seed dev backend frontend radiogenomics \
 	test test-backend test-frontend e2e lint format kaggle-notebooks kaggle-train kaggle-train-all \
 	federated docker screenshots clean
 
@@ -42,6 +42,9 @@ export: ## Export all trained models of PROFILE to ONNX
 
 federated: ## Run the FedAvg demo from the CLI
 	$(PY) -m ml.federated.fedavg
+
+radiogenomics: ## Radiogenomics study + brain-seg fairness on LGG/TCGA (needs data-starter)
+	$(PY) -m ml.radiogenomics --profile starter
 
 kaggle-notebooks: ## (Re)generate Kaggle notebooks for every full-profile model
 	$(PY) -m ml.kaggle.generate

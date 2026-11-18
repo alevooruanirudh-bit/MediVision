@@ -1,4 +1,4 @@
-"""SQLModel tables: Patient, Study, Finding, Review, Report, ChatMessage, AuditLog."""
+"""SQLModel tables: Patient, Study, Finding, Review, Report, ChatMessage, AuditLog, User."""
 
 from __future__ import annotations
 
@@ -49,6 +49,13 @@ class Study(SQLModel, table=True):
     deid_json: str | None = None
     created_at: datetime = Field(default_factory=_now, index=True)
     analyzed_at: datetime | None = None
+    # data governance (M31) / traceability (M24)
+    consent_basis: str | None = None  # uploader_attested | public_research_dataset | waived
+    uploaded_by: str | None = None
+    input_sha256: str | None = None
+    # critical-finding alert acknowledgement (M13)
+    alert_ack_by: str | None = None
+    alert_ack_at: datetime | None = None
 
     @property
     def results(self) -> dict[str, Any]:
@@ -71,6 +78,13 @@ class Finding(SQLModel, table=True):
     edited_label: str | None = None
     note: str | None = None
     rank: int = 0
+    # provenance / liability (M27)
+    source: str = "ai"  # ai | ai+radiologist (edited) | radiologist (added)
+    model_name: str | None = None
+    model_version: str | None = None
+    reviewed_by: str | None = None
+    reviewed_role: str | None = None
+    reviewed_at: datetime | None = None
 
 
 class Review(SQLModel, table=True):
@@ -79,6 +93,7 @@ class Review(SQLModel, table=True):
     study_id: str = Field(index=True)
     action: str  # accept | reject | edit
     reviewer: str = "radiologist"
+    reviewer_role: str | None = None
     original_label: str = ""
     new_label: str | None = None
     comment: str | None = None
@@ -94,7 +109,10 @@ class Report(SQLModel, table=True):
     sections_json: str = "{}"
     status: str = "draft"  # draft | signed
     signed_by: str | None = None
+    signed_role: str | None = None
     signed_at: datetime | None = None
+    drafted_by: str = "ai:copilot-rules"  # who produced the text
+    edited_by: str | None = None  # last human editor
     version: int = 1
     created_at: datetime = Field(default_factory=_now)
     updated_at: datetime = Field(default_factory=_now)
@@ -122,3 +140,16 @@ class AuditLog(SQLModel, table=True):
     entity: str = ""
     entity_id: str | None = None
     details_json: str | None = None
+    role: str | None = None
+    prev_hash: str | None = None  # hash chain (C5): sha256(prev_hash + canonical entry)
+    hash: str | None = Field(default=None, index=True)
+
+
+class User(SQLModel, table=True):
+    id: str = Field(default_factory=_id, primary_key=True)
+    username: str = Field(index=True, unique=True)
+    display_name: str = ""
+    role: str = "radiologist"  # admin | radiologist | resident | viewer
+    password_hash: str = ""
+    token_hash: str | None = Field(default=None, index=True)
+    created_at: datetime = Field(default_factory=_now)

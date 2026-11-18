@@ -244,6 +244,9 @@ def c_why(ctx: Ctx) -> Answer:
         parts.append(
             f"The fracture detector also proposes a box (score {f['detector_score']:.2f})."
         )
+    for r in (f.get("rationale") or {}).get("reasons", []):
+        if r.get("kind") in ("agreement", "measurement", "input"):
+            parts.append(r["text"])
     parts.append("Heatmaps show where the network looked, not proof of disease. " + CORRELATE)
     return Answer(
         " ".join(parts),

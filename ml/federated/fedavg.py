@@ -142,6 +142,28 @@ def evaluate(model: nn.Module, x: torch.Tensor, y: torch.Tensor) -> dict[str, fl
     return {"accuracy": float(((p >= 0.5) == yy).mean()), "auroc": float(roc_auc_score(yy, p))}
 
 
+def per_site(
+    models: dict[str, nn.Module], xt: torch.Tensor, yt: torch.Tensor, names: list[str]
+) -> dict[str, Any]:
+    """AUROC of each model on each hospital's own scanner style (test set split in 3 equal parts,
+    one per style). Worst-site AUROC and the best-worst gap measure generalisation / site bias."""
+    parts = np.array_split(np.arange(len(yt)), len(names))
+    table: dict[str, dict[str, float]] = {}
+    for mname, m in models.items():
+        table[mname] = {
+            site: round(evaluate(m, xt[idx], yt[idx])["auroc"], 4)
+            for site, idx in zip(names, parts)
+        }
+    summ = {
+        k: {
+            "worst_site_auroc": min(v.values()),
+            "site_gap": round(max(v.values()) - min(v.values()), 4),
+        }
+        for k, v in table.items()
+    }
+    return {"auroc": table, "summary": summ}
+
+
 def fedavg(global_model: nn.Module, locals_: list[nn.Module], weights: list[float]) -> None:
     gs = global_model.state_dict()
     tot = sum(weights)
@@ -205,10 +227,18 @@ def run(
         "elapsed_s": round(time.time() - t0, 1),
     }
     local_only = {}
+    local_models = {}
     for i, h in enumerate(hospitals):
         m = TinyCNN()
         _train_local(m, h.x, h.y, rounds * local_epochs, lr, seed=seed + 50 + i)
         local_only[h.name] = evaluate(m, xt, yt)
+        local_models[f"local: {h.name}"] = m
+    sites = per_site(
+        {"federated": global_model, "centralized": cen, **local_models},
+        xt,
+        yt,
+        [h.name for h in hospitals],
+    )
     yield {
         "type": "baseline",
         "name": "local_only",
@@ -223,6 +253,14 @@ def run(
         "federated_curve": fed_curve,
         "centralized_curve": cen_curve,
         "hospitals": [h.summary for h in hospitals],
+        "per_site": sites,
+        "privacy": {
+            "shared": "model weights only (FedAvg); no images or labels leave a hospital",
+            "not_included": "secure aggregation, differential privacy — needed for a real "
+            "deployment, because weights can leak information",
+            "regulation": "HIPAA (US) / GDPR (EU) still require a lawful basis, data-processing "
+            "agreements, minimisation and audit; federation reduces, not removes, these duties",
+        },
         "rounds": rounds,
         "seconds": round(time.time() - t0, 1),
     }

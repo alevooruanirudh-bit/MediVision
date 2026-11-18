@@ -1,0 +1,8 @@
+{
+  "model": "breast_us",
+  "profile": "starter",
+  "img_size": 128,
+  "onnx": true,
+  "max_abs_diff": 3.56378173828125,
+  "cpu_ms_per_image": 2.9
+}

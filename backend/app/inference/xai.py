@@ -10,7 +10,15 @@ import cv2
 import numpy as np
 
 from app.inference.registry import ModelHandle
-from ml.data.transforms import preprocess
+from ml.data.transforms import preprocess, preprocess_rgb
+
+
+def _prep(handle: ModelHandle, img: np.ndarray, size: int | None = None) -> np.ndarray:
+    size = size or handle.img_size
+    if handle.cfg.get("dataset") == "retina":
+        return preprocess_rgb(img if img.ndim == 3 else np.stack([img] * 3, -1), size)
+    return preprocess(img, size)
+
 
 _lock = threading.Lock()
 
@@ -37,7 +45,7 @@ def cam(
 
     model = handle.torch_model()
     layer = model.cam_layer()
-    x = torch.from_numpy(preprocess(img, handle.img_size))
+    x = torch.from_numpy(_prep(handle, img))
     cls = GradCAMPlusPlus if method == "gradcampp" else GradCAM
     with _lock, cls(model=model, target_layers=[layer]) as c:
         g = c(input_tensor=x, targets=[ClassifierOutputTarget(class_idx)])[0]
@@ -58,7 +66,7 @@ def occlusion(
 ) -> np.ndarray:
     """Probability drop when each patch is occluded (batched through ONNX/PyTorch)."""
     size = handle.img_size
-    base_in = preprocess(img, size)
+    base_in = _prep(handle, img, size)
     patch = size // grid
     batch, coords = [], []
     for gy in range(grid):

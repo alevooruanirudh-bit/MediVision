@@ -59,6 +59,43 @@ NP: dict[str, tuple[str, str]] = {  # (with article, bare)
     "Glioma": ("a glioma", "glioma"),
     "Meningioma": ("a meningioma", "meningioma"),
     "Pituitary tumour": ("a pituitary tumour", "pituitary tumour"),
+    "Intracranial hemorrhage": ("intracranial haemorrhage", "intracranial haemorrhage"),
+    "Suspicious breast lesion": ("a suspicious breast lesion", "suspicious breast lesion"),
+    "Referable diabetic retinopathy": (
+        "referable diabetic retinopathy",
+        "referable diabetic retinopathy",
+    ),
+    "Malignancy-suspicious lung nodule": (
+        "a lung nodule with malignant features",
+        "lung nodule with malignant features",
+    ),
+}
+NEW_PIPES = {
+    "head_ct": (
+        "Single axial non-contrast head CT slice, brain window (de-identified upload).",
+        "Brain",
+        "No intracranial haemorrhage identified by the AI model on this slice. A single slice "
+        "cannot exclude haemorrhage elsewhere.",
+        "No intracranial haemorrhage identified on this slice.",
+    ),
+    "breast_us": (
+        "Single breast ultrasound image (de-identified upload).",
+        "Breast",
+        "No features suspicious for malignancy identified by the AI model.",
+        "No sonographic features suspicious for malignancy identified by the AI model.",
+    ),
+    "fundus": (
+        "Single colour fundus photograph (de-identified upload).",
+        "Retina",
+        "No referable diabetic retinopathy identified by the AI model.",
+        "No referable diabetic retinopathy identified.",
+    ),
+    "ct_volume": (
+        "Chest CT sub-volume centred on a nodule (64³ patch, de-identified upload).",
+        "Lung nodule",
+        "The nodule does not show features the AI model associates with malignancy.",
+        "Nodule without AI-suspected malignant features; follow guideline-based surveillance.",
+    ),
 }
 LIKELY = [
     "Findings are consistent with {np}{zone}.",
@@ -241,6 +278,27 @@ def write_report(results: dict[str, Any], study: Any, style: str = "standard") -
                 f"AI model on this slice (no-tumour probability "
                 f"{br.get('no_tumour_prob', 0):.2f})."
             )
+    elif pipe in NEW_PIPES:
+        technique, sec, normal, _ = NEW_PIPES[pipe]
+        pos = [f for f in chosen if f["label"] in NP]
+        if pos:
+            f = pos[0]
+            extra_txt = ""
+            if pipe == "fundus" and f.get("grade"):
+                extra_txt = f" Most probable ICDR grade: {f['grade']}."
+            if pipe == "breast_us" and f.get("risk_category"):
+                extra_txt = f" AI suspicion category: {f['risk_category']}."
+            if pipe == "ct_volume" and meas.get("volume_mm3"):
+                extra_txt = (
+                    f" Segmented volume ~{meas['volume_mm3']:.0f} mm³ "
+                    f"(equivalent diameter {meas.get('equivalent_diameter_mm', 0):.1f} mm)."
+                )
+            findings[sec] = realise(f, f["mode"], seed, tables) + _prob_note(f) + extra_txt
+        else:
+            findings[sec] = normal
+            fs = results.get("findings") or []
+            if pipe == "fundus" and fs and fs[0].get("grade"):
+                findings[sec] += f" Most probable ICDR grade: {fs[0]['grade']}."
     else:
         technique = "Image could not be analysed."
         findings["Summary"] = (
@@ -271,6 +329,21 @@ def write_report(results: dict[str, Any], study: Any, style: str = "standard") -
                 else " (pixel spacing unknown)"
             )
         )
+    if pipe == "ct_volume" and meas.get("available"):
+        m_lines.append(
+            f"Nodule volume: {meas['volume_mm3']:.0f} mm³ · equivalent diameter "
+            f"{meas['equivalent_diameter_mm']:.1f} mm · {meas['slices_with_nodule']} slices"
+            + (" (voxel spacing assumed 1 mm — not in file)" if meas.get("spacing_assumed") else "")
+        )
+    rad = results.get("radiomics") or {}
+    if rad.get("first_order"):
+        fo, tx = rad["first_order"], rad.get("texture_glcm") or {}
+        m_lines.append(
+            f"Radiomics ({rad.get('roi')}): mean {fo.get('mean')}, SD {fo.get('std')}, "
+            f"entropy {fo.get('entropy_bits')} bits"
+            + (f", GLCM contrast {tx['contrast']}, homogeneity {tx['homogeneity']}" if tx else "")
+            + " (descriptive only)"
+        )
     if pipe == "fracture" and results.get("detections"):
         m_lines.append(
             f"Detector candidate boxes: {len(results['detections'])} "
@@ -291,6 +364,8 @@ def write_report(results: dict[str, Any], study: Any, style: str = "standard") -
             imp = ["No fracture identified by the AI model."]
         elif pipe == "brain":
             imp = ["No tumour of the trained types identified on this slice."]
+        elif pipe in NEW_PIPES:
+            imp = [NEW_PIPES[pipe][3]]
         else:
             imp = ["Not analysed — unsupported or non-medical input."]
     if (

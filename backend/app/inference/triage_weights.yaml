@@ -22,6 +22,10 @@ weights:
   Glioma: 0.95
   Meningioma: 0.80
   Pituitary tumour: 0.75
+  Intracranial hemorrhage: 1.00
+  Malignancy-suspicious lung nodule: 0.60
+  Suspicious breast lesion: 0.55
+  Referable diabetic retinopathy: 0.35
 levels:          # lower bounds
   CRITICAL: 75
   URGENT: 45

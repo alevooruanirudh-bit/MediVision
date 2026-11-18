@@ -28,6 +28,10 @@ export const modalityLabel: Record<string, string> = {
   chest_xray: "Chest X-ray",
   bone_xray: "Bone X-ray",
   brain_mri: "Brain MRI",
+  head_ct: "Head CT",
+  breast_us: "Breast US",
+  fundus: "Fundus photo",
+  chest_ct_volume: "Chest CT volume",
   other_medical: "Other medical",
   not_medical: "Not medical",
 };

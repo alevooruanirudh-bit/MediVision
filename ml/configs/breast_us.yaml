@@ -1,0 +1,17 @@
+# Breast-ultrasound malignancy classifier (ours) on BreastMNIST+ 128 px (Al-Dhabyani BUSI).
+common:
+  task: binary
+  label_name: Malignant breast lesion
+  dataset: breast_us
+  model: {arch: classifier, backbone: efficientnet_b0, dropout: 0.4, hidden: 128}
+  loss: {type: weighted_bce}
+  optim: {lr: 3.0e-4, weight_decay: 1.0e-3}
+  augment: {scale: [0.75, 1.0], rotate: 12, brightness: 0.15, contrast: 0.2, clahe_p: 0.2, hflip: true}
+  train: {patience: 6, warmup_epochs: 1, num_workers: 0, monitor: val_auroc}
+starter:
+  img_size: 128
+  train: {epochs: 20, batch_size: 32}
+full:
+  img_size: 224
+  train: {epochs: 30, batch_size: 32, num_workers: 4}
+  kaggle: {dataset_sources: [aryashah2k/breast-ultrasound-images-dataset], gpu_hours: 0.3}

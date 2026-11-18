@@ -1,8 +1,8 @@
-# Modality router (our small CNN, from scratch): chest_xray / bone_xray / brain_mri / other_medical / not_medical
+# Modality router (our small CNN, from scratch): 8 classes, see ml/common.py ROUTER_CLASSES
 common:
   task: multiclass
   dataset: router
-  labels: router5
+  labels: router8
   model: {arch: smallcnn, width: 32, dropout: 0.3}
   loss: {type: ce, label_smoothing: 0.05}
   optim: {lr: 2.0e-3, weight_decay: 1.0e-4}

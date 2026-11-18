@@ -262,7 +262,8 @@ class BrainMRIDataset(Dataset):
 
 # --------------------------------------------------------------------------- router
 class RouterDataset(Dataset):
-    """5-way modality router: chest_xray / bone_xray / brain_mri / other_medical / not_medical.
+    """8-way modality router: chest_xray / bone_xray / brain_mri / head_ct / breast_us / fundus /
+    other_medical (abdominal CT, CT patches, paediatric CXR) / not_medical (CIFAR-10 photos).
 
     Colour is preserved (natural photos are colourful) but half of the natural images are converted
     to grayscale so the router cannot rely on colour alone.
@@ -291,9 +292,25 @@ class RouterDataset(Dataset):
         pools["brain_mri"] += take(BrainMRIDataset(split, 128).x, n // 2)
         with contextlib.suppress(Exception):
             pools["brain_mri"] += take(SegDataset("lgg", split, 128).x, n // 2)
-        for flag in ("organamnist", "breastmnist", "pneumoniamnist"):
+        with contextlib.suppress(FileNotFoundError):
+            hct = HeadCTDataset(split, 128).x
+            # 120 training slices only: oversample (augmentations make the copies differ)
+            reps = max(1, (n // 2) // max(len(hct), 1))
+            pools["head_ct"] += [np.asarray(im) for im in hct] * reps
+        with contextlib.suppress(FileNotFoundError):
+            xb, _ = load_medmnist("breastmnist", 128, split)
+            reps = max(1, (n // 2) // max(len(xb), 1))
+            pools["breast_us"] += take(xb, n) * min(reps, 2)
+        with contextlib.suppress(FileNotFoundError):
+            xr, _ = load_medmnist("retinamnist", 128, split)
+            pools["fundus"] += take(xr, n)
+        for flag in ("organamnist", "pneumoniamnist", "nodulemnist3d"):
             try:
-                xo, _ = load_medmnist(flag, 128 if flag != "pneumoniamnist" else 64, split)
+                if flag == "nodulemnist3d":
+                    xv, _ = load_medmnist(flag, 64, split)
+                    xo = xv[:, 32]  # axial mid-slices of chest-CT patches
+                else:
+                    xo, _ = load_medmnist(flag, 128 if flag != "pneumoniamnist" else 64, split)
                 pools["other_medical"] += take(xo, n // 3)
             except FileNotFoundError:
                 pass
@@ -399,3 +416,110 @@ def report_text(row: Any) -> str:
     else:
         text = f or imp
     return " ".join(text.lower().replace("xxxx", "").split())
+
+
+# --------------------------------------------------------------------------- new modalities (D-21)
+class HeadCTDataset(Dataset):
+    """Head CT hemorrhage (Kitamura, Kaggle): 200 axial slices, binary hemorrhage label."""
+
+    def __init__(
+        self, split: str, size: int = 192, augment: Augment | None = None, limit: int | None = None
+    ) -> None:
+        d = PROCESSED / "head_ct"
+        if not (d / "metadata.csv").exists():
+            raise FileNotFoundError("head_ct not prepared; run make data-starter")
+        meta = pd.read_csv(d / "metadata.csv")
+        cache = np.load(next(d.glob("images_*.npy")), mmap_mode="r")
+        keep = np.where(meta["split"].to_numpy() == split)[0]
+        keep = keep[_subset(len(keep), limit)]
+        self.x = np.asarray(cache[keep])
+        self.y = meta["label"].to_numpy()[keep].astype(np.float32)
+        self.aug = augment or Augment(size, train=False)
+
+    def __len__(self) -> int:
+        return len(self.x)
+
+    def __getitem__(self, i: int) -> tuple[torch.Tensor, torch.Tensor]:
+        img, _ = self.aug(self.x[i])
+        return torch.from_numpy(normalize_gray(img)), torch.tensor([self.y[i]])
+
+
+class BreastUSDataset(Dataset):
+    """BreastMNIST+ (breast ultrasound, Al-Dhabyani 2020). Positive = malignant (MedMNIST label 0)."""
+
+    def __init__(
+        self, split: str, size: int = 128, augment: Augment | None = None, limit: int | None = None
+    ) -> None:
+        x, y = load_medmnist("breastmnist", 128, split)
+        idx = _subset(len(x), limit)
+        self.x = x[idx]
+        self.y = (1 - y[idx, 0]).astype(np.float32)
+        self.aug = augment or Augment(size, train=False)
+
+    def __len__(self) -> int:
+        return len(self.x)
+
+    def __getitem__(self, i: int) -> tuple[torch.Tensor, torch.Tensor]:
+        img, _ = self.aug(self.x[i])
+        return torch.from_numpy(normalize_gray(img)), torch.tensor([self.y[i]])
+
+
+class RetinaDataset(Dataset):
+    """RetinaMNIST+ colour fundus photographs, 5 diabetic-retinopathy grades (DeepDRiD)."""
+
+    def __init__(self, split: str, size: int = 128, train: bool = False) -> None:
+        x, y = load_medmnist("retinamnist", 128, split)
+        self.x, self.y = x, y[:, 0].astype(np.int64)
+        self.size, self.train = size, train
+
+    def __len__(self) -> int:
+        return len(self.x)
+
+    def __getitem__(self, i: int) -> tuple[torch.Tensor, torch.Tensor]:
+        from ml.data.transforms import preprocess_rgb
+
+        img = np.asarray(self.x[i])
+        if self.train:
+            if random.random() < 0.5:
+                img = img[:, ::-1]
+            if random.random() < 0.5:
+                img = img[::-1]
+            k = random.randint(0, 3)
+            img = np.rot90(img, k)
+            h = img.shape[0]
+            s = random.uniform(0.85, 1.0)
+            c = int(h * s)
+            y0, x0 = random.randint(0, h - c), random.randint(0, h - c)
+            img = img[y0 : y0 + c, x0 : x0 + c]
+            img = np.clip(
+                img.astype(np.float32) * random.uniform(0.85, 1.15) + random.uniform(-15, 15),
+                0,
+                255,
+            ).astype(np.uint8)
+        x = preprocess_rgb(np.ascontiguousarray(img), self.size)[0]
+        return torch.from_numpy(x), torch.tensor(self.y[i])
+
+
+class Nodule3DDataset(Dataset):
+    """NoduleMNIST3D (LIDC-IDRI chest-CT nodule patches, 64^3). Positive = malignant."""
+
+    def __init__(self, split: str, size: int = 64, train: bool = False) -> None:
+        x, y = load_medmnist("nodulemnist3d", 64, split)
+        self.x, self.y = x, y[:, 0].astype(np.float32)
+        self.size, self.train = size, train
+
+    def __len__(self) -> int:
+        return len(self.x)
+
+    def __getitem__(self, i: int) -> tuple[torch.Tensor, torch.Tensor]:
+        v = self.x[i].astype(np.float32) / 255.0
+        if self.train:
+            for ax in range(3):
+                if random.random() < 0.5:
+                    v = np.flip(v, ax)
+            v = np.rot90(v, random.randint(0, 3), axes=(1, 2))
+            v = np.clip(v * random.uniform(0.9, 1.1) + random.uniform(-0.05, 0.05), 0, 1)
+        v = (v - 0.5) / 0.25
+        return torch.from_numpy(np.ascontiguousarray(v)[None].astype(np.float32)), torch.tensor(
+            [self.y[i]]
+        )

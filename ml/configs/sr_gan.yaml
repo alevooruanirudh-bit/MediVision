@@ -1,0 +1,13 @@
+# x2 super-resolution generator (ours) with an adversarial PatchGAN loss (SRGAN-style, small).
+common:
+  task: superres
+  dataset: chestmnist
+  model: {arch: srgan, width: 48, blocks: 6, scale: 2}
+  loss: {l1: 1.0, adv: 0.003}
+  optim: {lr: 2.0e-4}
+starter:
+  img_size: 64
+  train: {epochs: 4, batch_size: 32, limit_train: 12000, limit_val: 400, pretrain_epochs: 2}
+full:
+  img_size: 128
+  train: {epochs: 20, batch_size: 32, limit_train: 60000, limit_val: 2000, pretrain_epochs: 5}

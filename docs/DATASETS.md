@@ -17,8 +17,22 @@ test-split samples (`sample_data/`, see its `SOURCES.md`).
 | Reports | Indiana University CXR (OpenI) — 256 px cleaned copy | CC BY-NC-SA 4.0 (derived) | Demner-Fushman et al., JAMIA 2016 | ✓ 3,298 frontal | ✓ originals |
 | Pneumonia boxes | RSNA Pneumonia Detection Challenge | competition rules | Shih et al., Radiol AI 2019 | — (rules not accepted) | ✓ |
 | Federated demo | PneumoniaMNIST 64 px | CC BY 4.0 | Kermany et al., Cell 2018 | ✓ | — |
-| Router "other medical" | OrganAMNIST (CT), BreastMNIST (US) | CC BY 4.0 | Yang et al. 2023 | ✓ | ✓ |
+| Head-CT hemorrhage | Head CT – hemorrhage (Kitamura): 200 axial slices, 100 / 100, one per patient | see Kaggle page (research use) | Kitamura, Kaggle 2018 | ✓ 120/40/40 split | ✓ (+ RSNA ICH, rules required) |
+| Head-CT hemorrhage (full) | RSNA Intracranial Hemorrhage Detection (~750k slices, 5 subtypes) | competition rules | Flanders et al., Radiol AI 2020 | — | ✓ (rules required) |
+| Lung nodule (CT) | NoduleMNIST3D 64³ — LIDC-IDRI nodule patches, benign / malignant (1,633) | CC BY 4.0 | Armato et al., Med Phys 2011; Yang et al. 2023 | ✓ official split | ✓ |
+| Breast ultrasound | BreastMNIST+ 128 px — BUSI (780 images, malignant vs benign/normal) | CC BY 4.0 | Al-Dhabyani et al., Data in Brief 2020 | ✓ official split | ✓ |
+| Fundus (DR) | RetinaMNIST+ 128 px — DeepDRiD colour fundus (1,600, ICDR 0–4) | CC BY 4.0 | Liu et al., Patterns 2022; Yang et al. 2023 | ✓ official split | ✓ |
+| Radiogenomics | LGG `data.csv` — TCGA molecular clusters, grade, survival, sex/age/race codes (110 patients) | CC BY-NC-SA 4.0 | Buda et al., CBM 2019; TCGA, NEJM 2015 | ✓ | ✓ |
+| Router "other medical" | OrganAMNIST (abdominal CT), PneumoniaMNIST (paediatric CXR), NoduleMNIST3D mid-slices | CC BY 4.0 | Yang et al. 2023 | ✓ | ✓ |
 | Router "not medical" | CIFAR-10 | Krizhevsky 2009 terms | Krizhevsky 2009 | ✓ | ✓ |
+
+**Class imbalance / rare conditions.** Chest labels use Asymmetric Loss; binary models (fracture, hemorrhage,
+nodule, breast) use positive-weighted BCE (weight = negatives / positives, capped at 30); multiclass models use
+class-weighted cross-entropy; operating thresholds are chosen per label on validation (Youden's J), and the
+Lab reports prevalence next to every sensitivity / specificity.
+
+**Demographic codes (LGG).** The Kaggle copy of `data.csv` stores sex and race as numeric codes without a
+documented mapping, so fairness tables show the codes ("sex: code 1") rather than guessed categories.
 
 ## Splits (no patient leakage)
 

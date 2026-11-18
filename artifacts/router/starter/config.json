@@ -1,7 +1,7 @@
 {
   "task": "multiclass",
   "dataset": "router",
-  "labels": "router5",
+  "labels": "router8",
   "model": {
     "arch": "smallcnn",
     "width": 32,

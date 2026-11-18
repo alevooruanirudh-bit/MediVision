@@ -21,7 +21,11 @@ def test_health_and_root(client) -> None:
 def test_upload_validation(client) -> None:
     r = client.post("/api/studies", files={"file": ("notes.txt", b"hello")})
     assert r.status_code == 415 and r.json()["error"]["code"] == "unsupported_type"
-    r = client.post("/api/studies", files={"file": ("bad.png", b"not an image")})
+    r = client.post(
+        "/api/studies",
+        files={"file": ("bad.png", b"not an image")},
+        data={"consent_basis": "uploader_attested"},
+    )
     assert r.status_code == 422
     assert client.get("/api/studies/does-not-exist").status_code == 404
 
@@ -258,7 +262,9 @@ def test_delete_study(client) -> None:
     if not p.exists():
         pytest.skip("sample missing")
     s = client.post(
-        "/api/studies", files={"file": (p.name, p.read_bytes())}, data={"analyze_now": "false"}
+        "/api/studies",
+        files={"file": (p.name, p.read_bytes())},
+        data={"analyze_now": "false", "consent_basis": "uploader_attested"},
     ).json()
     assert s["status"] == "uploaded"
     assert client.delete(f"/api/studies/{s['id']}").json() == {"deleted": s["id"]}

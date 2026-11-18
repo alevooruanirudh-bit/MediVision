@@ -7,6 +7,7 @@ import * as React from "react";
 
 import { EmptyState, PageHeader, UrgencyPill } from "@/components/common";
 import { Badge, Card, CardHeader, NativeSelect, Skeleton, Switch } from "@/components/ui/primitives";
+import { PatientTimeline } from "@/components/timeline";
 import { ImageViewer, type View } from "@/components/viewer/image-viewer";
 import { api } from "@/lib/api";
 import type { StudySummary } from "@/lib/types";
@@ -157,6 +158,7 @@ function Inner() {
                   <div><div className="text-[11px] text-muted">Change</div><div className={cn("num text-xl font-semibold", Math.abs(d.ctr.delta) >= 0.03 ? "text-amber" : "text-teal")}>{d.ctr.delta > 0 ? "+" : ""}{fmt(d.ctr.delta)}</div></div>
                 </Card>
               )}
+              {d.current_study.patient_id && <PatientTimeline patientId={d.current_study.patient_id} />}
             </div>
           </div>
         </div>

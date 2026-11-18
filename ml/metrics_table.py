@@ -55,6 +55,46 @@ ROWS = [
         lambda t: f"{t.get('bleu4', 0):.3f} / {t.get('rouge_l', 0):.3f}",
     ),
     ("copilot_intent", "Copilot intent model", "held-out accuracy", lambda t: t.get("accuracy")),
+    (
+        "head_ct_cls",
+        "Head-CT hemorrhage classifier",
+        "AUROC · sens / spec",
+        lambda t: f"{t.get('auroc', 0):.3f} · {t.get('sensitivity', 0):.2f} / "
+        f"{t.get('specificity', 0):.2f}",
+    ),
+    (
+        "nodule3d",
+        "Chest-CT nodule malignancy (3-D CNN)",
+        "AUROC · sens / spec",
+        lambda t: f"{t.get('auroc', 0):.3f} · {t.get('sensitivity', 0):.2f} / "
+        f"{t.get('specificity', 0):.2f}",
+    ),
+    (
+        "breast_us",
+        "Breast-ultrasound malignancy",
+        "AUROC · sens / spec",
+        lambda t: f"{t.get('auroc', 0):.3f} · {t.get('sensitivity', 0):.2f} / "
+        f"{t.get('specificity', 0):.2f}",
+    ),
+    (
+        "retina_dr",
+        "Diabetic-retinopathy grader (fundus)",
+        "referable AUROC · κ",
+        lambda t: f"{t.get('referable_auroc', 0):.3f} · {t.get('quadratic_kappa', 0):.3f}",
+    ),
+    (
+        "sr_gan",
+        "Super-resolution x2 (SR-GAN)",
+        "PSNR bicubic → ours (dB)",
+        lambda t: f"{t.get('psnr_bicubic', 0):.2f} → {t.get('psnr_ours', 0):.2f}",
+    ),
+    (
+        "radiogenomics",
+        "Radiogenomics (LGG / TCGA)",
+        "targets above chance",
+        lambda t: f"{sum(v['above_chance'] for v in t.get('targets', {}).values())}"
+        f"/{len(t.get('targets', {}))}",
+    ),
 ]
 
 
@@ -94,6 +134,41 @@ def fairness(profile: str = "starter") -> str:
     )
 
 
+def second_reader_section(profile: str = "starter") -> list[str]:
+    """Sensitivity / specificity / FPR / FNR at each model's operating point (paper M7)."""
+    rows = ["| Model | Target | Sens | Spec | FPR | FNR |", "|---|---|---|---|---|---|"]
+
+    def add(model: str, target: str, se: float | None, sp: float | None) -> None:
+        if se is None or sp is None:
+            return
+        rows.append(f"| {model} | {target} | {se:.3f} | {sp:.3f} | {1 - sp:.3f} | {1 - se:.3f} |")
+
+    ce = ARTIFACTS / "chest_ensemble" / profile / "metrics.json"
+    if ce.exists():
+        for lab, v in json.loads(ce.read_text())["test"].get("per_label", {}).items():
+            add("Chest ensemble", lab, v.get("sensitivity"), v.get("specificity"))
+    for key, name in (
+        ("fracture_cls", "Fracture classifier"),
+        ("head_ct_cls", "Head-CT hemorrhage"),
+        ("nodule3d", "CT nodule malignancy"),
+        ("breast_us", "Breast-US malignancy"),
+    ):
+        p = ARTIFACTS / key / profile / "metrics.json"
+        if p.exists():
+            t = json.loads(p.read_text())["test"]
+            add(name, "positive", t.get("sensitivity"), t.get("specificity"))
+    p = ARTIFACTS / "retina_dr" / profile / "metrics.json"
+    if p.exists():
+        r = json.loads(p.read_text())["test"].get("referable") or {}
+        add("Fundus DR grader", "referable DR", r.get("sensitivity"), r.get("specificity"))
+    return [
+        "## Second-reader error rates (operating point = Youden's J on validation)",
+        "",
+        *rows,
+        "",
+    ]
+
+
 def main() -> None:
     fed = ARTIFACTS / "federated" / "last_run.json"
     fed_txt = ""
@@ -119,6 +194,23 @@ def main() -> None:
                 body += ["### Chest fairness (sex / age / view)", "", fa, ""]
     if fed_txt:
         body += ["## Federated learning demo", "", fed_txt, ""]
+        ps = json.loads(fed.read_text()).get("per_site")
+        if ps:
+            sites = list(next(iter(ps["auroc"].values())))
+            rows = [
+                "| Model | " + " | ".join(sites) + " | worst site | gap |",
+                "|---" * (len(sites) + 3) + "|",
+            ]
+            for mname, row in ps["auroc"].items():
+                sm = ps["summary"][mname]
+                rows.append(
+                    f"| {mname} | "
+                    + " | ".join(f"{row[x]:.3f}" for x in sites)
+                    + f" | {sm['worst_site_auroc']:.3f} | {sm['site_gap']:.3f} |"
+                )
+            body += ["### Per-site generalisation (AUROC on each hospital's scanner style)", ""]
+            body += rows + [""]
+    body += second_reader_section()
     (ROOT / "docs" / "METRICS.md").write_text("\n".join(body))
     readme = ROOT / "README.md"
     if readme.exists():

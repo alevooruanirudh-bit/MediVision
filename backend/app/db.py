@@ -43,6 +43,25 @@ def init_db() -> None:
     from app import models  # noqa: F401  (register tables)
 
     SQLModel.metadata.create_all(get_engine())
+    migrate()
+
+
+def migrate() -> list[str]:
+    """Additive SQLite migration: ADD COLUMN for model fields missing in an older database."""
+    eng = get_engine()
+    if not str(eng.url).startswith("sqlite"):
+        return []
+    added = []
+    with eng.begin() as conn:
+        for table in SQLModel.metadata.sorted_tables:
+            have = {r[1] for r in conn.exec_driver_sql(f"PRAGMA table_info('{table.name}')")}
+            for col in table.columns:
+                if col.name in have:
+                    continue
+                typ = col.type.compile(dialect=eng.dialect)
+                conn.exec_driver_sql(f'ALTER TABLE "{table.name}" ADD COLUMN "{col.name}" {typ}')
+                added.append(f"{table.name}.{col.name}")
+    return added
 
 
 def get_session() -> Iterator[Session]:

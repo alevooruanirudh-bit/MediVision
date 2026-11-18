@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Braces, Download, FileSignature, FlaskConical, Loader2, Lock, RotateCcw, Save, Sparkles } from "lucide-react";
+import { ArrowLeft, Braces, Download, FileSignature, FileStack, FlaskConical, Loader2, Lock, RotateCcw, Save, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import * as React from "react";
@@ -42,6 +42,7 @@ export default function ReportEditor() {
   const [fhir, setFhir] = React.useState<Record<string, unknown> | null>(null);
   const reviewer = useSettings((s) => s.reviewer);
   const [signer, setSigner] = React.useState(reviewer);
+  const [attest, setAttest] = React.useState(false);
   const report = rq.data;
   React.useEffect(() => {
     if (report) setDraft(report.sections);
@@ -86,6 +87,19 @@ export default function ReportEditor() {
               <a href={api.pdfUrl(report.id)} target="_blank" rel="noreferrer" data-testid="pdf-link"><Download /> PDF</a>
             </Button>
             <Button variant="secondary" onClick={async () => setFhir(await api.fhir(report.id))}><Braces /> FHIR</Button>
+            <Tip content="DICOM Encapsulated PDF for PACS">
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  api
+                    .download(`/api/reports/${report.id}/dicom`, `medivision_${id}_report.dcm`)
+                    .then(() => toast.success("DICOM report exported"))
+                    .catch((e) => toast.error((e as Error).message))
+                }
+              >
+                <FileStack /> DICOM
+              </Button>
+            </Tip>
             <Button variant="primary" disabled={signed} onClick={() => setSignOpen(true)}>
               {signed ? <Lock /> : <FileSignature />} {signed ? `Signed by ${report.signed_by}` : "Sign off"}
             </Button>
@@ -100,6 +114,11 @@ export default function ReportEditor() {
             <ModelBadge profile={study.data?.model_profile} />
             <Badge tone={report.engine === "experimental" ? "violet" : "cyan"}>{report.engine === "experimental" ? "Experimental engine" : "Rule-based engine"}</Badge>
             <Badge tone={signed ? "teal" : "amber"}>{signed ? "signed" : "draft"} · v{report.version}</Badge>
+            <span className="w-full text-[11px] text-subtle" data-testid="report-provenance">
+              Drafted by {(report.drafted_by ?? "ai:copilot-rules").replace("ai:", "AI · ")}
+              {report.edited_by ? ` · last edited by ${report.edited_by}` : ""}
+              {signed ? ` · signed by ${report.signed_by} (${report.signed_role ?? "radiologist"})` : " · awaiting human sign-off"}
+            </span>
           </div>
           {report.engine === "experimental" && (
             <div className="mb-5 rounded-xl border border-violet/30 bg-violet/10 p-3 text-xs text-violet">
@@ -194,10 +213,16 @@ export default function ReportEditor() {
       <Dialog open={signOpen} onOpenChange={setSignOpen}>
         <DialogContent title="Sign off report" description="Signing makes the report read-only and records it in the audit log.">
           <Input value={signer} onChange={(e) => setSigner(e.target.value)} aria-label="Signer name" />
+          <label className="mt-3 flex items-start gap-2 text-xs text-muted">
+            <input type="checkbox" checked={attest} onChange={(e) => setAttest(e.target.checked)} className="mt-0.5 accent-[var(--cyan)]" data-testid="sign-attest" />
+            I have reviewed the images and every AI finding; I take responsibility for this report. The AI draft and my
+            edits are recorded separately in the audit log.
+          </label>
           <div className="mt-4 flex justify-end gap-2">
             <Button variant="ghost" onClick={() => setSignOpen(false)}>Cancel</Button>
             <Button
               variant="primary"
+              disabled={!attest}
               onClick={async () => {
                 if (dirty) await api.updateReport(report.id, draft);
                 await run("sign", () => api.signReport(report.id, signer), "Report signed");

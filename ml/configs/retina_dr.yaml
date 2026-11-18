@@ -1,0 +1,16 @@
+# Diabetic-retinopathy grader (ours) on RetinaMNIST+ colour fundus photos (5 ICDR grades).
+common:
+  task: multiclass
+  labels: retina5
+  dataset: retina
+  model: {arch: classifier, backbone: efficientnet_b0, dropout: 0.4, hidden: 128}
+  loss: {type: ce, label_smoothing: 0.1}
+  optim: {lr: 3.0e-4, weight_decay: 1.0e-3}
+  train: {patience: 6, warmup_epochs: 1, num_workers: 0, monitor: val_macro_f1}
+starter:
+  img_size: 128
+  train: {epochs: 20, batch_size: 32}
+full:
+  img_size: 384
+  train: {epochs: 25, batch_size: 32, num_workers: 4}
+  kaggle: {dataset_sources: [sovitrath/diabetic-retinopathy-224x224-2019-data], gpu_hours: 1.0}

@@ -16,8 +16,9 @@ test.describe.serial("MediVision end-to-end", () => {
 
   test("upload → findings + heatmap → report → PDF → copilot", async ({ page, request }) => {
     await page.goto("/worklist");
+    await page.getByTestId("consent-checkbox").check();
     await page.getByTestId("file-input").setInputFiles(path.join(SAMPLES, "chest_effusion.png"));
-    const open = page.getByRole("link", { name: "Open" }).first();
+    const open = page.getByRole("link", { name: "Open", exact: true }).first();
     await expect(open).toBeVisible({ timeout: 60_000 });
     await open.click();
     await expect(page).toHaveURL(/studies\//);
@@ -52,6 +53,7 @@ test.describe.serial("MediVision end-to-end", () => {
           file: { name: f, mimeType: "image/png", buffer: fs.readFileSync(path.join(SAMPLES, f)) },
           patient_ref: "E2E-PAIR",
           modality_hint: "chest",
+          consent_basis: "public_research_dataset",
         },
       });
       expect(res.ok()).toBeTruthy();

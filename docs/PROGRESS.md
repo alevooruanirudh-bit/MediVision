@@ -49,3 +49,19 @@
 - [x] Docs: README, ARCHITECTURE, DATASETS, TRAINING, MODEL_CARD, METRICS, DEPLOYMENT, DEMO_SCRIPT, API
 - [x] Dockerfiles (HF Spaces compatible) + docker-compose; Vercel-ready frontend (Docker build not run locally — D-16)
 - [x] Final commit
+
+## Phase 11 — Paper requirements audit (JECIR 2023) — see REQUIREMENTS_AUDIT.md
+- [x] Audit of 34 MUST / 7 SHOULD / 10 COULD requirements (before: 19 / 4 / 0 fully implemented)
+- [x] New modalities: head-CT hemorrhage, CT nodule 3-D CNN + volumetrics, breast ultrasound, fundus DR grading (D-21)
+- [x] Router v2 (8 classes, fundus colour exemption) (D-22); CT volume upload + 3-D MIP/MPR view (D-23)
+- [x] Second-reader metrics (sens/spec/FPR/FNR/PPV/NPV) for every classifier (Lab + METRICS.md)
+- [x] Plain-language rationale per finding (D-24); radiomics panel (D-25)
+- [x] Model versioning (weights hash), per-finding AI/human provenance, report drafter/editor/signer (D-26)
+- [x] Role-based access + optional token auth, consent capture at upload (D-27)
+- [x] Hash-chained tamper-evident audit log + verify endpoint/UI (D-28)
+- [x] Critical-finding alerts with acknowledgement; autonomous pre-clear mode (D-29)
+- [x] DICOM Secondary Capture + Encapsulated PDF export (D-30)
+- [x] Progression timeline; SR-GAN ×2 super-resolution; image fusion (D-31)
+- [x] Radiogenomics (LGG/TCGA) + segmentation fairness by sex/age/race; federated per-site generalisation + HIPAA/GDPR notes (D-32)
+- [x] Tests: backend/tests/test_requirements.py; docs updated (README, MODEL_CARD, DATASETS, DECISIONS)
+- [ ] Skipped with reasons: stroke LVO / PE (C3), PET-CT / fMRI (C7), wearables (C8)

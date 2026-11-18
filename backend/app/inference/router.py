@@ -7,13 +7,38 @@ from typing import Any
 import numpy as np
 
 from app.inference.registry import registry
-from ml.common import ROUTER_CLASSES
+from ml.common import ROUTER_CLASSES, ROUTER_CLASSES_V1
 from ml.data.transforms import preprocess_rgb
 
-PIPELINE_FOR = {"chest_xray": "chest", "bone_xray": "fracture", "brain_mri": "brain"}
+PIPELINE_FOR = {
+    "chest_xray": "chest",
+    "bone_xray": "fracture",
+    "brain_mri": "brain",
+    "head_ct": "head_ct",
+    "breast_us": "breast_us",
+    "fundus": "fundus",
+}
+# Colour is expected only for fundus photographs; any other colourful input is not a scan.
+COLOUR_MODALITIES = {"fundus"}
 # Radiographs and MRI are grayscale (colourfulness ~0, JPEG noise < 3). Real chroma => not a scan.
 COLOR_LIMIT = 6.0
-HINTS = {"chest": "chest_xray", "fracture": "bone_xray", "bone": "bone_xray", "brain": "brain_mri"}
+HINTS = {
+    "chest": "chest_xray",
+    "fracture": "bone_xray",
+    "bone": "bone_xray",
+    "brain": "brain_mri",
+    "head_ct": "head_ct",
+    "ct": "head_ct",
+    "breast": "breast_us",
+    "ultrasound": "breast_us",
+    "breast_us": "breast_us",
+    "fundus": "fundus",
+    "retina": "fundus",
+}
+SUPPORTED = (
+    "chest X-ray, bone X-ray, brain MRI, head CT, breast ultrasound, colour fundus photo, "
+    "chest-CT nodule volume (.npy)"
+)
 
 
 def softmax(z: np.ndarray) -> np.ndarray:
@@ -47,14 +72,17 @@ def route(img: np.ndarray, hint: str | None = None) -> dict[str, Any]:
             "colorfulness": color,
         }
     t = float(h.metrics.get("test", {}).get("temperature", 1.0) or 1.0)
+    classes = ROUTER_CLASSES_V1 if h.cfg.get("labels") == "router5" else ROUTER_CLASSES
     logits = h.run(preprocess_rgb(img, h.img_size))[0][0]
+    if len(classes) != len(logits):
+        classes = ROUTER_CLASSES if len(logits) == len(ROUTER_CLASSES) else ROUTER_CLASSES_V1
     p = softmax(logits / t)
     k = int(p.argmax())
-    label = ROUTER_CLASSES[k]
+    label = classes[k]
     conf = float(p[k])
     warning = None
     ood = False
-    if color > COLOR_LIMIT and label != "not_medical":
+    if color > COLOR_LIMIT and label not in COLOUR_MODALITIES and label != "not_medical":
         ood = True
         warning = (
             "Colour photograph detected — this does not look like a medical image "
@@ -70,8 +98,8 @@ def route(img: np.ndarray, hint: str | None = None) -> dict[str, Any]:
     elif label == "other_medical":
         ood = True
         warning = (
-            "Medical image of an unsupported type (e.g. CT, ultrasound). "
-            "Supported: chest X-ray, bone X-ray, brain MRI."
+            "Medical image of an unsupported type (e.g. abdominal CT, paediatric film). "
+            f"Supported: {SUPPORTED}."
         )
     elif conf < 0.6:
         warning = f"Modality uncertain ({label.replace('_', ' ')} {conf:.0%}). Please verify."
@@ -82,7 +110,7 @@ def route(img: np.ndarray, hint: str | None = None) -> dict[str, Any]:
         )
     return {
         "label": label,
-        "probs": {c: float(v) for c, v in zip(ROUTER_CLASSES, p)},
+        "probs": {c: float(v) for c, v in zip(classes, p)},
         "confidence": conf,
         "pipeline": None if ood else PIPELINE_FOR.get(label),
         "ood": ood,

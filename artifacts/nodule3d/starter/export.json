@@ -1,0 +1,8 @@
+{
+  "model": "nodule3d",
+  "profile": "starter",
+  "img_size": 64,
+  "onnx": true,
+  "max_abs_diff": 4.76837158203125e-07,
+  "cpu_ms_per_image": 84.5
+}

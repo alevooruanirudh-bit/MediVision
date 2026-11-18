@@ -20,7 +20,69 @@ export interface Finding {
   box?: [number, number, number, number];
   detector_score?: number;
   kind: string;
-  review?: { status: string; edited_label?: string | null; note?: string | null };
+  model?: string;
+  grade?: string;
+  expected_grade?: number;
+  risk_category?: string;
+  volume_mm3?: number;
+  rationale?: { reasons: { kind: string; text: string }[]; summary: string };
+  provenance?: { source: string; model: string | null; model_version: string | null };
+  review?: {
+    status: string;
+    edited_label?: string | null;
+    note?: string | null;
+    reviewed_by?: string | null;
+    reviewed_role?: string | null;
+    reviewed_at?: string | null;
+    source?: string;
+  };
+}
+
+export interface Radiomics {
+  roi: string;
+  shape: Record<string, number>;
+  first_order: Record<string, number>;
+  texture_glcm?: Record<string, number>;
+  note?: string;
+}
+
+export interface Autonomy {
+  enabled: boolean;
+  action?: "pre_cleared_normal" | "critical_alert" | "none";
+  text?: string;
+  requires_human_confirmation?: boolean;
+}
+
+export interface Timeline {
+  pipeline: string;
+  n_studies: number;
+  span_days: number;
+  points: {
+    study_id: string;
+    date: string;
+    day: number;
+    urgency_score: number | null;
+    urgency_level: Level | null;
+    probabilities: Record<string, number>;
+    positive: string[];
+    ctr?: number | null;
+    lesion_size?: number | null;
+  }[];
+  trends: { label: string; first: number; last: number; slope_per_30d: number; trend: string; series: number[] }[];
+  urgency_slope_per_30d: number;
+  lesion_growth: { first: number; last: number; change_pct: number } | null;
+  call: string;
+  note: string;
+}
+
+export interface Me {
+  username: string;
+  role: "admin" | "radiologist" | "resident" | "viewer";
+  name: string;
+  authenticated: boolean;
+  auth_enabled: boolean;
+  permissions: string[];
+  roles: string[];
 }
 
 export interface Modality {
@@ -54,6 +116,11 @@ export interface Measurements {
   box?: [number, number, number, number];
   centroid?: [number, number];
   consistent_with_classifier?: boolean;
+  volume_mm3?: number;
+  equivalent_diameter_mm?: number;
+  slices_with_nodule?: number;
+  spacing_assumed?: boolean;
+  voxels?: number;
 }
 
 export interface Triage {
@@ -70,17 +137,26 @@ export interface Detection {
 }
 
 export interface Results {
-  pipeline: "chest" | "fracture" | "brain" | null;
+  pipeline: "chest" | "fracture" | "brain" | "head_ct" | "breast_us" | "fundus" | "ct_volume" | null;
   modality: Modality;
   findings: Finding[];
   detections: Detection[];
   measurements: Measurements;
-  overlays: { heatmaps: Record<string, Record<string, string>>; lung_mask?: string; tumour_mask?: string };
+  overlays: {
+    heatmaps: Record<string, Record<string, string>>;
+    lung_mask?: string;
+    tumour_mask?: string;
+    volume?: { mpr: Record<string, string>; mip_frames: string[]; shape: number[] };
+  };
   triage: Triage;
   extra: {
     chest?: { members: string[]; profile: string; energy: number; energy_threshold: number; energy_ood: boolean };
     brain?: { class_probs: Record<string, number>; predicted: string; no_tumour_prob: number };
+    fundus?: { grade_probs: Record<string, number>; predicted_grade: string };
   };
+  model_versions?: { name: string; profile: string; version: string; trained_at: string | null; backend: string }[];
+  radiomics?: Radiomics | null;
+  autonomy?: Autonomy;
   image: { url: string; width: number; height: number };
   model_profile: "starter" | "full";
   model_profiles: Record<string, string>;
@@ -120,11 +196,24 @@ export interface StudySummary {
   n_positive: number;
   pipeline: string | null;
   warning: string | null;
+  autonomy?: Autonomy | null;
+  alert?: { active: boolean; acknowledged_by: string | null; acknowledged_at: string | null };
+  consent_basis?: string | null;
+  uploaded_by?: string | null;
+  input_sha256?: string | null;
+  patient_id?: string;
 }
 
 export interface Study extends StudySummary {
   results: Results;
-  deid: { format?: string; removed_tags?: string[]; pseudonym?: string; ms?: number; exif_stripped?: boolean };
+  deid: {
+    format?: string;
+    removed_tags?: string[];
+    pseudonym?: string;
+    ms?: number;
+    exif_stripped?: boolean;
+    volume_shape?: number[] | null;
+  };
   report_id: string | null;
   other_studies: { id: string; created_at: string; study_date: string | null; modality: string | null; status: string }[];
 }
@@ -149,7 +238,10 @@ export interface Report {
   sections: ReportSections;
   status: "draft" | "signed";
   signed_by: string | null;
+  signed_role?: string | null;
   signed_at: string | null;
+  drafted_by?: string;
+  edited_by?: string | null;
   version: number;
   created_at: string;
   updated_at: string;

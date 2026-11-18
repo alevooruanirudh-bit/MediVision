@@ -1,0 +1,8 @@
+{
+  "model": "sr_gan",
+  "profile": "starter",
+  "img_size": 64,
+  "onnx": true,
+  "max_abs_diff": 3.5762786865234375e-07,
+  "cpu_ms_per_image": 19.7
+}
