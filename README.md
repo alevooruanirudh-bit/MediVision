@@ -66,7 +66,12 @@ after `make kaggle-train-all`. Full details, fairness tables and the federated r
 
 ## Quick start
 
+The trained starter weights (~850 MB) are stored with [Git LFS](https://git-lfs.com), so a fresh clone
+can run inference straight away: `make setup`, then `make dev`. You only need `data-starter` and
+`train-starter` to retrain.
+
 ```bash
+git lfs install && git clone https://github.com/alevooruanirudh-bit/MediVision.git
 make setup            # Python 3.11 venv + requirements, npm install
 make data-starter     # free datasets via MedMNIST+ and the Kaggle API (~/.kaggle token)
 make train-starter    # trains, evaluates and exports EVERY starter model

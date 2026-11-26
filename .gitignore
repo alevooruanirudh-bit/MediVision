@@ -21,6 +21,8 @@ artifacts/**/last.pt
 backend/storage/
 backend/*.db
 backend/*.db-journal
+backend/*.db-wal
+backend/*.db-shm
 
 # frontend
 frontend/node_modules/
@@ -34,12 +36,7 @@ frontend/tsconfig.tsbuildinfo
 # kaggle run outputs
 ml/kaggle/*/output/
 logs/
-# large weights are rebuilt by `make train-starter` (small ones are whitelisted below)
-artifacts/**/*.pt
-artifacts/**/*.onnx
-artifacts/**/*.npz
-!artifacts/router/starter/model.onnx
-!artifacts/lung_unet/starter/model.onnx
-!artifacts/brain_seg/starter/model.onnx
-!artifacts/denoiser/starter/model.onnx
+# trained weights ARE committed (via Git LFS, see .gitattributes); only training
+# intermediates and smoke-test runs are ignored
+artifacts/*/kaggle_smoke/
 ml/kaggle/*_smoke/

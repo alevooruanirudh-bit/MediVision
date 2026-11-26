@@ -1,27 +1,27 @@
 {
   "federated": {
-    "accuracy": 0.7323717948717948,
-    "auroc": 0.8738220468989699
+    "accuracy": 0.625,
+    "auroc": 0.4849660311198772
   },
   "centralized": {
-    "accuracy": 0.8333333333333334,
-    "auroc": 0.9015450361604208
+    "accuracy": 0.6153846153846154,
+    "auroc": 0.6745233399079553
   },
   "local_only": {
     "St. Aurora (urban referral)": {
-      "accuracy": 0.8461538461538461,
-      "auroc": 0.8980824019285558
+      "accuracy": 0.625,
+      "auroc": 0.5958579881656805
     },
     "Riverside General": {
-      "accuracy": 0.7932692307692307,
-      "auroc": 0.8956607495069033
+      "accuracy": 0.49038461538461536,
+      "auroc": 0.7479180363795748
     },
     "Hillcrest Rural Clinic": {
       "accuracy": 0.375,
-      "auroc": 0.7871137409598947
+      "auroc": 0.7272079772079773
     }
   },
-  "local_only_mean_auroc": 0.8602856307984513,
+  "local_only_mean_auroc": 0.6903280005844108,
   "federated_curve": [
     {
       "accuracy": 0.625,
@@ -30,38 +30,6 @@
     {
       "accuracy": 0.625,
       "auroc": 0.4849660311198772
-    },
-    {
-      "accuracy": 0.625,
-      "auroc": 0.5314047775586237
-    },
-    {
-      "accuracy": 0.625,
-      "auroc": 0.7365987289064211
-    },
-    {
-      "accuracy": 0.625,
-      "auroc": 0.5957703265395573
-    },
-    {
-      "accuracy": 0.7083333333333334,
-      "auroc": 0.8446088099934254
-    },
-    {
-      "accuracy": 0.7227564102564102,
-      "auroc": 0.858229235152312
-    },
-    {
-      "accuracy": 0.7532051282051282,
-      "auroc": 0.870940170940171
-    },
-    {
-      "accuracy": 0.7756410256410257,
-      "auroc": 0.8782489590181897
-    },
-    {
-      "accuracy": 0.7323717948717948,
-      "auroc": 0.8738220468989699
     }
   ],
   "centralized_curve": [
@@ -72,38 +40,6 @@
     {
       "accuracy": 0.6153846153846154,
       "auroc": 0.6745233399079553
-    },
-    {
-      "accuracy": 0.7083333333333334,
-      "auroc": 0.7683651106728029
-    },
-    {
-      "accuracy": 0.7067307692307693,
-      "auroc": 0.8249835634451019
-    },
-    {
-      "accuracy": 0.7371794871794872,
-      "auroc": 0.8480714442252903
-    },
-    {
-      "accuracy": 0.7788461538461539,
-      "auroc": 0.8704799474030244
-    },
-    {
-      "accuracy": 0.7852564102564102,
-      "auroc": 0.8816677624369932
-    },
-    {
-      "accuracy": 0.8173076923076923,
-      "auroc": 0.8824019285557747
-    },
-    {
-      "accuracy": 0.7660256410256411,
-      "auroc": 0.896701731317116
-    },
-    {
-      "accuracy": 0.8333333333333334,
-      "auroc": 0.9015450361604208
     }
   ],
   "hospitals": [
@@ -129,51 +65,51 @@
   "per_site": {
     "auroc": {
       "federated": {
-        "St. Aurora (urban referral)": 0.9079,
-        "Riverside General": 0.914,
-        "Hillcrest Rural Clinic": 0.8787
+        "St. Aurora (urban referral)": 0.4984,
+        "Riverside General": 0.502,
+        "Hillcrest Rural Clinic": 0.5546
       },
       "centralized": {
-        "St. Aurora (urban referral)": 0.9138,
-        "Riverside General": 0.9393,
-        "Hillcrest Rural Clinic": 0.8774
+        "St. Aurora (urban referral)": 0.7758,
+        "Riverside General": 0.752,
+        "Hillcrest Rural Clinic": 0.7253
       },
       "local: St. Aurora (urban referral)": {
-        "St. Aurora (urban referral)": 0.9131,
-        "Riverside General": 0.9195,
-        "Hillcrest Rural Clinic": 0.8738
+        "St. Aurora (urban referral)": 0.6593,
+        "Riverside General": 0.6348,
+        "Hillcrest Rural Clinic": 0.6324
       },
       "local: Riverside General": {
-        "St. Aurora (urban referral)": 0.9181,
-        "Riverside General": 0.9562,
-        "Hillcrest Rural Clinic": 0.8747
+        "St. Aurora (urban referral)": 0.7508,
+        "Riverside General": 0.7653,
+        "Hillcrest Rural Clinic": 0.7535
       },
       "local: Hillcrest Rural Clinic": {
-        "St. Aurora (urban referral)": 0.7887,
-        "Riverside General": 0.8109,
-        "Hillcrest Rural Clinic": 0.7778
+        "St. Aurora (urban referral)": 0.861,
+        "Riverside General": 0.8416,
+        "Hillcrest Rural Clinic": 0.7718
       }
     },
     "summary": {
       "federated": {
-        "worst_site_auroc": 0.8787,
-        "site_gap": 0.0353
+        "worst_site_auroc": 0.4984,
+        "site_gap": 0.0562
       },
       "centralized": {
-        "worst_site_auroc": 0.8774,
-        "site_gap": 0.0619
+        "worst_site_auroc": 0.7253,
+        "site_gap": 0.0505
       },
       "local: St. Aurora (urban referral)": {
-        "worst_site_auroc": 0.8738,
-        "site_gap": 0.0457
+        "worst_site_auroc": 0.6324,
+        "site_gap": 0.0269
       },
       "local: Riverside General": {
-        "worst_site_auroc": 0.8747,
-        "site_gap": 0.0815
+        "worst_site_auroc": 0.7508,
+        "site_gap": 0.0145
       },
       "local: Hillcrest Rural Clinic": {
-        "worst_site_auroc": 0.7778,
-        "site_gap": 0.0331
+        "worst_site_auroc": 0.7718,
+        "site_gap": 0.0892
       }
     }
   },
@@ -182,6 +118,6 @@
     "not_included": "secure aggregation, differential privacy \u2014 needed for a real deployment, because weights can leak information",
     "regulation": "HIPAA (US) / GDPR (EU) still require a lawful basis, data-processing agreements, minimisation and audit; federation reduces, not removes, these duties"
   },
-  "rounds": 10,
-  "seconds": 29.5
+  "rounds": 2,
+  "seconds": 7.6
 }

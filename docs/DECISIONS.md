@@ -219,3 +219,11 @@ statistics, not a learned model.
 **D-37 — Scope trimmed.** C3 (stroke LVO / PE on CT angiography) and C8 (wearables) are removed from scope:
 there is no small, free, suitable dataset (RSNA PE is ~900 GB), and wearables are outside imaging. They are
 no longer listed as requirements.
+
+**D-38 — Trained weights are committed via Git LFS.** A clone must be able to run the app without the
+9 GB data download and a retrain. Every starter-profile `.pt` / `.onnx` / `.npz` under `artifacts/` (~850 MB)
+is tracked with Git LFS (`.gitattributes`). This is required because `chest_convnext_tiny` is 108 MB,
+over GitHub's 100 MB per-file limit. These stay out of git: `data/` (9.2 GB, and dataset licences forbid
+redistribution; `make data-starter` re-downloads it), training `checkpoints/`, `kaggle_smoke/` runs,
+`logs/`, `.venv`, `node_modules`, and the SQLite runtime files (`*.db-wal`/`*.db-shm`). The backend
+creates and seeds the database on start.
